@@ -22,12 +22,14 @@ aerialway=$(echo "$aerialwaymeter / 1000" | bc)
 sled=$(echo "$sledmeter / 1000" | bc)
 hike=$(echo "$hikemeter / 1000" | bc)
 skitour=$(echo "$skitourmeter / 1000" | bc)
+date=$(cat ../data/state.txt)
 echo {
 echo \"downhill\": $downhill,
 echo \"nordic\": $nordic,
 echo \"aerialway\": $aerialway,
 echo \"skitour\": $skitour,
 echo \"sled\": $sled ,
-echo \"snowshoeing\": $hike
+echo \"snowshoeing\": $hike,
+echo \"date\": $date
 echo }
 
