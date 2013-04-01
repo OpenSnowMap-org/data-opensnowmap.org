@@ -30,6 +30,6 @@ echo \"aerialway\": $aerialway,
 echo \"skitour\": $skitour,
 echo \"sled\": $sled ,
 echo \"snowshoeing\": $hike,
-echo \"date\": $date
+echo \"date\": \"$date\"
 echo }
 
