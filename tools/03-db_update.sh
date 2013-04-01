@@ -21,8 +21,8 @@ else echo $(date)' update mapnik db succeed '
 fi
 
 ${TOOLS_DIR}./make_sites.py
-${TOOLS_DIR}./relations_down.py
-cd ~/mapnik/offset-style/
+${TOOLS_DIR}./relations_down.py > /dev/null
+cd /home/website/mapnik/offset-style/
 python build-relations-style.py lists
 /etc/init.d/renderd restart
 cd ${WORK_DIR}
