@@ -168,8 +168,8 @@ else
     echo $(date)' no monthly file found'
 fi
 
-#~ cp ${PLANET_DIR}*.tsv \
-       #~ /var/www/www.pistes-nordiques.org/data/
+cp ${PLANET_DIR}*.tsv \
+       /var/www/www.pistes-nordiques.org/data/
 #-----------------------------------------------------------------------
 # remove temporary files
 #-----------------------------------------------------------------------
