@@ -169,7 +169,7 @@ else
 fi
 
 cp ${PLANET_DIR}*.tsv \
-       /var/www/www.pistes-nordiques.org/data/
+       /var/www/www.opensnowmap.org/data/
 #-----------------------------------------------------------------------
 # remove temporary files
 #-----------------------------------------------------------------------
