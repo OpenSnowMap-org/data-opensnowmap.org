@@ -31,3 +31,7 @@ for relation in relations:
 	sys.stdout.write("%s \r" % (i) )
 	sys.stdout.flush()
 conn.commit()
+
+cur.execute("update planet_osm_line set \"piste:grooming\"= 'classic;skating' \
+			where \"piste:grooming\"= 'classic+skating';")
+conn.commit()
