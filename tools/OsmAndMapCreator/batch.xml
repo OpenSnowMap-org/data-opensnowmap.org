@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<batch_process>
+	<process_attributes mapZooms="" renderingTypesFile="rendering_types.xml"
+		zoomWaySmoothness="" 
+		osmDbDialect="sqlite" mapDbDialect="sqlite"/>
+
+	 <process directory_for_osm_files="./../../osmand_data"
+        directory_for_index_files="./../../osmand_data"
+		directory_for_generation="./../../tmp"
+
+		indexPOI="false" 
+		indexRouting="false" 
+		indexMap="true"
+		indexTransport="false" 
+		indexAddress="false">
+					
+	</process>
+</batch_process> 
