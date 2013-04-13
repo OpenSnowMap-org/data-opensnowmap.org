@@ -23,7 +23,7 @@ fi
 ${TOOLS_DIR}./make_sites.py
 ${TOOLS_DIR}./relations_down.py > /dev/null
 
-/var/lib/mod_tile/planet-import-complete
+touch /var/lib/mod_tile/planet-import-complete
 
 cd /home/website/mapnik/offset-style/
 python build-relations-style.py lists
