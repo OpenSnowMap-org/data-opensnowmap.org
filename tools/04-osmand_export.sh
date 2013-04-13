@@ -2,7 +2,6 @@
 # This script process piste.osm to usable osmand obf for android devices
 #______________________________________________________________________
 WORK_DIR=/home/website/Planet/
-WORK_DIR=/home/yves/OPENSNOWMAP/Planet.git/
 cd ${WORK_DIR}
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
