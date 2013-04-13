@@ -6,7 +6,7 @@ Parses an osm file add a "member_of" tag if an element is a member of a relation
 from lxml import etree
 from copy import deepcopy
 
-import pdb
+#~ import pdb
 import os, sys
 
 global maxWayId
@@ -191,7 +191,6 @@ for relation in relations:
 					else:
 						addTag(way,"name", old +' - '+ tag.get('v'))
 
-pdb.set_trace()
 for way in ways:
 	addTag(way,'layer', '10')
 	cleanWay(way)
