@@ -23,6 +23,6 @@ echo $(date)' ######################### '
 
 echo $(date)' ######################### '
 echo $(date)' Sqlite generation starting '
-${TOOLS_DIR}./tile-list-not-unique.py -f ${PLANET_DIR}planet_pistes.osm -o ${TMP_DIR}tilesz16.lst -Z 16
-cat ${TMP_DIR}tilesz16.lst | sort | uniq > ${TMP_DIR}uniq_z16.lst
-${TOOLS_DIR}./render2sqlite.py ${TMP_DIR}uniq_z16.lst ${PLANET_DIR}opensnowmap.org-z16.sqlitedb
+${TOOLS_DIR}./tile-list-not-unique.py -f ${PLANET_DIR}planet_pistes.osm -o ${TMP_DIR}tilesz16.lst -Z 14
+cat ${TMP_DIR}tilesz14.lst | sort | uniq > ${TMP_DIR}uniq_z14.lst
+${TOOLS_DIR}./render2sqlite.py ${TMP_DIR}uniq_z16.lst ${PLANET_DIR}opensnowmap.org-z14.sqlitedb

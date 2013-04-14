@@ -3,7 +3,7 @@
 import os
 from mapnik import *
 import math
-import pdb
+import sqlite3
 
 class SqliteTileStorage():
     """ Sqlite files methods for simple tile storage"""
