@@ -58,7 +58,7 @@ cp ${PLANET_DIR}pistes_length.fr.txt \
        /var/www/www.opensnowmap.org/data/pistes_length.fr.txt
        
 # make world-ski.obf avail for download
-
+cp ${WORK_DIR}osmand_data/World-ski_2.obf /home/website/downloadable/World-ski_2.obf
 gzip -c ${WORK_DIR}osmand_data/World-ski_2.obf > /home/website/downloadable/World-ski_2.obf.gz
 zip -j /home/website/downloadable/World-ski_2.obf.zip ${WORK_DIR}osmand_data/World-ski_2.obf 
 
