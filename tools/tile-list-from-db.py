@@ -68,15 +68,16 @@ cur = conn.cursor()
 json=False
 if args.geojson != "" :
     json=open(args.geojson,'r').readline()
-
 if args.ofilename:
     o=open(args.ofilename,'w')
+
+cx,cy=num2deg(0.5, 0.5, args.Z+1)
+cx2,cy2=num2deg(1.5, 1.5, args.Z+1)
+dx=(cx2-cx)/3
+dy=(cy2-cy)/3
+
 for zoom in range(args.z,args.Z+1):
     print "zoom: ", str(zoom)
-    cx,cy=num2deg(0.5, 0.5, zoom)
-    cx2,cy2=num2deg(1.5, 1.5, zoom)
-    dx=cx2-cx
-    dy=cy2-cy
     if json:
         cur.execute("select distinct st_x(dp), st_y(dp)\
                 from (\
