@@ -208,7 +208,7 @@ infile=sys.argv[1]
 outfile=sys.argv[2]
 
 store=SqliteTileStorage('TMS')
-store.create('tmp.sqlitedb',True)
+store.create('/var/tmp/tmp.sqlitedb',True)
 tiles=open(infile,'r').readlines()
 
 # The size of the tile in pixel:
@@ -220,7 +220,7 @@ lonlat = Projection('+proj=longlat +datum=WGS84')
 proj = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over"
 
 m = Map(sx,sy,proj)
-mapfile="dev/map.xml"
+mapfile="/home/website/mapnik/offset-style/map.xml"
 load_map(m,mapfile)
 m.background = Color("transparent")
 cnt=0
