@@ -57,13 +57,17 @@ parser.add_argument("-z", "--min-zoom", dest="z",type=int,default=2,
                   help="minimum zoom level")
 parser.add_argument("-Z", "--max-zoom", dest="Z",type=int,default=18,
                   help="maximum zoom level")
-
+parser.add_argument("-j", "--geojson", dest="geojson",default="",
+                  help="crop from a geojson polygon")
 args = parser.parse_args()
 print args
 
 conn = psycopg2.connect("dbname=pistes-mapnik user=mapnik")
 cur = conn.cursor()
 
+json=False
+if args.geojson != "" :
+    json=open(args.geojson,'r').readline()
 
 if args.ofilename:
     o=open(args.ofilename,'w')
@@ -73,8 +77,18 @@ for zoom in range(args.z,args.Z+1):
     cx2,cy2=num2deg(1.5, 1.5, zoom)
     dx=cx2-cx
     dy=cy2-cy
-    
-    cur.execute("select distinct st_x(dp), st_y(dp)\
+    if json:
+        cur.execute("select distinct st_x(dp), st_y(dp)\
+                from (\
+                    select (st_dumppoints(mpts)).geom as dp \
+                        from (\
+                            select st_snaptogrid(st_segmentize(st_transform(way, 4326),%s),%s,%s,%s,%s) as mpts\
+                            from planet_osm_line where \
+                            st_intersects(way, st_transform(st_setsrid(ST_GeomFromGeoJSON('%s'),4326),900913))\
+                        ) as foo \
+                    )as bar;"% (dy/2,cx, cy, dx, dy,json))
+    else:
+        cur.execute("select distinct st_x(dp), st_y(dp)\
                 from (\
                     select (st_dumppoints(mpts)).geom as dp \
                         from (\
