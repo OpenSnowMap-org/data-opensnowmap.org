@@ -69,5 +69,5 @@ cp ${PLANET_DIR}stats.json /var/www/data/stats.json
 echo $(date)' Update complete'
 
 
-#~ ${TOOLS_DIR}./04-osmand_export.sh
+${TOOLS_DIR}./04-osmand_export.sh
 
