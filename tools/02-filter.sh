@@ -68,11 +68,11 @@ echo $(date)' latest planet_pistes.osm published'
 #Create change files
 #-----------------------------------------------------------------------
 today=$(date --date="today" +%Y-%m-%d)
-yesterday=$(date --date="yesterday" +%Y-%m-%d)
+yesterday=$(date --date="2 days ago" +%Y-%m-%d)
 lastweek=$(date --date="1 week ago" +%Y-%m-%d)
 lastmonth=$(date --date="1 month ago" +%Y-%m-%d)
 
-daily_file=${ARCHIVE_DIR}planet_pistes-$today.osm.gz
+daily_file=${PLANET_DIR}planet_pistes.osm
 yesterday_file=${ARCHIVE_DIR}planet_pistes-$yesterday.osm.gz
 lastweek_file=${ARCHIVE_DIR}planet_pistes-$lastweek.osm.gz
 lastmonth_file=${ARCHIVE_DIR}planet_pistes-$lastmonth.osm.gz
