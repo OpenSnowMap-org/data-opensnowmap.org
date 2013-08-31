@@ -23,6 +23,11 @@ try:
 except:
 	conn.rollback()
 try: 
+	cur.execute("ALTER TABLE planet_osm_polygon ADD in_site bigint[];")
+	conn.commit()
+except:
+	conn.rollback()
+try: 
 	cur.execute("ALTER TABLE planet_osm_point ADD in_site bigint[];")
 	conn.commit()
 except:
@@ -47,6 +52,10 @@ for relation in relations:
 					select array_append(in_site::bigint[], %s::bigint)\
 					from planet_osm_line where osm_id = %s limit 1) \
 				where osm_id = %s;" % (relid, memberid, memberid))
+		cur.execute("update planet_osm_polygon set in_site= (\
+					select array_append(in_site::bigint[], %s::bigint)\
+					from planet_osm_polygon where osm_id = %s limit 1) \
+				where osm_id = %s;" % (relid, memberid, memberid))
 		# populate in_site for relations
 		memberid = -memberid
 		cur.execute("update planet_osm_line set in_site= (\
@@ -64,6 +73,11 @@ conn.commit()
 #
 try: 
 	cur.execute("ALTER TABLE planet_osm_line ADD member_of bigint[];")
+	conn.commit()
+except:
+	conn.rollback()
+try: 
+	cur.execute("ALTER TABLE planet_osm_polygon ADD member_of bigint[];")
 	conn.commit()
 except:
 	conn.rollback()
@@ -87,6 +101,10 @@ for relation in relations:
 					select array_append(member_of::bigint[], %s::bigint)\
 					from planet_osm_line where osm_id = %s limit 1) \
 				where osm_id = %s;" % (relid, memberid, memberid))
+		cur.execute("update planet_osm_polygon set member_of= (\
+					select array_append(member_of::bigint[], %s::bigint)\
+					from planet_osm_polygon where osm_id = %s limit 1) \
+				where osm_id = %s;" % (relid, memberid, memberid))
 		# populate member_of for points
 		cur.execute("update planet_osm_point set member_of= (\
 					select array_append(member_of::bigint[], %s::bigint)\
@@ -105,6 +123,10 @@ for relation in relations:
 					cur.execute("update planet_osm_line set in_site= (\
 								select array_append(in_site::bigint[], %s::bigint)\
 								from planet_osm_line where osm_id = %s limit 1) \
+							where osm_id = %s;" % (siteid, memberid, memberid))
+					cur.execute("update planet_osm_polygon set in_site= (\
+								select array_append(in_site::bigint[], %s::bigint)\
+								from planet_osm_polygon where osm_id = %s limit 1) \
 							where osm_id = %s;" % (siteid, memberid, memberid))
 					# populate in_site for nodes members of routes relations
 					cur.execute("update planet_osm_point set in_site= (\
