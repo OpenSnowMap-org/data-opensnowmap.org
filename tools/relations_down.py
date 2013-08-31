@@ -40,28 +40,27 @@ relations=cur.fetchall()
 i=len(relations)
 
 for relation in relations:
-	relid=relation[0]
+	site_id=relation[0]
 	for memberid in relation[1]:
 		# populate in_site for points
 		cur.execute("update planet_osm_point set in_site= (\
 					select array_append(in_site::bigint[], %s::bigint)\
 					from planet_osm_line where osm_id = %s limit 1) \
-				where osm_id = %s;" % (relid, memberid, memberid))
+				where osm_id = %s;" % (site_id, memberid, memberid))
 		# populate in_site for ways
 		cur.execute("update planet_osm_line set in_site= (\
 					select array_append(in_site::bigint[], %s::bigint)\
 					from planet_osm_line where osm_id = %s limit 1) \
-				where osm_id = %s;" % (relid, memberid, memberid))
+				where osm_id = %s;" % (site_id, memberid, memberid))
 		cur.execute("update planet_osm_polygon set in_site= (\
 					select array_append(in_site::bigint[], %s::bigint)\
 					from planet_osm_polygon where osm_id = %s limit 1) \
-				where osm_id = %s;" % (relid, memberid, memberid))
+				where osm_id = %s;" % (site_id, memberid, memberid))
 		# populate in_site for relations
-		memberid = -memberid
 		cur.execute("update planet_osm_line set in_site= (\
 					select array_append(in_site::bigint[], %s::bigint)\
 					from planet_osm_line where osm_id = %s limit 1) \
-				where osm_id = %s;" % (relid, memberid, memberid))
+				where osm_id = %s;" % (site_id, -memberid, -memberid))
 		
 		
 	i-=1
@@ -94,45 +93,45 @@ relations=cur.fetchall()
 i=len(relations)
 
 for relation in relations:
-	relid=relation[0]
+	route_id=relation[0]
 	for memberid in relation[1]:
 		# populate member_of for ways
 		cur.execute("update planet_osm_line set member_of= (\
 					select array_append(member_of::bigint[], %s::bigint)\
 					from planet_osm_line where osm_id = %s limit 1) \
-				where osm_id = %s;" % (relid, memberid, memberid))
+				where osm_id = %s;" % (route_id, memberid, memberid))
 		cur.execute("update planet_osm_polygon set member_of= (\
 					select array_append(member_of::bigint[], %s::bigint)\
 					from planet_osm_polygon where osm_id = %s limit 1) \
-				where osm_id = %s;" % (relid, memberid, memberid))
+				where osm_id = %s;" % (route_id, memberid, memberid))
 		# populate member_of for points
 		cur.execute("update planet_osm_point set member_of= (\
 					select array_append(member_of::bigint[], %s::bigint)\
 					from planet_osm_point where osm_id = %s limit 1) \
-				where osm_id = %s;" % (relid, memberid, memberid))
+				where osm_id = %s;" % (route_id, memberid, memberid))
 		# populate in_site for ways and nodes members of routes relations
-		relid=-relid
 		cur.execute("select in_site from planet_osm_line \
-					where osm_id = %s;" % (relid))
-		sitesids=cur.fetchall()
-		if len(sitesids) > 0:
-			sitesids=sitesids[0][0]
-			if sitesids:
-				for siteid in sitesids:
-					# populate in_site for ways members of routes relations
-					cur.execute("update planet_osm_line set in_site= (\
-								select array_append(in_site::bigint[], %s::bigint)\
-								from planet_osm_line where osm_id = %s limit 1) \
-							where osm_id = %s;" % (siteid, memberid, memberid))
-					cur.execute("update planet_osm_polygon set in_site= (\
-								select array_append(in_site::bigint[], %s::bigint)\
-								from planet_osm_polygon where osm_id = %s limit 1) \
-							where osm_id = %s;" % (siteid, memberid, memberid))
-					# populate in_site for nodes members of routes relations
-					cur.execute("update planet_osm_point set in_site= (\
-								select array_append(in_site::bigint[], %s::bigint)\
-								from planet_osm_point where osm_id = %s limit 1) \
-							where osm_id = %s;" % (siteid, memberid, memberid))
+					where osm_id = %s;" % (-route_id))
+		
+		#~ sitesids=cur.fetchall()
+		#~ if len(sitesids) > 0:
+			#~ sitesids=sitesids[0][0]
+			#~ if sitesids:
+				#~ for siteid in sitesids:
+					#~ # populate in_site for ways members of routes relations
+					#~ cur.execute("update planet_osm_line set in_site= (\
+								#~ select array_append(in_site::bigint[], %s::bigint)\
+								#~ from planet_osm_line where osm_id = %s limit 1) \
+							#~ where osm_id = %s;" % (siteid, memberid, memberid))
+					#~ cur.execute("update planet_osm_polygon set in_site= (\
+								#~ select array_append(in_site::bigint[], %s::bigint)\
+								#~ from planet_osm_polygon where osm_id = %s limit 1) \
+							#~ where osm_id = %s;" % (siteid, memberid, memberid))
+					#~ # populate in_site for nodes members of routes relations
+					#~ cur.execute("update planet_osm_point set in_site= (\
+								#~ select array_append(in_site::bigint[], %s::bigint)\
+								#~ from planet_osm_point where osm_id = %s limit 1) \
+							#~ where osm_id = %s;" % (siteid, memberid, memberid))
 		
 	i-=1
 	sys.stdout.write("%s \r" % (i) )
