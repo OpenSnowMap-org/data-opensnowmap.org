@@ -27,6 +27,7 @@
 node        simple        text        linear
 node,way   name         text         linear
 node,way   aerialway    text         linear
+node,way   railway      text         linear
 node,way   amenity      text         nocache,polygon
 node,way   bridge       text         linear
 node,way   disused      text         linear
