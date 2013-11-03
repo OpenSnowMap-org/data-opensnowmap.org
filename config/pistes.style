@@ -51,6 +51,7 @@ way piste:difficulty        text    linear
 way piste:grooming          text    linear
 way piste:oneway            text    linear
 way piste:lit               text    linear
+way lit               text    linear
 way piste:abandoned         text    linear
 way gladed          text    linear
 way competition     text    linear
