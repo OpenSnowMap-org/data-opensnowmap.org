@@ -8,9 +8,9 @@
 #~ psql -d pistes-pgsnapshot -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_bbox.sql
 #~ psql -d pistes-pgsnapshot -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_linestring.sql
 #~ psql -d pistes-pgsnapshot -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_action.sql
-#~ psql -d pistes-pgsnapshot -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_relations_geometry.sql
-#~ psql -d pistes-pgsnapshot -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_names.sql
-#~ psql -d pistes-pgsnapshot -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_relations_types.sql
+#~ psql -d pistes-pgsnapshot -f /home/website/Planet/config/pgsnapshot_schema_0.6_relations_geometry.sql
+#~ psql -d pistes-pgsnapshot -f /home/website/Planet/config/pgsnapshot_schema_0.6_names.sql
+#~ psql -d pistes-pgsnapshot -f /home/website/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
 
 osmosis="/home/website/src/osmosis-0.43.1/bin/osmosis"
 WORK_DIR=/home/website/Planet/
