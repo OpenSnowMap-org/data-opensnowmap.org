@@ -6,7 +6,7 @@ import psycopg2
 import os, sys
 from lxml import etree
 
-conn = psycopg2.connect("dbname=pistes-mapnik user=mapnik")
+conn = psycopg2.connect("dbname=pistes-mapnik-tmp user=mapnik")
 cur = conn.cursor()
 
 # normalize grooming tag

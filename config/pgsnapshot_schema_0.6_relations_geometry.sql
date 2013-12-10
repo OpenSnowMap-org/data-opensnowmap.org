@@ -12,7 +12,7 @@ CREATE OR REPLACE FUNCTION insertRelationGeom() RETURNS trigger AS $$
 BEGIN
 	UPDATE relations 
 	SET geom=(
-		SELECT ST_Centroid(st_collect(ways.linestring)) FROM ways
+		SELECT ST_ConvexHull(st_collect(ways.linestring)) FROM ways
 		WHERE ways.id in (
 				SELECT member_id FROM relation_members WHERE relation_id = relations.id
 				)
@@ -37,7 +37,7 @@ CREATE OR REPLACE FUNCTION updateRelationGeom() RETURNS trigger AS $$
 BEGIN
 	UPDATE relations 
 	SET geom=(
-		SELECT ST_Centroid(st_collect(ways.linestring)) FROM ways
+		SELECT ST_ConvexHull(st_collect(ways.linestring)) FROM ways
 		WHERE ways.id in (
 				SELECT member_id FROM relation_members WHERE relation_id = relations.id
 				)

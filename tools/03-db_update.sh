@@ -1,4 +1,4 @@
-osmosis="/home/website/src/osmosis/bin/osmosis -q"
+osmosis="/home/website/src/osmosis-0.43.1/bin/osmosis -q"
 WORK_DIR=/home/website/Planet/
 cd ${WORK_DIR}
 # This script log
@@ -9,9 +9,12 @@ TMP_DIR=${WORK_DIR}tmp/
 TOOLS_DIR=${WORK_DIR}tools/
 CONFIG_DIR=${WORK_DIR}config/
 
+DBMAPNIKTMP=pistes-mapnik-tmp
+DBMAPNIK=pistes-mapnik
+
 # Populate mapnik db
 echo $(date)' updating mapnik DB'
-/usr/local/bin/osm2pgsql -U mapnik -s -c -m -d pistes-mapnik -S ${CONFIG_DIR}pistes.style\
+/usr/local/bin/osm2pgsql -U mapnik -s -c -m -d $DBMAPNIK -S ${CONFIG_DIR}pistes.style\
  ${PLANET_DIR}planet_pistes.osm > /dev/null 2>&1
 if [ $? -ne 0 ]
 then
@@ -23,11 +26,17 @@ fi
 ${TOOLS_DIR}./make_sites.py
 ${TOOLS_DIR}./relations_down.py > /dev/null
 
+service renderd stop
+dropdb $DBMAPNIK
+createdb -T $DBMAPNIKTMP $DBMAPNIK
+service renderd start
+
+
 touch /var/lib/mod_tile/planet-import-complete
 
 cd /home/website/mapnik/offset-style/
 python build-relations-style.py lists
-/etc/init.d/renderd restart
+#~ /etc/init.d/renderd restart
 cd ${WORK_DIR}
 
 ##########################################
@@ -68,6 +77,6 @@ cp ${PLANET_DIR}stats.json /var/www/data/stats.json
 
 echo $(date)' Update complete'
 
-
+${TOOLS_DIR}./06-pgsnapshot.sh
 ${TOOLS_DIR}./04-osmand_export.sh
 
