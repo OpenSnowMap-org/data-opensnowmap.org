@@ -14,7 +14,7 @@ DBMAPNIK=pistes-mapnik
 
 # Populate mapnik db
 echo $(date)' updating mapnik DB'
-/usr/local/bin/osm2pgsql -U mapnik -s -c -m -d $DBMAPNIK -S ${CONFIG_DIR}pistes.style\
+/usr/local/bin/osm2pgsql -U mapnik -s -c -m -d $DBMAPNIKTMP -S ${CONFIG_DIR}pistes.style\
  ${PLANET_DIR}planet_pistes.osm > /dev/null 2>&1
 if [ $? -ne 0 ]
 then
