@@ -25,12 +25,19 @@ fi
 
 ${TOOLS_DIR}./make_sites.py
 ${TOOLS_DIR}./relations_down.py > /dev/null
-
+service monit stop
 service renderd stop
 /etc/init.d/renderd stop
+echo "SELECT
+    pg_terminate_backend (pg_stat_activity.procpid)
+FROM
+    pg_stat_activity
+WHERE
+    pg_stat_activity.datname = 'pistes-mapnik';" | psql -d pistes-mapnik
 dropdb $DBMAPNIK
 createdb -T $DBMAPNIKTMP $DBMAPNIK
 /etc/init.d/renderd start
+service monit start
 service renderd start
 
 touch /var/lib/mod_tile/planet-import-complete
