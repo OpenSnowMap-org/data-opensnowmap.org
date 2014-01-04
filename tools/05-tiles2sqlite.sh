@@ -4,7 +4,7 @@
 # 
 #______________________________________________________________________
 
-WORK_DIR=/home/website/Planet/
+WORK_DIR=/home/admin/Planet/
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
 # Directory where the planet file is stored

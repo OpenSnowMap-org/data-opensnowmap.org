@@ -6,8 +6,8 @@
 # It also create daily, weekly and monthly change files along with tsv
 # file containing the newly created nodes.
 #______________________________________________________________________
-osmosis="/home/website/src/osmosis/bin/osmosis -q"
-WORK_DIR=/home/website/Planet/
+osmosis="/home/admin/src/osmosis/bin/osmosis -q"
+WORK_DIR=/home/admin/Planet/
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
 # Directory where the planet file is stored
@@ -15,7 +15,7 @@ PLANET_DIR=${WORK_DIR}data/
 TMP_DIR=${WORK_DIR}tmp/
 TOOLS_DIR=${WORK_DIR}tools/
 ARCHIVE_DIR=${WORK_DIR}archives/
-DOWNLOADS_DIR=/home/website/downloadable/
+DOWNLOADS_DIR=/home/admin/downloadable/
 
 CONFIG_DIR=${WORK_DIR}config/
 cd ${TOOLS_DIR}
@@ -68,7 +68,7 @@ echo $(date)' latest planet_pistes.osm published'
 #Create change files
 #-----------------------------------------------------------------------
 today=$(date --date="today" +%Y-%m-%d)
-yesterday=$(date --date="2 days ago" +%Y-%m-%d)
+yesterday=$(date --date="1 day ago" +%Y-%m-%d)
 lastweek=$(date --date="1 week ago" +%Y-%m-%d)
 lastmonth=$(date --date="1 month ago" +%Y-%m-%d)
 
@@ -91,12 +91,12 @@ then
         --wxc ${PLANET_DIR}daily.osc
         echo $(date)' daily.osc done'
     else
-        echo $(date)' no yesterday file found'
+        echo $(date)' no yesterday file found' $yesterday_file
     fi
 # Create weekly.osc
     if [ -f $lastweek_file ];
     then
-        echo $(date)' lastweek file found'
+        echo $(date)' lastweek file found' $lastweek_file
         $osmosis \
         --rx $daily_file \
         --rx $lastweek_file \
@@ -104,12 +104,12 @@ then
         --wxc ${PLANET_DIR}weekly.osc
         echo $(date)' weekly.osc done'
     else
-        echo $(date)' no last_week file found'
+        echo $(date)' no lastweek file found' $lastweek_file
     fi
 # Create monthly.osc
     if [ -f $lastmonth_file ];
     then
-        echo $(date)' lastweek file found'
+        echo $(date)' lastmonth file found' $lastmonth_file
         $osmosis \
         --rx $daily_file \
         --rx $lastmonth_file \
@@ -117,10 +117,10 @@ then
         --wxc ${PLANET_DIR}monthly.osc
         echo $(date)' monthly.osc done'
     else
-        echo $(date)' no last_month file found'
+        echo $(date)' no lastmonth file found' $lastmonth_file
     fi
 else
-    echo $(date)' no daily file found'$daily_file
+    echo $(date)' NO DAILY FILE FOUND !!'$daily_file
 fi
 
 #-----------------------------------------------------------------------

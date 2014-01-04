@@ -1,7 +1,7 @@
 #______________________________________________________________________
 # This script process piste.osm to usable osmand obf for android devices
 #______________________________________________________________________
-WORK_DIR=/home/website/Planet/
+WORK_DIR=/home/admin/Planet/
 cd ${WORK_DIR}
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
@@ -58,9 +58,9 @@ cp ${PLANET_DIR}pistes_length.fr.txt \
        /var/www/www.opensnowmap.org/data/pistes_length.fr.txt
        
 # make world-ski.obf avail for download
-cp ${WORK_DIR}osmand_data/World-ski_2.obf /home/website/downloadable/World-ski_2.obf
-gzip -c ${WORK_DIR}osmand_data/World-ski_2.obf > /home/website/downloadable/World-ski_2.obf.gz
-zip -j /home/website/downloadable/World-ski_2.obf.zip ${WORK_DIR}osmand_data/World-ski_2.obf 
+cp ${WORK_DIR}osmand_data/World-ski_2.obf /home/admin/downloadable/World-ski_2.obf
+gzip -c ${WORK_DIR}osmand_data/World-ski_2.obf > /home/admin/downloadable/World-ski_2.obf.gz
+zip -j /home/admin/downloadable/World-ski_2.obf.zip ${WORK_DIR}osmand_data/World-ski_2.obf 
 
 echo $(date)' Osmand Export complete'
 exit 0

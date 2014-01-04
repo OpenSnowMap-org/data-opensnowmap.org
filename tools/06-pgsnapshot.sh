@@ -25,8 +25,8 @@
 #~ psql -d pistes-pgsnapshot-tmp -f /home/website/Planet/config/pgsnapshot_schema_0.6_names.sql
 #~ psql -d pistes-pgsnapshot-tmp -f /home/website/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
 
-osmosis="/home/website/src/osmosis-0.43.1/bin/osmosis"
-WORK_DIR=/home/website/Planet/
+osmosis="/home/admin/src/osmosis/bin/osmosis"
+WORK_DIR=/home/admin/Planet/
 cd ${WORK_DIR}
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
@@ -43,7 +43,7 @@ TESTSIZE=$(stat -c%s ${PLANET_DIR}planet_pistes.osm)
 if [ $TESTSIZE -gt 1000 ]
 then echo $(date)' planet_pistes.osm ok, updating pgsnapshot DB'
     #Updating DB for osmosis:
-    $osmosis --truncate-pgsql host="localhost" \
+    $osmosis --truncate-pgsql host="localhost" user="xapi" password="xapi" \
     database=$DBTMP
     if [ $? -ne 0 ]
     then
@@ -51,7 +51,7 @@ then echo $(date)' planet_pistes.osm ok, updating pgsnapshot DB'
         exit 5
     fi
     $osmosis --read-xml ${PLANET_DIR}planet_pistes.osm \
-    --write-pgsql host="localhost" database=$DBTMP
+    --write-pgsql host="localhost" database=$DBTMP user="xapi" password="xapi"
     if [ $? -ne 0 ]
     then
         echo $(date)' Osmosis failed to update pgsnapshot DB'

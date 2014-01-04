@@ -1,5 +1,5 @@
-osmosis="/home/website/src/osmosis-0.43.1/bin/osmosis -q"
-WORK_DIR=/home/website/Planet/
+osmosis="/home/admin/src/osmosis/bin/osmosis -q"
+WORK_DIR=/home/admin/Planet/
 cd ${WORK_DIR}
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
@@ -27,14 +27,15 @@ ${TOOLS_DIR}./make_sites.py
 ${TOOLS_DIR}./relations_down.py > /dev/null
 
 service renderd stop
+/etc/init.d/renderd stop
 dropdb $DBMAPNIK
 createdb -T $DBMAPNIKTMP $DBMAPNIK
+/etc/init.d/renderd start
 service renderd start
-
 
 touch /var/lib/mod_tile/planet-import-complete
 
-cd /home/website/mapnik/offset-style/
+cd /home/admin/mapnik/offset-style/
 python build-relations-style.py lists
 #~ /etc/init.d/renderd restart
 cd ${WORK_DIR}

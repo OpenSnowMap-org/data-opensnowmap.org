@@ -43,7 +43,7 @@ except:
 	conn.rollback()
 	
 WORK_DIR=''
-osmDoc=etree.parse(WORK_DIR+"/home/website/Planet/data/planet_pistes_sites.osm")
+osmDoc=etree.parse(WORK_DIR+"/home/admin/Planet/data/planet_pistes_sites.osm")
 
 relations=osmDoc.findall('relation')
 
@@ -85,7 +85,7 @@ for relation in relations:
 							(entrance,'yes',name, types_list, str(lonlat[0]),str(lonlat[1])))
 						except:
 							"""Traceback (most recent call last):
-							  File "/home/website/Planet/tools/./make_sites.py", line 83, in <module>
+							  File "/home/admin/Planet/tools/./make_sites.py", line 83, in <module>
 							    (entrance,'yes',name, types_list, str(lonlat[0]),str(lonlat[1])))
 							TypeError: 'NoneType' object has no attribute '__getitem__'"""
 							pass

@@ -1,5 +1,5 @@
-osmosis=/home/website/src/osmosis-0.40.1/bin/osmosis
-WORK_DIR=/home/website/Planet/
+osmosis=/home/admin/src/osmosis/bin/osmosis
+WORK_DIR=/home/admin/Planet/
 cd ${WORK_DIR}
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log

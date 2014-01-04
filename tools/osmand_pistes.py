@@ -37,7 +37,7 @@ def deepCleanWay(way):
     return True
 #
 
-WORK_DIR="/home/website/Planet/"
+WORK_DIR="/home/admin/Planet/"
 
 osmDoc=etree.parse(sys.argv[1])
 outFile=open(sys.argv[2],'w')
