@@ -25,8 +25,8 @@ fi
 
 ${TOOLS_DIR}./make_sites.py
 ${TOOLS_DIR}./relations_down.py > /dev/null
-service monit stop
-service renderd stop
+/usr/sbin/service monit stop
+/usr/sbin/service renderd stop
 /etc/init.d/renderd stop
 echo "SELECT
     pg_terminate_backend (pg_stat_activity.procpid)
@@ -37,8 +37,8 @@ WHERE
 dropdb $DBMAPNIK
 createdb -T $DBMAPNIKTMP $DBMAPNIK
 /etc/init.d/renderd start
-service monit start
-service renderd start
+/usr/sbin/service monit start
+/usr/sbin/service renderd start
 
 touch /var/lib/mod_tile/planet-import-complete
 
