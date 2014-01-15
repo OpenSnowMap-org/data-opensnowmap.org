@@ -18,26 +18,27 @@ echo $(date)' updating mapnik DB'
  ${PLANET_DIR}planet_pistes.osm > /dev/null 2>&1
 if [ $? -ne 0 ]
 then
-    echo $(date)' FAILED update mapnik db'
+    echo $(date)' FAILED update TMP mapnik db'
     exit 4
-else echo $(date)' update mapnik db succeed '
+else echo $(date)' update TMP mapnik db succeed '
 fi
 
 ${TOOLS_DIR}./make_sites.py
 ${TOOLS_DIR}./relations_down.py > /dev/null
-/usr/sbin/service monit stop
+
+monit unmonitor renderd # http must be enabled in /etc/monit/monitrc
 /usr/sbin/service renderd stop
-/etc/init.d/renderd stop
 echo "SELECT
     pg_terminate_backend (pg_stat_activity.procpid)
 FROM
     pg_stat_activity
 WHERE
     pg_stat_activity.datname = 'pistes-mapnik';" | psql -d pistes-mapnik
+    
 dropdb $DBMAPNIK
 createdb -T $DBMAPNIKTMP $DBMAPNIK
-/etc/init.d/renderd start
-/usr/sbin/service monit start
+
+monit monitor renderd
 /usr/sbin/service renderd start
 
 touch /var/lib/mod_tile/planet-import-complete

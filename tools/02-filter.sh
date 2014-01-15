@@ -24,7 +24,7 @@ echo $(date)' ######################### '
 echo $(date)' Filtering starting '
 #______________________________________________________________________
 # Filtering pistes
-./osmfilter ${PLANET_DIR}planet.o5m --keep="piste:type= or aerialway= or railway=funicular or site=piste or sport=ski_jump or sport=skating or sport=ski_jump_take_off" > ${TMP_DIR}planet_pistes.osm
+./osmfilter ${PLANET_DIR}planet.o5m --keep="piste:type= or aerialway= or railway=funicular or railway=incline or site=piste or sport=ski_jump or sport=skating or sport=ski_jump_take_off" > ${TMP_DIR}planet_pistes.osm
 if [ $? -ne 0 ]
 then
     echo $(date)' FAILED to filter planet file'
