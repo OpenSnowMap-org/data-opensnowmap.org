@@ -33,13 +33,13 @@ echo "SELECT
 FROM
     pg_stat_activity
 WHERE
-    pg_stat_activity.datname = 'pistes-mapnik';" | psql -d pistes-mapnik
+    pg_stat_activity.datname = 'pistes-mapnik';" | psql -d $DBMAPNIKTMP
     
 dropdb $DBMAPNIK
 createdb -T $DBMAPNIKTMP $DBMAPNIK
-
-monit monitor renderd
 /usr/sbin/service renderd start
+monit monitor renderd
+
 
 touch /var/lib/mod_tile/planet-import-complete
 
