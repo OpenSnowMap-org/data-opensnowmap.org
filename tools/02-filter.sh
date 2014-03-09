@@ -129,7 +129,7 @@ fi
 if [ -f ${PLANET_DIR}daily.osc ];
 then
     echo $(date)' daily file found'
-    cat ${PLANET_DIR}daily.osc | grep -o 'lat="[0-9.]*" lon="[0-9.]*"' > ${TMP_DIR}tmp1
+    cat ${PLANET_DIR}daily.osc | grep -o 'lat="[-0-9.]*" lon="[-0-9.]*"' > ${TMP_DIR}tmp1
     sed s/lat=\"// ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
     sed s/\lon=\"// ${TMP_DIR}tmp2 > ${TMP_DIR}tmp1
     sed s/\"//g ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
@@ -143,7 +143,7 @@ fi
 if [ -f ${PLANET_DIR}weekly.osc ];
 then
     echo $(date)' weekly file found'
-    cat ${PLANET_DIR}weekly.osc | grep -o 'lat="[0-9.]*" lon="[0-9.]*"' > ${TMP_DIR}tmp1
+    cat ${PLANET_DIR}weekly.osc | grep -o 'lat="[-0-9.]*" lon="[-0-9.]*"' > ${TMP_DIR}tmp1
     sed s/lat=\"// ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
     sed s/\lon=\"// ${TMP_DIR}tmp2 > ${TMP_DIR}tmp1
     sed s/\"//g ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
@@ -157,7 +157,7 @@ fi
 if [ -f ${PLANET_DIR}monthly.osc ];
 then
     echo $(date)' monthly file found'
-    cat ${PLANET_DIR}monthly.osc | grep -o 'lat="[0-9.]*" lon="[0-9.]*"' > ${TMP_DIR}tmp1
+    cat ${PLANET_DIR}monthly.osc | grep -o 'lat="[-0-9.]*" lon="[-0-9.]*"' > ${TMP_DIR}tmp1
     sed s/lat=\"// ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
     sed s/\lon=\"// ${TMP_DIR}tmp2 > ${TMP_DIR}tmp1
     sed s/\"//g ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
