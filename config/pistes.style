@@ -56,6 +56,7 @@ way piste:abandoned         text    linear
 way gladed          text    linear
 way competition     text    linear
 way patrolled       text    linear
+way landuse       text    linear
 node,way   takeoff       text         linear
 node,way   color    text         linear
 node,way   colour   text         linear
