@@ -33,6 +33,7 @@ cur = conn.cursor()
     
 try: 
 	cur.execute("ALTER TABLE planet_osm_point ADD site_name text;")
+	cur.execute("ALTER TABLE planet_osm_point ADD landuse text;")
 	conn.commit()
 except:
 	conn.rollback()
@@ -90,4 +91,58 @@ for relation in relations:
 							TypeError: 'NoneType' object has no attribute '__getitem__'"""
 							pass
 					conn.commit()
-				
+cur.execute("""
+			SELECT DISTINCT planet_osm_polygon.osm_id
+				FROM planet_osm_polygon
+				WHERE
+				planet_osm_polygon.landuse = 'winter_sports' 
+				AND 
+				(planet_osm_polygon.name is not null OR planet_osm_polygon."piste:name" is not null)
+				AND
+				(
+					SELECT count(planet_osm_line.*) FROM planet_osm_polygon, planet_osm_line
+					WHERE
+					planet_osm_polygon.landuse = 'winter_sports' 
+					AND 
+					(planet_osm_polygon.name is not null OR planet_osm_polygon."piste:name" is not null)
+					AND 
+					ST_Intersects(planet_osm_line.way,planet_osm_polygon.way)
+				) > 3
+			;
+			""")
+sites_ids=cur.fetchall()
+ids=[str(long(x[0])) for x in sites_ids]
+print ids
+l=len(ids)
+for i in ids:
+	l-=1
+	print l
+	cur.execute("""
+		INSERT INTO planet_osm_point(osm_id, "piste:type",site_name, way, landuse) 
+		SELECT planet_osm_polygon.osm_id,string_agg(distinct planet_osm_line."piste:type",';'),
+		 coalesce(planet_osm_polygon.name),st_centroid(planet_osm_polygon.way),
+		 'winter_sports'
+		FROM planet_osm_line, planet_osm_polygon
+		WHERE 
+		planet_osm_polygon.osm_id=%s
+		AND
+		ST_Intersects(planet_osm_line.way,
+		planet_osm_polygon.way)
+		AND
+		planet_osm_line."piste:type" in ('downhill',
+			'hike',
+			'ice-skate',
+			'jump',
+			'nordic',
+			'playground',
+			'skitour',
+			'ski_jump',
+			'sled',
+			'sleigh',
+			'snow_park')
+		GROUP BY
+		planet_osm_polygon.osm_id,planet_osm_polygon.name,planet_osm_polygon.way;
+		""",(i,))
+conn.commit()
+
+		
