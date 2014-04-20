@@ -11,19 +11,24 @@
 #~ psql -d pistes-pgsnapshot -f /home/website/Planet/config/pgsnapshot_schema_0.6_relations_geometry.sql
 #~ psql -d pistes-pgsnapshot -f /home/website/Planet/config/pgsnapshot_schema_0.6_names.sql
 #~ psql -d pistes-pgsnapshot -f /home/website/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
-
+#~ 
+#~ dropdb pistes-pgsnapshot-tmp
 #~ createdb pistes-pgsnapshot-tmp
 #~ psql -d pistes-pgsnapshot-tmp -f /usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql
 #~ psql -d pistes-pgsnapshot-tmp -f /usr/share/postgresql/9.1/contrib/postgis-2.0/spatial_ref_sys.sql
 #~ echo "CREATE EXTENSION hstore;"  | psql -d pistes-pgsnapshot-tmp
 #~ echo "CREATE EXTENSION pg_trgm;"  | psql -d pistes-pgsnapshot-tmp
-#~ psql -d pistes-pgsnapshot-tmp -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6.sql
-#~ psql -d pistes-pgsnapshot-tmp -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_bbox.sql
-#~ psql -d pistes-pgsnapshot-tmp -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_linestring.sql
-#~ psql -d pistes-pgsnapshot-tmp -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_action.sql
-#~ psql -d pistes-pgsnapshot-tmp -f /home/website/Planet/config/pgsnapshot_schema_0.6_relations_geometry.sql
-#~ psql -d pistes-pgsnapshot-tmp -f /home/website/Planet/config/pgsnapshot_schema_0.6_names.sql
-#~ psql -d pistes-pgsnapshot-tmp -f /home/website/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6_bbox.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6_linestring.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6_action.sql
+## 94 s import
+##$osmosis --rxc "test.osc" --wpc database="pistes-pgsnapshot-tmp";
+##2 s
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_geometry.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_names.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
+#~ ## 200s import
 
 osmosis="/home/admin/src/osmosis/bin/osmosis"
 WORK_DIR=/home/admin/Planet/
@@ -50,14 +55,24 @@ then echo $(date)' planet_pistes.osm ok, updating pgsnapshot DB'
         echo $(date)' truncate DB failed'
         exit 5
     fi
-    $osmosis --read-xml ${PLANET_DIR}planet_pistes.osm \
+    #~ $osmosis --read-xml-change ${TOOLS_DIR}landuse.osc \
+    #~ --sort-change --simplify-change \
+    #~ --read-xml ${PLANET_DIR}planet_pistes.osm \
+    #~ --apply-change \
+     #~ --write-xml withlanduse.osm
+    $osmosis --read-xml-change ${TOOLS_DIR}landuse.osc \
+    --sort-change --simplify-change \
+    --read-xml ${PLANET_DIR}planet_pistes.osm \
+    --apply-change \
     --write-pgsql host="localhost" database=$DBTMP user="xapi" password="xapi"
     if [ $? -ne 0 ]
     then
         echo $(date)' Osmosis failed to update pgsnapshot DB'
         exit 5
     fi
+    echo $(date)' Drop pgsnapshot DB'
     dropdb $DB
+    echo $(date)' Create pgsnapshot DB'
 	createdb -T $DBTMP $DB
     
     #~ # Copy the total way length and last update.txt infos to the website

@@ -5,6 +5,8 @@ import pdb
 import psycopg2
 import os, sys
 from lxml import etree
+import datetime
+from cgi import escape
 
 def process(relation):
 	name = ''
@@ -129,7 +131,7 @@ for i in ids:
 		ST_Intersects(planet_osm_line.way,
 		planet_osm_polygon.way)
 		AND
-		planet_osm_line."piste:type" in ('downhill',
+		(planet_osm_line."piste:type" in ('downhill',
 			'hike',
 			'ice-skate',
 			'jump',
@@ -140,9 +142,61 @@ for i in ids:
 			'sled',
 			'sleigh',
 			'snow_park')
+			OR
+			planet_osm_line.aerialway is not null)
 		GROUP BY
 		planet_osm_polygon.osm_id,planet_osm_polygon.name,planet_osm_polygon.way;
 		""",(i,))
 conn.commit()
+#~ 
+#~ # make landuse-> site osc
 
+f=open('landuse.osc','w')
+f.write('<osmChange version="0.6" generator="Opensnowmap">\n')
+l=len(ids)
+for i in ids:
+	l-=1
+	
+	cur.execute("""
+	SELECT planet_osm_point.site_name, planet_osm_point."piste:type"
+	FROM planet_osm_point
+	WHERE
+	osm_id = %s
+	""" % (i,))
+	req=cur.fetchall()
+	try :
+		name=req[0][0]
+		typ=req[0][1]
+		cur.execute("""
+				SELECT DISTINCT planet_osm_line.osm_id
+					FROM planet_osm_line, planet_osm_polygon
+					WHERE
+					planet_osm_polygon.osm_id = %s
+					AND
+					ST_Intersects(planet_osm_line.way,planet_osm_polygon.way)
+				;
+				"""% (i,))
+		members=cur.fetchall()
+		member_ids=[str(long(x[0])) for x in members]
 		
+		f.write('   <create>\n')
+		f.write('       <relation id="'+i+'" changeset="1" version="1" timestamp="')
+		f.write(datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S"))
+		f.write('">\n')
+		
+		for m in member_ids:
+			f.write('           <member type="way" role="" ref="'+str(m)+'"/>\n')
+		f.write('           <tag k="name" v="'+escape(name,quote=True)+'"/>\n')
+		if typ:
+			f.write('           <tag k="piste:type" v="'+typ+'"/>\n')
+		f.write('           <tag k="landuse" v="winter_sports"/>\n')
+		f.write('           <tag k="site" v="piste"/>\n')
+		f.write('       </relation>\n')
+		f.write('   </create>\n')
+	except  Exception,e:
+		print "error for way ", i
+		print str(e)
+		print req
+		
+	
+f.write('</osmChange>')
