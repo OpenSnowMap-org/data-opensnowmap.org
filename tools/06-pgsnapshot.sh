@@ -60,7 +60,7 @@ then echo $(date)' planet_pistes.osm ok, updating pgsnapshot DB'
     #~ --read-xml ${PLANET_DIR}planet_pistes.osm \
     #~ --apply-change \
      #~ --write-xml withlanduse.osm
-    $osmosis --read-xml-change ${TOOLS_DIR}landuse.osc \
+    $osmosis --read-xml-change ${PLANET_DIR}landuse.osc \
     --sort-change --simplify-change \
     --read-xml ${PLANET_DIR}planet_pistes.osm \
     --apply-change \

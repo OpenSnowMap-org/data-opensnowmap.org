@@ -151,7 +151,7 @@ conn.commit()
 #~ 
 #~ # make landuse-> site osc
 
-f=open('landuse.osc','w')
+f=open('/home/admin/Planet/data/landuse.osc','w')
 f.write('<osmChange version="0.6" generator="Opensnowmap">\n')
 l=len(ids)
 for i in ids:
