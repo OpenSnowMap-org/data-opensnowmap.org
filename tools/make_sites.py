@@ -191,6 +191,7 @@ for i in ids:
 			f.write('           <tag k="piste:type" v="'+typ+'"/>\n')
 		f.write('           <tag k="landuse" v="winter_sports"/>\n')
 		f.write('           <tag k="site" v="piste"/>\n')
+		f.write('           <tag k="was_way" v="yes"/>\n')
 		f.write('       </relation>\n')
 		f.write('   </create>\n')
 	except  Exception,e:
