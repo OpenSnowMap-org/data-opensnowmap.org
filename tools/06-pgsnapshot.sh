@@ -55,11 +55,6 @@ then echo $(date)' planet_pistes.osm ok, updating pgsnapshot DB'
         echo $(date)' truncate DB failed'
         exit 5
     fi
-    #~ $osmosis --read-xml-change ${TOOLS_DIR}landuse.osc \
-    #~ --sort-change --simplify-change \
-    #~ --read-xml ${PLANET_DIR}planet_pistes.osm \
-    #~ --apply-change \
-     #~ --write-xml withlanduse.osm
     $osmosis --read-xml-change ${PLANET_DIR}landuse.osc \
     --sort-change --simplify-change \
     --read-xml ${PLANET_DIR}planet_pistes.osm \
@@ -81,3 +76,16 @@ else
     echo $(date)' planet_pistes.osm empty'
     exit 5
 fi
+
+${TOOLS_DIR}./resort_list.py > ${PLANET_DIR}resorts.json
+TESTSIZE=$(stat -c%s ${PLANET_DIR}resorts.json)
+if [ $TESTSIZE -gt 10 ]
+then 
+	echo $(date)' resorts.json ok'
+	cp ${PLANET_DIR}resorts.json /var/www/data
+
+else 
+    echo $(date)' resorts.json empty'
+    exit 6
+fi
+
