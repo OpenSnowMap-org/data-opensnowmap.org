@@ -27,6 +27,7 @@
 node        simple        text        linear
 node,way   name         text         linear
 node,way   aerialway    text         linear
+node,way   waterway    text         linear
 node,way   railway      text         linear
 node,way   amenity      text         nocache,polygon
 node,way   bridge       text         linear
@@ -41,23 +42,9 @@ node,way   tunnel       text         linear
 node,way   area         text         # hard coded support for area=1/yes => polygon is in osm2pgsql
 nnode,way   z_order      int4         linear # This is calculated during import
 way        way_area     real                # This is calculated during import
-way piste:lift              text    linear
-way piste:name              text    linear
-way piste:lift:occupancy    text    linear
-way piste:lift:capacity     text    linear
-way piste:lift:duration     text    linear
-node,way piste:type              text    linear
-way piste:difficulty        text    linear
-way piste:grooming          text    linear
-way piste:oneway            text    linear
-way piste:lit               text    linear
-way lit               text    linear
-way piste:abandoned         text    linear
-way gladed          text    linear
-way competition     text    linear
-way patrolled       text    linear
-way landuse			text    polygon
-node,way   takeoff       text         linear
-node,way   color    text         linear
-node,way   colour   text         linear
-way       route_name       text     linear
+node,way whitewater:section_grade              text    linear
+node,way whitewater:section_name              text    linear
+node,way whitewater:rapid_grade    text    linear
+node,way whitewater:rapid_name    text    linear
+node,way whitewater:name    text    linear
+node,way whitewater     text    linear
