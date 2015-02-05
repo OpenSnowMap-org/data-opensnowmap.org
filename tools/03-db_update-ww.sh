@@ -42,14 +42,21 @@ then
     exit 4
 else echo $(date)' update TMP mapnik db succeed '
 fi
-
+echo $(date)' unmonitor renderd'
+monit unmonitor renderd # http must be enabled in /etc/monit/monitrc
+echo $(date)' stop renderd'
+/usr/sbin/service renderd stop
 echo "SELECT
-    pg_terminate_backend (pg_stat_activity.procpid)
+    pg_terminate_backend (pg_stat_activity.pid)
 FROM
     pg_stat_activity
 WHERE
-    pg_stat_activity.datname = 'ww-mapnik';" | psql -d $DBMAPNIKTMP
+    pg_stat_activity.datname = 'pistes-mapnik';" | psql -d $DBMAPNIKTMP
     
 dropdb $DBMAPNIK
 createdb -T $DBMAPNIKTMP $DBMAPNIK
 
+/usr/sbin/service renderd start
+echo $(date)' start renderd'
+monit monitor renderd
+echo $(date)' remonitor renderd'

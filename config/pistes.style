@@ -61,3 +61,11 @@ node,way   takeoff       text         linear
 node,way   color    text         linear
 node,way   colour   text         linear
 way       route_name       text     linear
+node,way   symbol       text         linear
+node,way   osmc:symbol       text         linear
+node,way   wiki:symbol       text         linear
+node,way   rental       text         linear
+node,way   ski       text         linear
+node,way   ref       text         linear
+node,way   piste:ref       text         linear
+node,way   highway       text         linear
