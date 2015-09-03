@@ -37,14 +37,18 @@ WHERE
     
 dropdb $DBMAPNIK
 createdb -T $DBMAPNIKTMP $DBMAPNIK
+
+cd /home/admin/mapnik/offset-style/
+python build-relations-style.py lists
+cd /home/admin/mapnik/single-overlay/
+python build-relations-style.py lists
+
 /usr/sbin/service renderd start
 monit monitor renderd
 
 
 touch /var/lib/mod_tile/planet-import-complete
 
-cd /home/admin/mapnik/offset-style/
-python build-relations-style.py lists
 #~ /etc/init.d/renderd restart
 cd ${WORK_DIR}
 
@@ -87,5 +91,5 @@ cp ${PLANET_DIR}stats.json /var/www/data/stats.json
 echo $(date)' Update complete'
 
 ${TOOLS_DIR}./06-pgsnapshot.sh
-${TOOLS_DIR}./04-osmand_export.sh
+
 

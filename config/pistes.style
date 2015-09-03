@@ -69,3 +69,4 @@ node,way   ski       text         linear
 node,way   ref       text         linear
 node,way   piste:ref       text         linear
 node,way   highway       text         linear
+node,way   man_made       text         linear
