@@ -30,7 +30,7 @@ echo $(date)' ######################### '
 echo $(date)' Filtering starting '
 #______________________________________________________________________
 # Filtering pistes
-./osmfilter ${PLANET_DIR}planet.o5m --keep="bridge= or whitewater:section_grade= or whitewater:section_name= or whitewater:rapid_grade= or whitewater:rapid_name= or whitewater= or sport=canoe or kayak_rental= or route=canoe" > ${TMP_DIR}planet_ww.osm
+./osmfilter ${PLANET_DIR}planet.o5m --keep="whitewater:section_grade= or whitewater:section_name= or whitewater:rapid_grade= or whitewater:rapid_name= or whitewater= or sport=canoe or kayak_rental= or route=canoe" > ${TMP_DIR}planet_ww.osm
 if [ $? -ne 0 ]
 then
     echo $(date)' FAILED to filter planet ww file'

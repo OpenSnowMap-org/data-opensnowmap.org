@@ -8,6 +8,8 @@ from lxml import etree
 import datetime
 from cgi import escape
 
+HOME_DIR=sys.argv[1]
+
 def process(relation):
 	name = ''
 	tags= relation.findall('tag')
@@ -45,8 +47,7 @@ try:
 except:
 	conn.rollback()
 	
-WORK_DIR=''
-osmDoc=etree.parse(WORK_DIR+"/home/admin/Planet/data/planet_pistes_sites.osm")
+osmDoc=etree.parse(HOME_DIR+"Planet/data/planet_pistes_sites.osm")
 
 relations=osmDoc.findall('relation')
 
@@ -114,11 +115,11 @@ cur.execute("""
 			""")
 sites_ids=cur.fetchall()
 ids=[str(long(x[0])) for x in sites_ids]
-print ids
+print "	ways to process: ",ids
 l=len(ids)
 for i in ids:
 	l-=1
-	print l
+	#~ print l
 	cur.execute("""
 		INSERT INTO planet_osm_point(osm_id, "piste:type",site_name, way, landuse) 
 		SELECT planet_osm_polygon.osm_id,string_agg(distinct planet_osm_line."piste:type",';'),
@@ -151,7 +152,7 @@ conn.commit()
 #~ 
 #~ # make landuse-> site osc
 
-f=open('/home/admin/Planet/data/landuse.osc','w')
+f=open(HOME_DIR+'Planet/data/landuse.osc','w')
 f.write('<osmChange version="0.6" generator="Opensnowmap">\n')
 l=len(ids)
 for i in ids:
@@ -195,9 +196,10 @@ for i in ids:
 		f.write('       </relation>\n')
 		f.write('   </create>\n')
 	except  Exception,e:
-		print "error for way ", i
-		print str(e)
-		print req
+		pass
+		#~ print "error for way ", i
+		#~ print str(e)
+		#~ print req
 		
 	
 f.write('</osmChange>')

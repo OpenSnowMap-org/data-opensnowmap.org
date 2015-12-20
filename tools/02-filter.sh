@@ -6,8 +6,15 @@
 # It also create daily, weekly and monthly change files along with tsv
 # file containing the newly created nodes.
 #______________________________________________________________________
-osmosis="/home/admin/src/osmosis/bin/osmosis -q"
-WORK_DIR=/home/admin/Planet/
+if  [ -d "/home/admin/" ]; then
+	H=/home/admin/
+else
+	H=/home/website/
+fi
+WORK_DIR=${H}Planet/
+
+osmosis=${H}"src/osmosis/bin/osmosis -q"
+
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
 # Directory where the planet file is stored
@@ -15,7 +22,7 @@ PLANET_DIR=${WORK_DIR}data/
 TMP_DIR=${WORK_DIR}tmp/
 TOOLS_DIR=${WORK_DIR}tools/
 ARCHIVE_DIR=${WORK_DIR}archives/
-DOWNLOADS_DIR=/home/admin/downloadable/
+DOWNLOADS_DIR=${H}downloadable/
 
 CONFIG_DIR=${WORK_DIR}config/
 cd ${TOOLS_DIR}

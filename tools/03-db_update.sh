@@ -1,5 +1,11 @@
-osmosis="/home/admin/src/osmosis/bin/osmosis -q"
-WORK_DIR=/home/admin/Planet/
+if  [ -d "/home/admin/" ]; then
+	H=/home/admin/
+else
+	H=/home/website/
+fi
+WORK_DIR=${H}Planet/
+
+osmosis=${H}"src/osmosis/bin/osmosis -q"
 cd ${WORK_DIR}
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
@@ -23,7 +29,7 @@ then
 else echo $(date)' update TMP mapnik db succeed '
 fi
 
-${TOOLS_DIR}./make_sites.py
+${TOOLS_DIR}./make_sites.py ${H}
 ${TOOLS_DIR}./relations_down.py > /dev/null
 
 monit unmonitor renderd # http must be enabled in /etc/monit/monitrc
@@ -38,9 +44,9 @@ WHERE
 dropdb $DBMAPNIK
 createdb -T $DBMAPNIKTMP $DBMAPNIK
 
-cd /home/admin/mapnik/offset-style/
+cd ${H}mapnik/offset-style/
 python build-relations-style.py lists
-cd /home/admin/mapnik/single-overlay/
+cd ${H}mapnik/single-overlay/
 python build-relations-style.py lists
 
 /usr/sbin/service renderd start

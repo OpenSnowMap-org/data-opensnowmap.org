@@ -30,8 +30,13 @@
 #~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
 #~ ## 200s import
 
-osmosis="/home/admin/src/osmosis/bin/osmosis"
-WORK_DIR=/home/admin/Planet/
+if  [ -d "/home/admin/" ]; then
+	H=/home/admin/
+else
+	H=/home/website/
+fi
+WORK_DIR=${H}Planet/
+osmosis=${H}"src/osmosis/bin/osmosis -q"
 cd ${WORK_DIR}
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log

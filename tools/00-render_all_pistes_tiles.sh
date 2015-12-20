@@ -1,5 +1,12 @@
-osmosis=/home/admin/src/osmosis/bin/osmosis
-WORK_DIR=/home/admin/Planet/
+if  [ -d "/home/admin/" ]; then
+	H=/home/admin/
+else
+	H=/home/website/
+fi
+WORK_DIR=${H}Planet/
+
+osmosis=${H}"src/osmosis/bin/osmosis -q"
+
 cd ${WORK_DIR}
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
@@ -13,8 +20,8 @@ today=$(date --date="today" +%Y-%m-%d)
 echo $(date)' Render tiles '>> $LOGFILE
 echo $(date)' Render tiles '
 pwd
-#~ ${TOOLS_DIR}./tile-list-from-db.py  -o all_tiles-$today.tilelist -z 0 -Z 15
-#~ cat all_tiles-$today.tilelist | sort | uniq > uniq.lst
+${TOOLS_DIR}./tile-list-from-db.py  -o all_tiles-$today.tilelist -z 0 -Z 16
+cat all_tiles-$today.tilelist | sort | uniq > uniq.lst
 cat all_tiles-2014-01-08.lst | sort | uniq > uniq.lst
 cat uniq.lst | render_list --num-threads=6 -s /var/run/renderd/renderd.sock -m pistes -f
 if [ $? -ne 0 ]

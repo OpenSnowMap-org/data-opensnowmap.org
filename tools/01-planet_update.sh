@@ -7,8 +7,13 @@
 # It will exit 2 on error, 1 if there is nothing to do, and 0 if update 
 # is succesfull.
 #______________________________________________________________________
+if  [ -d "/home/admin/" ]; then
+	H=/home/admin/
+else
+	H=/home/website/
+fi
+WORK_DIR=${H}Planet/
 
-WORK_DIR=/home/admin/Planet/
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
 # Directory where the planet file is stored

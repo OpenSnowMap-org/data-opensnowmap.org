@@ -4,7 +4,12 @@
 # 
 #______________________________________________________________________
 
-WORK_DIR=/home/admin/Planet/
+if  [ -d "/home/admin/" ]; then
+	H=/home/admin/
+else
+	H=/home/website/
+fi
+WORK_DIR=${H}Planet/
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
 # Directory where the planet file is stored
@@ -39,4 +44,4 @@ ${TOOLS_DIR}./tile-list-from-db.py -o ${TMP_DIR}list.lst -Z 16 -j ${TOOLS_DIR}ge
 cat ${TMP_DIR}list.lst | sort | uniq > ${TMP_DIR}uniq.lst
 nice -n19 ${TOOLS_DIR}./render2sqlite.py ${TMP_DIR}uniq.lst ${PLANET_DIR}opensnowmap.org-Southern_Europe-z16.sqlitedb
 
-mv ${PLANET_DIR}*.sqlitedb /home/website/downloadable/
+mv ${PLANET_DIR}*.sqlitedb ${H}downloadable/
