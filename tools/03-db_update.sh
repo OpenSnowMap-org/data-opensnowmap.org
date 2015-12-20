@@ -63,24 +63,24 @@ cd ${WORK_DIR}
 ##########################################
 
 
-TESTSIZE=$(stat -c%s ${PLANET_DIR}planet_pistes.osm)
-if [ $TESTSIZE -gt 1000 ]
-then echo $(date)' planet_pistes.osm ok, updating XAPI DB'
-    #Updating DB for osmosis:
-    $osmosis --truncate-pgsql host="localhost" \
-    database="pistes-xapi" user="xapi" password="xapi"
-    if [ $? -ne 0 ]
-    then
-        echo $(date)' truncate DB failed'
-        exit 5
-    fi
-    $osmosis --read-xml ${PLANET_DIR}planet_pistes.osm \
-    --write-pgsql host="localhost" database="pistes-xapi" user="xapi" password="xapi"
-    if [ $? -ne 0 ]
-    then
-        echo $(date)' Osmosis failed to update DB'
-        exit 5
-    fi
+#~ TESTSIZE=$(stat -c%s ${PLANET_DIR}planet_pistes.osm)
+#~ if [ $TESTSIZE -gt 1000 ]
+#~ then echo $(date)' planet_pistes.osm ok, updating XAPI DB'
+    #~ #Updating DB for osmosis:
+    #~ $osmosis --truncate-pgsql host="localhost" \
+    #~ database="pistes-xapi" user="xapi" password="xapi"
+    #~ if [ $? -ne 0 ]
+    #~ then
+        #~ echo $(date)' truncate DB failed'
+        #~ exit 5
+    #~ fi
+    #~ $osmosis --read-xml ${PLANET_DIR}planet_pistes.osm \
+    #~ --write-pgsql host="localhost" database="pistes-xapi" user="xapi" password="xapi"
+    #~ if [ $? -ne 0 ]
+    #~ then
+        #~ echo $(date)' Osmosis failed to update DB'
+        #~ exit 5
+    #~ fi
     
     
     #~ # Copy the total way length and last update.txt infos to the website
