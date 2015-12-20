@@ -10,7 +10,7 @@ import json
 import codecs
 import pycountry
 
-con = psycopg2.connect("dbname=pistes-pgsnapshot user=admin")
+con = psycopg2.connect("dbname=pistes-pgsnapshot user=xapi")
 cur = con.cursor()
 cur.execute("""
 SELECT id,

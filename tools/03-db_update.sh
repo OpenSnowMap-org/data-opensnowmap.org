@@ -34,13 +34,19 @@ ${TOOLS_DIR}./relations_down.py > /dev/null
 
 monit unmonitor renderd # http must be enabled in /etc/monit/monitrc
 /usr/sbin/service renderd stop
+## procpid or pid for PG < 9.2
+#~ echo "SELECT
+    #~ pg_terminate_backend (pg_stat_activity.procpid)
+#~ FROM
+    #~ pg_stat_activity
+#~ WHERE
+    #~ pg_stat_activity.datname = 'pistes-mapnik';" | psql -d $DBMAPNIKTMP
 echo "SELECT
-    pg_terminate_backend (pg_stat_activity.procpid)
+    pg_terminate_backend (pg_stat_activity.pid)
 FROM
     pg_stat_activity
 WHERE
     pg_stat_activity.datname = 'pistes-mapnik';" | psql -d $DBMAPNIKTMP
-    
 dropdb $DBMAPNIK
 createdb -T $DBMAPNIKTMP $DBMAPNIK
 
@@ -85,10 +91,10 @@ cd ${WORK_DIR}
     
     #~ # Copy the total way length and last update.txt infos to the website
 #~ 
-else 
-    echo $(date)' planet_pistes_processed.osm empty'
-    exit 5
-fi
+#~ else 
+    #~ echo $(date)' planet_pistes_processed.osm empty'
+    #~ exit 5
+#~ fi
 #~ # backup
 
 ${TOOLS_DIR}./pistes-stat2json.sh >${PLANET_DIR}stats.json

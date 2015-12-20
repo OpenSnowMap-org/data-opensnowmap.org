@@ -22,7 +22,12 @@ aerialway=$(echo "$aerialwaymeter / 1000" | bc)
 sled=$(echo "$sledmeter / 1000" | bc)
 hike=$(echo "$hikemeter / 1000" | bc)
 skitour=$(echo "$skitourmeter / 1000" | bc)
-date=$(cat /home/admin/Planet/data/state.txt)
+if  [ -d "/home/admin/" ]; then
+	date=$(cat /home/admin/Planet/data/state.txt)
+else
+	date=$(cat /home/website/Planet/data/state.txt)
+fi
+
 echo {
 echo \"downhill\": $downhill,
 echo \"nordic\": $nordic,
