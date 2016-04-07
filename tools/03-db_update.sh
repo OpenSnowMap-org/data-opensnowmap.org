@@ -32,21 +32,32 @@ fi
 ${TOOLS_DIR}./make_sites.py ${H}
 ${TOOLS_DIR}./relations_down.py > /dev/null
 
+##########################################
+#~ List expired tiles from the 2 databases, the old and the new
+##########################################
+
+cd ${TOOLS_DIR}
+./list_expired.py ${PLANET_DIR}daily.osc
+
+##########################################
+#~ swap the 2 databases, the old and the new
+##########################################
+
 monit unmonitor renderd # http must be enabled in /etc/monit/monitrc
 /usr/sbin/service renderd stop
 ## procpid or pid for PG < 9.2
-#~ echo "SELECT
-    #~ pg_terminate_backend (pg_stat_activity.procpid)
-#~ FROM
-    #~ pg_stat_activity
-#~ WHERE
-    #~ pg_stat_activity.datname = 'pistes-mapnik';" | psql -d $DBMAPNIKTMP
 echo "SELECT
-    pg_terminate_backend (pg_stat_activity.pid)
+    pg_terminate_backend (pg_stat_activity.procpid)
 FROM
     pg_stat_activity
 WHERE
     pg_stat_activity.datname = 'pistes-mapnik';" | psql -d $DBMAPNIKTMP
+#~ echo "SELECT
+    #~ pg_terminate_backend (pg_stat_activity.pid)
+#~ FROM
+    #~ pg_stat_activity
+#~ WHERE
+    #~ pg_stat_activity.datname = 'pistes-mapnik';" | psql -d $DBMAPNIKTMP
 dropdb $DBMAPNIK
 createdb -T $DBMAPNIKTMP $DBMAPNIK
 
@@ -59,9 +70,20 @@ python build-relations-style.py lists
 monit monitor renderd
 
 
-touch /var/lib/mod_tile/planet-import-complete
+##########################################
+## Expire tiles, touch only
+##########################################
+# to stop expiry:
+#~ touch -d "2 years ago" /var/lib/mod_tile/planet-import-complete 
+# to start default expiry 
+#~ touch /var/lib/mod_tile/planet-import-complete
+# expiry from tile list: we never change the planet timestamp, just mark the 
+# relevant tiles as expired. Done on 07042016
+cd ${TOOLS_DIR}
+cat expired_tiles.lst | render_expired --map=single --touch-from=0 --num-threads=1
 
 #~ /etc/init.d/renderd restart
+
 cd ${WORK_DIR}
 
 ##########################################
