@@ -80,7 +80,8 @@ monit monitor renderd
 # expiry from tile list: we never change the planet timestamp, just mark the 
 # relevant tiles as expired. Done on 07042016
 cd ${TOOLS_DIR}
-cat expired_tiles.lst | render_expired --map=single --touch-from=0 --num-threads=1
+cat expired_tiles.lst | /usr/local/bin/render_expired --map=single --touch-from=0 --num-threads=1
+cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes --touch-from=0 --num-threads=1
 
 #~ /etc/init.d/renderd restart
 
