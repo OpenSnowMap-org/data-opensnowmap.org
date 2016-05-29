@@ -31,7 +31,7 @@ def process(relation):
 	entrances_list= ",".join(entrances)
 	return name, id_list, entrances
 
-print "makes_sites.py, process relations and landuses for ressorts rendering\n"
+
 conn = psycopg2.connect("dbname=pistes-mapnik-tmp user=mapnik")
 cur = conn.cursor()
     
@@ -47,7 +47,7 @@ try:
 except:
 	conn.rollback()
 	
-osmDoc=etree.parse(HOME_DIR+"Planet/data/planet_pistes_sites.osm")
+osmDoc=etree.parse("/Planet/data/planet_pistes_sites.osm")
 
 relations=osmDoc.findall('relation')
 
@@ -115,7 +115,7 @@ cur.execute("""
 			""")
 sites_ids=cur.fetchall()
 ids=[str(long(x[0])) for x in sites_ids]
-print "	Number of ways to process: ",len(ids)
+print "	ways to process: ",ids
 l=len(ids)
 for i in ids:
 	l-=1

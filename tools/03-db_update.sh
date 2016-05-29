@@ -3,9 +3,11 @@ if  [ -d "/home/admin/" ]; then
 else
 	H=/home/website/
 fi
+
 WORK_DIR=${H}Planet/
 
-osmosis=${H}"src/osmosis/bin/osmosis -q"
+#osmosis=${H}"src/osmosis/bin/osmosis -q"
+osmosis="osmosis -q"
 cd ${WORK_DIR}
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
@@ -19,7 +21,7 @@ DBMAPNIKTMP=pistes-mapnik-tmp
 DBMAPNIK=pistes-mapnik
 
 # Populate mapnik db
-echo $(date)' updating mapnik DB'
+echo $(date)' updating TMP mapnik DB'
 /usr/local/bin/osm2pgsql -U mapnik -s -c -m -d $DBMAPNIKTMP -S ${CONFIG_DIR}pistes.style\
  ${PLANET_DIR}planet_pistes.osm > /dev/null 2>&1
 if [ $? -ne 0 ]
@@ -29,15 +31,23 @@ then
 else echo $(date)' update TMP mapnik db succeed '
 fi
 
-${TOOLS_DIR}./make_sites.py ${H}
-${TOOLS_DIR}./relations_down.py > /dev/null
+${TOOLS_DIR}./make_sites.py /data/
+${TOOLS_DIR}./relations_down.py
 
 ##########################################
 #~ List expired tiles from the 2 databases, the old and the new
 ##########################################
 
 cd ${TOOLS_DIR}
-./list_expired.py ${PLANET_DIR}daily.osc
+if [ -f ${PLANET_DIR}dailyok ];
+then
+    ./list_expired.py ${PLANET_DIR}daily.osc $DBMAPNIKTMP $DBMAPNIK
+else 
+    echo '#######################################'
+    echo '            EXPIRE MANUALLY !'
+    echo '#######################################'
+fi
+
 
 ##########################################
 #~ swap the 2 databases, the old and the new
@@ -47,29 +57,34 @@ monit unmonitor renderd # http must be enabled in /etc/monit/monitrc
 /usr/sbin/service renderd stop
 ## procpid or pid for PG < 9.2
 echo "SELECT
-    pg_terminate_backend (pg_stat_activity.procpid)
+    pg_terminate_backend (pg_stat_activity.pid)
 FROM
     pg_stat_activity
 WHERE
-    pg_stat_activity.datname = 'pistes-mapnik';" | psql -d $DBMAPNIKTMP
+    pg_stat_activity.datname = 'pistes-mapnik';" | psql -d $DBMAPNIKTMP -U mapnik
 #~ echo "SELECT
     #~ pg_terminate_backend (pg_stat_activity.pid)
 #~ FROM
     #~ pg_stat_activity
 #~ WHERE
     #~ pg_stat_activity.datname = 'pistes-mapnik';" | psql -d $DBMAPNIKTMP
-dropdb $DBMAPNIK
-createdb -T $DBMAPNIKTMP $DBMAPNIK
+echo $(date)' replace mapnik DB'
+dropdb -U mapnik $DBMAPNIK
+createdb -U mapnik -T $DBMAPNIKTMP $DBMAPNIK
 
+echo $(date)' update relations style'
 cd ${H}mapnik/offset-style/
 python build-relations-style.py lists
+xmllint -noent ${H}mapnik/offset-style/map.xml > ${H}mapnik/offset-style/full.xml
 cd ${H}mapnik/single-overlay/
 python build-relations-style.py lists
+xmllint -noent ${H}mapnik/single-overlay/map.xml > ${H}mapnik/single-overlay/full.xml
 
+echo $(date)' restart renderd'
 /usr/sbin/service renderd start
 monit monitor renderd
 
-
+echo $(date)' expire tiles'
 ##########################################
 ## Expire tiles, touch only
 ##########################################
@@ -81,7 +96,7 @@ monit monitor renderd
 # relevant tiles as expired. Done on 07042016
 cd ${TOOLS_DIR}
 cat expired_tiles.lst | /usr/local/bin/render_expired --map=single --touch-from=0 --num-threads=1
-cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes --touch-from=0 --num-threads=1
+cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-only --touch-from=0 --num-threads=1
 
 #~ /etc/init.d/renderd restart
 

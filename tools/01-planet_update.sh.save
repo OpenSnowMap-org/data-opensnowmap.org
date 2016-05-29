@@ -12,7 +12,7 @@ if  [ -d "/home/admin/" ]; then
 else
 	H=/home/website/
 fi
-WORK_DIR=${H}Planet/
+WORK_DIR=Planet/
 
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log

@@ -17,6 +17,7 @@ conn.commit()
 
 # copy sites ids as a in_site tag for it's members
 #
+print "relation_down.py: Normalize groomin and post-process relations\n"
 try: 
 	cur.execute("ALTER TABLE planet_osm_line ADD in_site bigint[];")
 	conn.commit()
@@ -64,8 +65,8 @@ for relation in relations:
 		
 		
 	i-=1
-	sys.stdout.write("%s \r" % (i) )
-	sys.stdout.flush()
+	#~ sys.stdout.write("%s \r" % (i) )
+	#~ sys.stdout.flush()
 conn.commit()
 
 # copy relations ids as a member_of tag for it's members
@@ -134,8 +135,8 @@ for relation in relations:
 							#~ where osm_id = %s;" % (siteid, memberid, memberid))
 		
 	i-=1
-	sys.stdout.write("%s \r" % (i) )
-	sys.stdout.flush()
+	#~ sys.stdout.write("%s \r" % (i) )
+	#~ sys.stdout.flush()
 conn.commit()
 
 

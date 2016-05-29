@@ -23,6 +23,9 @@ def num2deg(xtile, ytile, zoom):
 
 sys.stdout.write("Parsing changefile for ids")
 filename = sys.argv[1]
+old_db = sys.argv[2]
+new_db = sys.argv[3]
+
 tree = etree.parse(filename)
 root = tree.getroot()
 ways_ids=[]
@@ -46,7 +49,7 @@ for element in root.iter():
 sys.stdout.write("nodes: %s, ways: %s, relations: %s \n" % (len(nodes_ids), len(ways_ids), len(relations_ids)))
 
 #Get nodes lon lat from new database
-conn = psycopg2.connect("dbname=pistes-mapnik-tmp user=mapnik")
+conn = psycopg2.connect("dbname="+old_db+" user=mapnik")
 cur = conn.cursor()
 
 tilesZ18 = []
@@ -136,7 +139,7 @@ for Id in relations_ids:
 conn.close()
 
 #Get nodes lon lat from old database (if pistes have been deleted)
-conn = psycopg2.connect("dbname=pistes-mapnik user=mapnik")
+conn = psycopg2.connect("dbname="+new_db+" user=mapnik")
 cur = conn.cursor()
 
 zoom = 18

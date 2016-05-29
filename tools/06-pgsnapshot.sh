@@ -36,7 +36,8 @@ else
 	H=/home/website/
 fi
 WORK_DIR=${H}Planet/
-osmosis=${H}"src/osmosis/bin/osmosis -q"
+#osmosis=${H}"src/osmosis/bin/osmosis -q"
+osmosis="osmosis -q"
 cd ${WORK_DIR}
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
@@ -70,17 +71,21 @@ then echo $(date)' planet_pistes.osm ok, updating pgsnapshot DB'
         echo $(date)' Osmosis failed to update pgsnapshot DB'
         exit 5
     fi
+
     echo $(date)' Drop pgsnapshot DB'
-    dropdb $DB
+    dropdb -U xapi $DB
     echo $(date)' Create pgsnapshot DB'
-	createdb -T $DBTMP $DB
-    
+	createdb -U xapi -T $DBTMP $DB
+    exit
     #~ # Copy the total way length and last update.txt infos to the website
 #~ 
 else 
     echo $(date)' planet_pistes.osm empty'
     exit 5
 fi
+
+exit 0
+# skip the rest, no needto hammer nominatim each day
 
 ${TOOLS_DIR}./resort_list.py > ${PLANET_DIR}resorts.json
 TESTSIZE=$(stat -c%s ${PLANET_DIR}resorts.json)

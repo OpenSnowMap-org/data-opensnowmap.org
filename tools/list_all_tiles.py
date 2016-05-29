@@ -48,7 +48,7 @@ for element in root.iter():
 sys.stdout.write("nodes: %s, ways: %s, relations: %s \n" % (len(nodes_ids), len(ways_ids), len(relations_ids)))
 
 #Get nodes lon lat from database
-conn = psycopg2.connect("dbname=pistes-mapnik-tmp user=mapnik")
+conn = psycopg2.connect("dbname=pistes-mapnik user=mapnik")
 cur = conn.cursor()
 
 tilesZ18 = []

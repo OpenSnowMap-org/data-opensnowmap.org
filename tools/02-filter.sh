@@ -13,8 +13,8 @@ else
 fi
 WORK_DIR=${H}Planet/
 
-osmosis=${H}"src/osmosis/bin/osmosis -q"
-
+#osmosis=${H}"src/osmosis/bin/osmosis -q"
+osmosis="osmosis -q"
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
 # Directory where the planet file is stored
@@ -74,6 +74,11 @@ echo $(date)' latest planet_pistes.osm published'
 #-----------------------------------------------------------------------
 #Create change files
 #-----------------------------------------------------------------------
+if [ -f ${PLANET_DIR}dailyok ];
+then
+    rm ${PLANET_DIR}dailyok
+fi
+
 today=$(date --date="today" +%Y-%m-%d)
 yesterday=$(date --date="1 day ago" +%Y-%m-%d)
 lastweek=$(date --date="1 week ago" +%Y-%m-%d)
@@ -91,24 +96,27 @@ then
     if [ -f $yesterday_file ];
     then
         echo $(date)' yesterday file found' $yesterday_file
-        $osmosis \
-        --rx $daily_file \
-        --rx $yesterday_file \
-        --dc \
-        --wxc ${PLANET_DIR}daily.osc
+        #~ $osmosis \
+        #~ --rx $daily_file \
+        #~ --rx $yesterday_file \
+        #~ --dc \
+        #~ --wxc ${PLANET_DIR}daily.osc
+        ./osmconvert $yesterday_file $daily_file --diff -o=${PLANET_DIR}daily.osc
         echo $(date)' daily.osc done'
+        touch ${PLANET_DIR}dailyok
     else
         echo $(date)' no yesterday file found' $yesterday_file
     fi
 # Create weekly.osc
     if [ -f $lastweek_file ];
     then
-        echo $(date)' lastweek file found' $lastweek_file
-        $osmosis \
-        --rx $daily_file \
-        --rx $lastweek_file \
-        --dc \
-        --wxc ${PLANET_DIR}weekly.osc
+        #~ echo $(date)' lastweek file found' $lastweek_file
+        #~ $osmosis \
+        #~ --rx $daily_file \
+        #~ --rx $lastweek_file \
+        #~ --dc \
+        #~ --wxc ${PLANET_DIR}weekly.osc
+        ./osmconvert $lastweek_file $daily_file --diff -o=${PLANET_DIR}weekly.osc
         echo $(date)' weekly.osc done'
     else
         echo $(date)' no lastweek file found' $lastweek_file
@@ -117,11 +125,12 @@ then
     if [ -f $lastmonth_file ];
     then
         echo $(date)' lastmonth file found' $lastmonth_file
-        $osmosis \
-        --rx $daily_file \
-        --rx $lastmonth_file \
-        --dc \
-        --wxc ${PLANET_DIR}monthly.osc
+        #~ $osmosis \
+        #~ --rx $daily_file \
+        #~ --rx $lastmonth_file \
+        #~ --dc \
+        #~ --wxc ${PLANET_DIR}monthly.osc
+        ./osmconvert $lastmonth_file $daily_file --diff -o=${PLANET_DIR}monthly.osc
         echo $(date)' monthly.osc done'
     else
         echo $(date)' no lastmonth file found' $lastmonth_file
@@ -176,7 +185,7 @@ else
 fi
 
 cp ${PLANET_DIR}*.tsv \
-       /var/www/www.opensnowmap.org/data/
+       /var/www/data/
 #-----------------------------------------------------------------------
 # remove temporary files
 #-----------------------------------------------------------------------

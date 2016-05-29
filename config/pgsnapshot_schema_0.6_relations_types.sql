@@ -3,7 +3,7 @@
 CREATE OR REPLACE FUNCTION insertRelationType() RETURNS trigger AS $$ 
 BEGIN
 	UPDATE relations 
-	SET tags = tags ||('piste:type'=>(
+	SET tags = tags ||hstore('piste:type',(
 		SELECT string_agg(trim('()' from types::text),';') from
 			(SELECT distinct tags->'piste:type' FROM ways
 			WHERE ways.id in (
@@ -22,7 +22,7 @@ $$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION updateRelationType() RETURNS trigger AS $$ 
 BEGIN
 	UPDATE relations 
-	SET tags = tags ||('piste:type'=>(
+	SET tags = tags ||hstore('piste:type',(
 		SELECT string_agg(trim('()' from types::text),';') from
 			(SELECT distinct tags->'piste:type' FROM ways
 			WHERE ways.id in (
