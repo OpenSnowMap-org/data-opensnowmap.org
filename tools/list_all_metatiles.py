@@ -60,20 +60,21 @@ for Id in nodes_ids:
     st_x(st_transform(way,4326)), st_y(st_transform(way,4326)) \
     from planet_osm_point where osm_id=%s;"% (Id,))
     for c in cur.fetchall():
-        x, y= deg2num(c[1],c[0],zoom)
-        if [x,y] not in tilesZ18: tilesZ18.append([x,y])
+        tx, ty= deg2num(c[1],c[0],zoom)
+        if [tx /8 * 8,ty / 8 * 8] not in tilesZ18: tilesZ18.append([tx /8 * 8,ty / 8 * 8])
 
 
 """Note:
 At Z18, 1 pixel = 0.596m
 1 tile = 256px = 152m
+8 tiles = 1216m
 http://www.openstreetmap.org/way/142043938 > 4.4km, 2 noeuds
 
 select distinct st_x(dp), st_y(dp)
     from (
         select (st_dumppoints(st_transform(way2,4326))).geom as dp 
             from (
-                select ST_Segmentize(way,152) as way2
+                select ST_Segmentize(way,1216) as way2
                 from planet_osm_line
                 where osm_id=142043938
             ) as foo 
@@ -87,14 +88,14 @@ for Id in ways_ids:
     from (\
         select (st_dumppoints(st_transform(way2,4326))).geom as dp \
             from (\
-                select ST_Segmentize(way,152) as way2\
+                select ST_Segmentize(way,1216) as way2\
                 from planet_osm_line\
                 where osm_id=%s\
             ) as foo \
         )as bar;"% (Id,))
     for c in cur.fetchall():
-        x, y= deg2num(c[1],c[0],zoom)
-        if [x,y] not in tilesZ18: tilesZ18.append([x,y])
+        tx, ty= deg2num(c[1],c[0],zoom)
+        if [tx /8 * 8,ty / 8 * 8] not in tilesZ18: tilesZ18.append([tx /8 * 8,ty / 8 * 8])
 
 sys.stdout.write("retrieving routes coords ...")
 sys.stdout.flush()
@@ -103,14 +104,14 @@ for Id in relations_ids:
     from (\
         select (st_dumppoints(st_transform(way2,4326))).geom as dp \
             from (\
-                select ST_Segmentize(way,152) as way2\
+                select ST_Segmentize(way,1216) as way2\
                 from planet_osm_line\
                 where osm_id=-%s\
             ) as foo \
         )as bar;"% (Id,))
     for c in cur.fetchall():
-        x, y= deg2num(c[1],c[0],zoom)
-        if [x,y] not in tilesZ18: tilesZ18.append([x,y])
+        tx, ty= deg2num(c[1],c[0],zoom)
+        if [tx /8 * 8,ty / 8 * 8] not in tilesZ18: tilesZ18.append([tx /8 * 8,ty / 8 * 8])
 
 sys.stdout.write("retrieving loops coords ...")
 sys.stdout.flush()
@@ -119,14 +120,14 @@ for Id in ways_ids:
     from (\
         select (st_dumppoints(st_transform(way2,4326))).geom as dp \
             from (\
-                select ST_Segmentize(way,152) as way2\
+                select ST_Segmentize(way,1216) as way2\
                 from planet_osm_polygon\
                 where osm_id=%s\
             ) as foo \
         )as bar;"% (Id,))
     for c in cur.fetchall():
-        x, y= deg2num(c[1],c[0],zoom)
-        if [x,y] not in tilesZ18: tilesZ18.append([x,y])
+        tx, ty= deg2num(c[1],c[0],zoom)
+        if [tx /8 * 8,ty / 8 * 8] not in tilesZ18: tilesZ18.append([tx /8 * 8,ty / 8 * 8])
 
 sys.stdout.write("retrieving area coords ...")
 sys.stdout.flush()
@@ -135,16 +136,23 @@ for Id in relations_ids:
     from (\
         select (st_dumppoints(st_transform(way2,4326))).geom as dp \
             from (\
-                select ST_Segmentize(way,152) as way2\
+                select ST_Segmentize(way,1216) as way2\
                 from planet_osm_polygon\
                 where osm_id=-%s\
             ) as foo \
         )as bar;"% (Id,))
     for c in cur.fetchall():
-        x, y= deg2num(c[1],c[0],zoom)
-        if [x,y] not in tilesZ18: tilesZ18.append([x,y])
+        tx, ty= deg2num(c[1],c[0],zoom)
+        if [tx /8 * 8,ty / 8 * 8] not in tilesZ18: tilesZ18.append([tx /8 * 8,ty / 8 * 8])
 
 conn.close()
+
+f=open("z18_metatiles_expiry.lst",'w')
+for t in tilesZ18:
+    x=t[0]
+    y=t[1]
+    f.write(str(x)+'/'+str(y)+'/'+str(18)+'\n')
+f.close()
 
 tiles={}
 
@@ -157,7 +165,7 @@ for z in range(maxzoom+1):
     sys.stdout.write("z%s: %s tiles\n" % (z,len(tiles[z])))
     sys.stdout.flush()
 
-f=open("all_tiles.lst",'w')
+f=open("all_metatiles_expiry_0-18.lst",'w')
 for z in range(maxzoom+1):
     for t in tiles[z]:
         x=t[0]
@@ -165,4 +173,11 @@ for z in range(maxzoom+1):
         f.write(str(x)+'/'+str(y)+'/'+str(z)+'\n')
 f.close()
 
+f=open("all_metatiles_render_0-18.lst",'w')
+for z in range(maxzoom+1):
+    for t in tiles[z]:
+        x=t[0]
+        y=t[1]
+        f.write(str(x)+' '+str(y)+' '+str(z)+'\n')
+f.close()
 #~ cat expired_tiles.lst | render_expired --touch-from=0 --map=single --num-threads=1

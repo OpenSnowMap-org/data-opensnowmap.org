@@ -94,9 +94,11 @@ echo $(date)' expire tiles'
 #~ touch /var/lib/mod_tile/planet-import-complete
 # expiry from tile list: we never change the planet timestamp, just mark the 
 # relevant tiles as expired. Done on 07042016
+# 
 cd ${TOOLS_DIR}
-cat expired_tiles.lst | /usr/local/bin/render_expired --map=single --touch-from=0 --num-threads=1
-cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-only --touch-from=0 --num-threads=1
+cat expired_tiles.lst | /usr/local/bin/render_expired --map=single --num-threads=1 --touch-from=0 
+cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-only --num-threads=1 --touch-from=0 
+cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-only-high-dpi --num-threads=1 --touch-from=0 
 
 #~ /etc/init.d/renderd restart
 

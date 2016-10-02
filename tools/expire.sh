@@ -16,3 +16,4 @@ createdb -U mapnik -T pistes-mapnik-tmp expiry-new-tmp
 ./list_expired.py ../tmp/diff.osc expiry-old-tmp expiry-new-tmp
 cat expired_tiles.lst | /usr/local/bin/render_expired --map=single --touch-from=0 --num-threads=1
 cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-only --touch-from=0 --num-threads=1
+cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-only-high-dpi --num-threads=1 --touch-from=0 

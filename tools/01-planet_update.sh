@@ -43,11 +43,15 @@ then
     exit 2
 else
     echo $(date)' Planet file updated '
-    mv ${TMP_DIR}new-planet.o5m ${PLANET_DIR}planet.o5m
+    # limit speed to 20MB/s in order to let some io to apache/mod_tile
+    rsync -a --bwlimit=20000 ${TMP_DIR}new-planet.o5m ${PLANET_DIR}planet.o5m
+    #mv ${TMP_DIR}new-planet.o5m ${PLANET_DIR}planet.o5m
+    echo $(date)' Planet file moved to planet directory '
 fi
 #______________________________________________________________________
 # Update timestamp
 ./osmconvert -v ${PLANET_DIR}planet.o5m --out-timestamp > ${PLANET_DIR}state.txt
+echo $(date)' Timestamp extracted '
 
 # remove files
 rm ${TMP_DIR}*
