@@ -32,17 +32,22 @@ The following scripts run daily with a cron job:
         From time to time, create a list of ressorts (resorts.json) with calls to Nominatim (resort_list.py)
     
 Other scripts run manually or monthly:
+
     make_mbtiles.sh (monthly)
         create *.mbtiles files with Geofabrik's meta2tile from all the server tiles z0 to z16
+        
     expire.sh
         Run the tile expiry script list_expired.py from two archived files
     get_colored_relations.sh
         get a list of lonlat where relations with the color tags are, in order to check for manual offsets to add
+        
     list_all_metatiles.py, list_all_tiles.py
         create a tile list from DB
     osmand_pistes.py
         not used anymore, was from the time Osmand did not provide the ski pistes in the .obf files.
+        
     render2sqlite.py
         in deprecation, was rendering tiles to sqlite, replaced by *.mbtiles
+        
     tile-list-from-db.py, tile-list-not-unique.py
         deprecated
