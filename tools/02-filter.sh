@@ -31,7 +31,8 @@ echo $(date)' ######################### '
 echo $(date)' Filtering starting '
 #______________________________________________________________________
 # Filtering pistes
-./osmfilter ${PLANET_DIR}planet.o5m --keep="piste:type= or aerialway= or railway=funicular or railway=incline or site=piste or landuse=winter_sports or sport=ski_jump or sport=skating or sport=ski_jump_take_off or man_made=snow_cannon" > ${TMP_DIR}planet_pistes.osm
+./osmfilter ${PLANET_DIR}planet.o5m --keep="piste:type= or aerialway= or railway=funicular or railway=incline or site=piste or landuse=winter_sports or sport=ski_jump or sport=ski_jump_take_off or man_made=snow_cannon or sport=skating or sport=ice_skating or leisure=ice_rink or sport=ice_stock or sport=curling or sport=ice_hockey " > ${TMP_DIR}planet_pistes.osm
+# consider or leisure=stadium or leisure=pitch or leisure=sports_centre or leisure=track, but we have to filter changeset for .tsv generation
 if [ $? -ne 0 ]
 then
     echo $(date)' FAILED to filter planet file'
