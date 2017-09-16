@@ -73,12 +73,12 @@ dropdb -U mapnik $DBMAPNIK
 createdb -U mapnik -T $DBMAPNIKTMP $DBMAPNIK
 
 echo $(date)' update relations style'
-cd ${H}mapnik/offset-style/
-python build-relations-style.py lists
-xmllint -noent ${H}mapnik/offset-style/map.xml > ${H}mapnik/offset-style/full.xml
-cd ${H}mapnik/single-overlay/
-python build-relations-style.py lists
-xmllint -noent ${H}mapnik/single-overlay/map.xml > ${H}mapnik/single-overlay/full.xml
+cd ${H}mapnik/pistes-only-clean2017/
+python build-relations-style.py ../offset_lists
+xmllint -noent ${H}mapnik/pistes-only-clean2017/map.xml > ${H}mapnik/pistes-only-clean2017/full.xml
+cd ${H}mapnik/pistes-relief-clean2017/
+python build-relations-style.py ../offset_lists
+xmllint -noent ${H}mapnik/pistes-relief-clean2017/map.xml > ${H}mapnik/pistes-relief-clean2017/full.xml
 
 echo $(date)' restart renderd'
 /usr/sbin/service renderd start
@@ -96,9 +96,9 @@ echo $(date)' expire tiles'
 # relevant tiles as expired. Done on 07042016
 # 
 cd ${TOOLS_DIR}
-cat expired_tiles.lst | /usr/local/bin/render_expired --map=single --num-threads=1 --touch-from=0 
-cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-only --num-threads=1 --touch-from=0 
-cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-only-high-dpi --num-threads=1 --touch-from=0 
+cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-relief --num-threads=1 --touch-from=0 
+cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes --num-threads=1 --touch-from=0 
+cat expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-high-dpi --num-threads=1 --touch-from=0 
 
 #~ /etc/init.d/renderd restart
 

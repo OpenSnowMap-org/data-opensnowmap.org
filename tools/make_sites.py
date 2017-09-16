@@ -47,7 +47,7 @@ try:
 except:
 	conn.rollback()
 	
-osmDoc=etree.parse(HOME_DIR+"Planet/data/planet_pistes_sites.osm")
+osmDoc=etree.parse(HOME_DIR+"data/planet_pistes_sites.osm")
 
 relations=osmDoc.findall('relation')
 
@@ -152,7 +152,7 @@ conn.commit()
 #~ 
 #~ # make landuse-> site osc
 
-f=open(HOME_DIR+'Planet/data/landuse.osc','w')
+f=open(HOME_DIR+'/data/landuse.osc','w')
 f.write('<osmChange version="0.6" generator="Opensnowmap">\n')
 l=len(ids)
 for i in ids:
