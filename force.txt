@@ -1,0 +1,16 @@
+dailyok
+daily.osc
+daily.tsv
+expired.tsv
+files.txt
+landuse.osc
+monthly.osc
+monthly.tsv
+planet.o5m
+planet_pistes.osm
+planet_pistes_sites.osm
+resorts.json
+state.txt
+stats.json
+weekly.osc
+weekly.tsv
