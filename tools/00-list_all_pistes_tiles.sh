@@ -20,7 +20,7 @@ today=$(date --date="today" +%Y-%m-%d)
 echo $(date)' List tiles '>> $LOGFILE
 echo $(date)' List tiles '
 pwd
-${TOOLS_DIR}./list_all_metatiles.py ${PLANET_DIR}planet_pistes.osm 18
+${TOOLS_DIR}./list_all_metatiles.py ${PLANET_DIR}planet_pistes.osm 16
 #~ ${TOOLS_DIR}./tile-list-from-db.py  -o all_tiles-$today.tilelist -z 0 -Z 18
 #~ cat all_tiles-$today.tilelist | sort | uniq > uniq-$today.lst
 #~ cat all_tiles-2014-01-08.lst | sort | uniq > uniq.lst

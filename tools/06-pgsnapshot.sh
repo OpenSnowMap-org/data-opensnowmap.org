@@ -1,17 +1,30 @@
 
 #~ createdb pistes-pgsnapshot
-#~ psql -d pistes-pgsnapshot -f /usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql
-#~ psql -d pistes-pgsnapshot -f /usr/share/postgresql/9.1/contrib/postgis-2.0/spatial_ref_sys.sql
+#~ psql -d pistes-pgsnapshot -f /usr/share/postgresql/9.6/contrib/postgis-2.3/postgis.sql
+#~ psql -d pistes-pgsnapshot -f /usr/share/postgresql/9.6/contrib/postgis-2.3/spatial_ref_sys.sql
 #~ echo "CREATE EXTENSION hstore;"  | psql -d pistes-pgsnapshot
 #~ echo "CREATE EXTENSION pg_trgm;"  | psql -d pistes-pgsnapshot
-#~ psql -d pistes-pgsnapshot -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6.sql
-#~ psql -d pistes-pgsnapshot -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_bbox.sql
-#~ psql -d pistes-pgsnapshot -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_linestring.sql
-#~ psql -d pistes-pgsnapshot -f /home/website/src/osmosis-0.43.1/script/pgsnapshot_schema_0.6_action.sql
-#~ psql -d pistes-pgsnapshot -f /home/website/Planet/config/pgsnapshot_schema_0.6_relations_geometry.sql
-#~ psql -d pistes-pgsnapshot -f /home/website/Planet/config/pgsnapshot_schema_0.6_names.sql
-#~ psql -d pistes-pgsnapshot -f /home/website/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
-#~ 
+#~ psql -d pistes-pgsnapshot -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6.sql
+#~ psql -d pistes-pgsnapshot -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6_bbox.sql
+#~ psql -d pistes-pgsnapshot -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6_linestring.sql
+#~ psql -d pistes-pgsnapshot -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6_action.sql
+#~ psql -d pistes-pgsnapshot -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_geometry.sql
+#~ psql -d pistes-pgsnapshot -f /home/admin/Planet/config/pgsnapshot_schema_0.6_names.sql
+#~ psql -d pistes-pgsnapshot -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
+
+#~ createdb pistes-pgsnapshot-tmp
+#~ psql -d pistes-pgsnapshot-tmp -f /usr/share/postgresql/9.6/contrib/postgis-2.3/postgis.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /usr/share/postgresql/9.6/contrib/postgis-2.3/spatial_ref_sys.sql
+#~ echo "CREATE EXTENSION hstore;"  | psql -d pistes-pgsnapshot-tmp
+#~ echo "CREATE EXTENSION pg_trgm;"  | psql -d pistes-pgsnapshot-tmp
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6_bbox.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6_linestring.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/src/osmosis/script/pgsnapshot_schema_0.6_action.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_geometry.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_names.sql
+#~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
+
 #~ dropdb pistes-pgsnapshot-tmp
 #~ createdb pistes-pgsnapshot-tmp
 #~ psql -d pistes-pgsnapshot-tmp -f /usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql
@@ -28,7 +41,7 @@
 #~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_geometry.sql
 #~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_names.sql
 #~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
-#~ ## 200s import
+## 200s import
 
 if  [ -d "/home/admin/" ]; then
 	H=/home/admin/
@@ -36,8 +49,8 @@ else
 	H=/home/website/
 fi
 WORK_DIR=${H}Planet/
-#osmosis=${H}"src/osmosis/bin/osmosis -q"
-osmosis="osmosis -q"
+osmosis=${H}"src/osmosis/bin/osmosis -q"
+#~ osmosis="osmosis -q"
 cd ${WORK_DIR}
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log

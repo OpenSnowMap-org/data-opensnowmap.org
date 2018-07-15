@@ -147,7 +147,7 @@ for Id in relations_ids:
 
 conn.close()
 
-f=open("z18_metatiles_expiry.lst",'w')
+f=open("z16_metatiles_expiry.lst",'w')
 for t in tilesZ18:
     x=t[0]
     y=t[1]
@@ -165,7 +165,7 @@ for z in range(maxzoom+1):
     sys.stdout.write("z%s: %s tiles\n" % (z,len(tiles[z])))
     sys.stdout.flush()
 
-f=open("all_metatiles_expiry_0-18.lst",'w')
+f=open("all_metatiles_expiry_0-16.lst",'w')
 for z in range(maxzoom+1):
     for t in tiles[z]:
         x=t[0]
@@ -173,7 +173,7 @@ for z in range(maxzoom+1):
         f.write(str(x)+'/'+str(y)+'/'+str(z)+'\n')
 f.close()
 
-f=open("all_metatiles_render_0-18.lst",'w')
+f=open("all_metatiles_render_0-16.lst",'w')
 for z in range(maxzoom+1):
     for t in tiles[z]:
         x=t[0]

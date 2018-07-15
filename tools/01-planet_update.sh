@@ -36,7 +36,7 @@ echo $(date)' Update starting '
 #______________________________________________________________________
 # Update planet
 
-./osmupdate ${PLANET_DIR}planet.o5m ${TMP_DIR}new-planet.o5m
+osmupdate ${PLANET_DIR}planet.o5m ${TMP_DIR}new-planet.o5m
 if [ $? -ne 0 ]
 then
     echo $(date)' FAILED to update planet file'
@@ -44,13 +44,13 @@ then
 else
     echo $(date)' Planet file updated '
     # limit speed to 20MB/s in order to let some io to apache/mod_tile
-    rsync -a --bwlimit=20000 ${TMP_DIR}new-planet.o5m ${PLANET_DIR}planet.o5m
+    rsync -a --bwlimit=100000 ${TMP_DIR}new-planet.o5m ${PLANET_DIR}planet.o5m
     #mv ${TMP_DIR}new-planet.o5m ${PLANET_DIR}planet.o5m
     echo $(date)' Planet file moved to planet directory '
 fi
 #______________________________________________________________________
 # Update timestamp
-./osmconvert -v ${PLANET_DIR}planet.o5m --out-timestamp > ${PLANET_DIR}state.txt
+osmconvert -v ${PLANET_DIR}planet.o5m --out-timestamp > ${PLANET_DIR}state.txt
 echo $(date)' Timestamp extracted '
 
 # remove files

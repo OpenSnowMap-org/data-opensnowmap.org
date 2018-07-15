@@ -31,7 +31,7 @@ echo $(date)' ######################### '
 echo $(date)' Filtering starting '
 #______________________________________________________________________
 # Filtering pistes
-./osmfilter ${PLANET_DIR}planet.o5m --keep="piste:type= or aerialway= or railway=funicular or railway=incline or site=piste or landuse=winter_sports or sport=ski_jump or sport=ski_jump_take_off or man_made=snow_cannon or sport=skating or sport=ice_skating or leisure=ice_rink or sport=ice_stock or sport=curling or sport=ice_hockey " > ${TMP_DIR}planet_pistes.osm
+osmfilter ${PLANET_DIR}planet.o5m --keep="piste:type= or aerialway= or railway=funicular or railway=incline or site=piste or landuse=winter_sports or sport=ski_jump or sport=ski_jump_take_off or man_made=snow_cannon or sport=skating or sport=ice_skating or leisure=ice_rink or sport=ice_stock or sport=curling or sport=ice_hockey " > ${TMP_DIR}planet_pistes.osm
 # consider or leisure=stadium or leisure=pitch or leisure=sports_centre or leisure=track, but we have to filter changeset for .tsv generation
 if [ $? -ne 0 ]
 then
@@ -43,7 +43,7 @@ fi
 mv ${TMP_DIR}planet_pistes.osm ${PLANET_DIR}planet_pistes.osm
 #______________________________________________________________________
 # Filtering sites
-./osmfilter ${PLANET_DIR}planet_pistes.osm --keep="site=piste" > ${TMP_DIR}planet_pistes_sites.osm
+osmfilter ${PLANET_DIR}planet_pistes.osm --keep="site=piste" > ${TMP_DIR}planet_pistes_sites.osm
 if [ $? -ne 0 ]
 then
     echo $(date)' FAILED to filter planet file'
@@ -102,7 +102,7 @@ then
         #~ --rx $yesterday_file \
         #~ --dc \
         #~ --wxc ${PLANET_DIR}daily.osc
-        ./osmconvert $yesterday_file $daily_file --diff -o=${PLANET_DIR}daily.osc
+        osmconvert $yesterday_file $daily_file --diff -o=${PLANET_DIR}daily.osc
         echo $(date)' daily.osc done'
         touch ${PLANET_DIR}dailyok
     else
@@ -117,7 +117,7 @@ then
         #~ --rx $lastweek_file \
         #~ --dc \
         #~ --wxc ${PLANET_DIR}weekly.osc
-        ./osmconvert $lastweek_file $daily_file --diff -o=${PLANET_DIR}weekly.osc
+        osmconvert $lastweek_file $daily_file --diff -o=${PLANET_DIR}weekly.osc
         echo $(date)' weekly.osc done'
     else
         echo $(date)' no lastweek file found' $lastweek_file
@@ -131,7 +131,7 @@ then
         #~ --rx $lastmonth_file \
         #~ --dc \
         #~ --wxc ${PLANET_DIR}monthly.osc
-        ./osmconvert $lastmonth_file $daily_file --diff -o=${PLANET_DIR}monthly.osc
+        osmconvert $lastmonth_file $daily_file --diff -o=${PLANET_DIR}monthly.osc
         echo $(date)' monthly.osc done'
     else
         echo $(date)' no lastmonth file found' $lastmonth_file

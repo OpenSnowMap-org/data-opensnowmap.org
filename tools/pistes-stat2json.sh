@@ -40,7 +40,7 @@ sled=$(         echo "($sledmeter + $Rsledmeter) / 1000" | bc)
 hike=$(         echo "($hikemeter + $Rhikemeter) / 1000" | bc)
 skitour=$(      echo "($skitourmeter + $Rskitourmeter) / 1000" | bc)
 if  [ -d "/home/admin/" ]; then
-	date=$(cat /data/Planet/data/state.txt)
+	date=$(cat /home/admin/Planet/data/state.txt)
 else
 	date=$(cat /home/website/Planet/data/state.txt)
 fi
