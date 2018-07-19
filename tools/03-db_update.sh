@@ -102,7 +102,7 @@ then
     cat expired_tiles.lst | /usr/local/bin/render_expired --map=base_snow_map --num-threads=1 --touch-from=0 
     cat expired_tiles.lst | /usr/local/bin/render_expired --map=base_snow_map_high_dpi --num-threads=1 --touch-from=0 
 fi
-#~ /etc/init.d/renderd restart
+
 
 cd ${WORK_DIR}
 
