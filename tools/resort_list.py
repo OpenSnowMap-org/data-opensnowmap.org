@@ -26,7 +26,7 @@ for s in sites:
 	if s[1] and s[2] and s[3]:
 		osm_id=str(long(s[0]))
 		resorts[osm_id]={}
-		resorts[osm_id]['name']=s[1].decode('utf8')
+		resorts[osm_id]['name']=s[1].decode('utf8').replace('/',' - ')
 		resorts[osm_id]['lon']=s[2]
 		resorts[osm_id]['lat']=s[3]
 
@@ -62,7 +62,7 @@ for r in resorts:
 	country = cur.fetchall()[0][0]
 	#~ print name.encode('utf8')
 	con.commit()
-	resorts[r]['country']=country
+	resorts[r]['country']=country.replace('/',' - ')
 	
 	cur.execute("""
 	SELECT name FROM osm_admin 
