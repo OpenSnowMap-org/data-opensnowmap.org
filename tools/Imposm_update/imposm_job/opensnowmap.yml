@@ -1,0 +1,1178 @@
+tags:
+  load_all: true
+tables:
+  landusages:
+    mapping:
+      military:
+      - barracks
+      barrier:
+      - hedge
+      man_made:
+      - pier
+      tourism:
+      - zoo
+      amenity:
+      - university
+      - school
+      - college
+      - library
+      - fuel
+      - parking
+      - cinema
+      - theatre
+      - place_of_worship
+      - hospital
+      aeroway:
+      - runway
+      - taxiway
+      leisure:
+      - park
+      - garden
+      - playground
+      - golf_course
+      - sports_centre
+      - pitch
+      - stadium
+      - common
+      - nature_reserve
+      highway:
+      - pedestrian
+      - footway
+      landuse:
+      - park
+      - forest
+      - residential
+      - retail
+      - commercial
+      - industrial
+      - railway
+      - cemetery
+      - grass
+      - farmyard
+      - farm
+      - farmland
+      - orchard
+      - vineyard
+      - wood
+      - meadow
+      - village_green
+      - recreation_ground
+      - allotments
+      - quarry
+      - winter_sports
+      place:
+      - island
+      natural:
+      - wood
+      - land
+      - scrub
+      - wetland
+      - heath
+      - scree
+      - shingle
+      - bare_rock
+      - cliff
+      - glacier
+    type: polygon
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: null
+      name: area
+      type: pseudoarea
+    - args:
+        ranks:
+        - pedestrian
+        - footway
+        - playground
+        - park
+        - forest
+        - cemetery
+        - farmyard
+        - farm
+        - farmland
+        - wood
+        - meadow
+        - grass
+        - wetland
+        - village_green
+        - recreation_ground
+        - garden
+        - sports_centre
+        - pitch
+        - common
+        - allotments
+        - golf_course
+        - university
+        - school
+        - college
+        - library
+        - baracks
+        - fuel
+        - parking
+        - nature_reserve
+        - cinema
+        - theatre
+        - place_of_worship
+        - hospital
+        - scrub
+        - orchard
+        - vineyard
+        - zoo
+        - quarry
+        - residential
+        - retail
+        - commercial
+        - industrial
+        - railway
+        - heath
+        - island
+        - land
+      key: z_order
+      name: z_order
+      type: zorder
+  waterareas:
+    mapping:
+      waterway:
+      - riverbank
+      amenity:
+      - swimming_pool
+      leisure:
+      - swimming_pool
+      landuse:
+      - basin
+      - reservoir
+      natural:
+      - water
+    type: polygon
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: null
+      name: area
+      type: pseudoarea
+    - key: tunnel
+      name: tunnel
+      type: boolint
+  natural_ways:
+    mapping:
+      barrier:
+      - hedge
+      man_made:
+      - cutline
+      natural:
+      - cliff
+      - tree_row
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+  natural_nodes:
+    mapping:
+      mountain_pass:
+      - 'yes'
+      natural:
+      - tree
+      - peak
+      - saddle
+    type: point
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: null
+      name: area
+      type: pseudoarea
+  buildings:
+    mapping:
+      building:
+      - __any__
+    type: polygon
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: null
+      name: area
+      type: pseudoarea
+  places:
+    mapping:
+      place:
+      - country
+      - state
+      - region
+      - county
+      - city
+      - town
+      - village
+      - hamlet
+      - suburb
+      - locality
+      - isolated_dwelling
+    type: point
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - args:
+        ranks:
+        - country
+        - state
+        - region
+        - county
+        - city
+        - town
+        - village
+        - hamlet
+        - suburb
+        - locality
+      key: z_order
+      name: z_order
+      type: zorder
+    - key: population
+      name: population
+      type: integer
+  transport_areas:
+    mapping:
+      aeroway:
+      - aerodrome
+      - terminal
+      - helipad
+      - apron
+      railway:
+      - station
+      - platform
+    type: polygon
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+  admin:
+    mapping:
+      boundary:
+      - administrative
+    type: polygon
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: admin_level
+      name: admin_level
+      type: integer
+  aeroways:
+    mapping:
+      aeroway:
+      - runway
+      - taxiway
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+  waterways:
+    mapping:
+      waterway:
+      - stream
+      - river
+      - canal
+      - drain
+      - ditch
+      barrier:
+      - ditch
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+  barrierways:
+    mapping:
+      barrier:
+      - city_wall
+      - fence
+      - hedge
+      - retaining_wall
+      - wall
+      - bollard
+      - gate
+      - spikes
+      - lift_gate
+      - kissing_gate
+      - embankment
+      - 'yes'
+      - wire_fence
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+  transport_points:
+    mapping:
+      aeroway:
+      - aerodrome
+      - terminal
+      - helipad
+      - gate
+      highway:
+      - motorway_junction
+      - turning_circle
+      - bus_stop
+      railway:
+      - station
+      - halt
+      - tram_stop
+      - crossing
+      - level_crossing
+      - subway_entrance
+    type: point
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: ref
+      name: ref
+      type: string
+  amenities:
+    mapping:
+      tourism:
+      - alpine_hut
+      - wilderness_hut
+      amenity:
+      - university
+      - school
+      - library
+      - fuel
+      - hospital
+      - fire_station
+      - police
+      - townhall
+      - shelter
+    type: point
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+  barrierpoints:
+    mapping:
+      barrier:
+      - block
+      - bollard
+      - cattle_grid
+      - chain
+      - cycle_barrier
+      - entrance
+      - horse_stile
+      - gate
+      - spikes
+      - lift_gate
+      - kissing_gate
+      - fence
+      - 'yes'
+      - wire_fence
+      - toll_booth
+      - stile
+    type: point
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+  housenumbers:
+    mapping:
+      addr:housenumber:
+      - __any__
+    type: point
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: addr:street
+      name: addr:street
+      type: string
+    - key: addr:postcode
+      name: addr:postcode
+      type: string
+    - key: addr:city
+      name: addr:city
+      type: string
+  housenumbers_interpolated:
+    mapping:
+      addr:interpolation:
+      - __any__
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: addr:street
+      name: addr:street
+      type: string
+    - key: addr:postcode
+      name: addr:postcode
+      type: string
+    - key: addr:city
+      name: addr:city
+      type: string
+    - key: addr:inclusion
+      name: addr:inclusion
+      type: string
+  roads:
+    mappings:
+      roads:
+        mapping:
+          man_made:
+          - pier
+          - groyne
+          highway:
+          - motorway
+          - motorway_link
+          - trunk
+          - trunk_link
+          - primary
+          - primary_link
+          - secondary
+          - secondary_link
+          - tertiary
+          - tertiary_link
+          - road
+          - path
+          - track
+          - service
+          - footway
+          - bridleway
+          - cycleway
+          - steps
+          - pedestrian
+          - living_street
+          - unclassified
+          - residential
+          - raceway
+      railway:
+        mapping:
+          railway:
+          - rail
+          - tram
+          - light_rail
+          - subway
+          - narrow_gauge
+          - preserved
+          - funicular
+          - monorail
+          - disused
+    filters:
+      exclude_tags:
+      - - area
+        - 'yes'
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: null
+      name: type
+      type: mapping_value
+    - key: name
+      name: name
+      type: string
+    - key: tunnel
+      name: tunnel
+      type: boolint
+    - key: bridge
+      name: bridge
+      type: boolint
+    - key: oneway
+      name: oneway
+      type: direction
+    - key: ref
+      name: ref
+      type: string
+    - key: layer
+      name: z_order
+      type: wayzorder
+    - key: layer
+      name: layer
+      type: wayzorder
+    - key: access
+      name: access
+      type: string
+    - key: service
+      name: service
+      type: string
+    - key: null
+      name: class
+      type: mapping_key
+  minorroads:
+    mappings:
+      roads:
+        mapping:
+          highway:
+          - road
+          - path
+          - track
+          - service
+          - footway
+          - bridleway
+          - cycleway
+          - steps
+          - pedestrian
+          - living_street
+          - unclassified
+          - residential
+          - raceway
+    filters:
+      exclude_tags:
+      - - area
+        - 'yes'
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: null
+      name: type
+      type: mapping_value
+    - key: name
+      name: name
+      type: string
+    - key: tunnel
+      name: tunnel
+      type: boolint
+    - key: bridge
+      name: bridge
+      type: boolint
+    - key: oneway
+      name: oneway
+      type: direction
+    - key: ref
+      name: ref
+      type: string
+    - key: layer
+      name: z_order
+      type: wayzorder
+    - key: layer
+      name: layer
+      type: wayzorder
+    - key: access
+      name: access
+      type: string
+    - key: service
+      name: service
+      type: string
+    - key: null
+      name: class
+      type: mapping_key
+  mainroads:
+    mappings:
+      roads:
+        mapping:
+          highway:
+          - motorway
+          - motorway_link
+          - trunk
+          - trunk_link
+          - primary
+          - primary_link
+          - secondary
+          - secondary_link
+          - tertiary
+          - tertiary_link
+    filters:
+      exclude_tags:
+      - - area
+        - 'yes'
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: null
+      name: type
+      type: mapping_value
+    - key: name
+      name: name
+      type: string
+    - key: tunnel
+      name: tunnel
+      type: boolint
+    - key: bridge
+      name: bridge
+      type: boolint
+    - key: oneway
+      name: oneway
+      type: direction
+    - key: ref
+      name: ref
+      type: string
+    - key: layer
+      name: z_order
+      type: wayzorder
+    - key: layer
+      name: layer
+      type: wayzorder
+    - key: access
+      name: access
+      type: string
+    - key: service
+      name: service
+      type: string
+    - key: null
+      name: class
+      type: mapping_key
+  motorways:
+    mappings:
+      roads:
+        mapping:
+          man_made:
+          - pier
+          - groyne
+          highway:
+          - motorway
+          - motorway_link
+          - trunk
+          - trunk_link
+    filters:
+      exclude_tags:
+      - - area
+        - 'yes'
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: null
+      name: type
+      type: mapping_value
+    - key: name
+      name: name
+      type: string
+    - key: tunnel
+      name: tunnel
+      type: boolint
+    - key: bridge
+      name: bridge
+      type: boolint
+    - key: oneway
+      name: oneway
+      type: direction
+    - key: ref
+      name: ref
+      type: string
+    - key: layer
+      name: z_order
+      type: wayzorder
+    - key: layer
+      name: layer
+      type: wayzorder
+    - key: access
+      name: access
+      type: string
+    - key: service
+      name: service
+      type: string
+    - key: null
+      name: class
+      type: mapping_key
+  pistes_area:
+    mapping:
+      piste:type:
+      - __any__
+    type: polygon
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: null
+      name: area
+      type: pseudoarea
+    - key: piste:name
+      name: piste_name
+      type: string
+    - key: piste:grooming
+      name: grooming
+      type: string
+    - key: piste:difficulty
+      name: difficulty
+      type: string
+    - key: piste:oneway
+      name: oneway
+      type: direction
+    - key: piste:lit
+      name: lit1
+      type: bool
+    - key: lit
+      name: lit2
+      type: bool
+    - key: piste:abandoned
+      name: abandoned
+      type: bool
+    - key: gladed
+      name: gladed
+      type: bool
+    - key: patrolled
+      name: patrolled
+      type: bool
+    - key: route
+      name: route
+      type: string
+  pistes_ways:
+    mapping:
+      piste:type:
+      - __any__
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: piste:name
+      name: piste_name
+      type: string
+    - key: piste:grooming
+      name: grooming
+      type: string
+    - key: piste:difficulty
+      name: difficulty
+      type: string
+    - key: piste:oneway
+      name: oneway
+      type: direction
+    - key: piste:lit
+      name: lit1
+      type: bool
+    - key: lit
+      name: lit2
+      type: bool
+    - key: piste:abandoned
+      name: abandoned
+      type: bool
+    - key: gladed
+      name: gladed
+      type: bool
+    - key: patrolled
+      name: patrolled
+      type: bool
+  resorts:
+    mapping:
+      landuse:
+      - winter_sports
+    type: polygon
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: null
+      name: area
+      type: pseudoarea
+  aerialways:
+    mapping:
+      aerialway:
+      - __any__
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+  pistes_sites:
+    mapping:
+      site:
+      - piste
+    type: relation
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: tags
+      type: hstore_tags
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: site_type
+      type: mapping_value
+  pistes_routes:
+    mapping:
+      route:
+      - piste
+      - ski
+      piste:type:
+      - __any__
+    type: relation
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: tags
+      type: hstore_tags
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: route_type
+      type: mapping_value
+    - key: piste:name
+      name: piste_name
+      type: string
+    - key: piste:type
+      name: type
+      type: string
+    - key: piste:grooming
+      name: grooming
+      type: string
+    - key: piste:color
+      name: color
+      type: string
+    - key: piste:colour
+      name: colour
+      type: string
+    - key: piste:difficulty
+      name: difficulty
+      type: string
+    - key: piste:oneway
+      name: oneway
+      type: direction
+    - key: piste:lit
+      name: lit1
+      type: bool
+    - key: lit
+      name: lit2
+      type: bool
+    - key: piste:abandoned
+      name: abandoned
+      type: bool
+    - key: gladed
+      name: gladed
+      type: bool
+    - key: patrolled
+      name: patrolled
+      type: bool
+  pistes_route_members:
+    mapping:
+      route:
+      - piste
+      - ski
+    type: relation_member
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: null
+      name: member
+      type: member_id
+    - key: null
+      name: index
+      type: member_index
+    - key: null
+      name: role
+      type: member_role
+    - key: null
+      name: type
+      type: member_type
+    - key: piste:type
+      name: piste_type
+      type: string
+    - key: name
+      name: relname
+      type: string
+    - key: name
+      name: name
+      type: string
+      from_member: true
+  pistes_site_members:
+    mapping:
+      site:
+      - piste
+    type: relation_member
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: null
+      name: member
+      type: member_id
+    - key: null
+      name: index
+      type: member_index
+    - key: null
+      name: role
+      type: member_role
+    - key: null
+      name: type
+      type: member_type
+    - key: name
+      name: relname
+      type: string
+    - key: name
+      name: name
+      type: string
+      from_member: true
+  sport_ways:
+    mapping:
+      sport:
+      - __any__
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+  sport_nodes:
+    mapping:
+      sport:
+      - __any__
+    type: point
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+generalized_tables:
+  landusages_gen0:
+    sql_filter: ST_Area(geometry)>500000.000000
+    source: landusages_gen1
+    tolerance: 200.0
+  landusages_gen1:
+    sql_filter: ST_Area(geometry)>50000.000000
+    source: landusages
+    tolerance: 50.0
+  roads_gen0:
+    sql_filter: null
+    source: roads_gen1
+    tolerance: 200.0
+  roads_gen1:
+    sql_filter: type IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary',
+      'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link')
+      OR class IN('railway')
+    source: roads
+    tolerance: 50.0
+  waterways_gen1:
+    sql_filter: null
+    source: waterways
+    tolerance: 50.0
+  waterways_gen0:
+    sql_filter: null
+    source: waterways_gen1
+    tolerance: 200
+  waterareas_gen0:
+    sql_filter: ST_Area(geometry)>500000.000000
+    source: waterareas_gen1
+    tolerance: 200.0
+  waterareas_gen1:
+    sql_filter: ST_Area(geometry)>50000.000000
+    source: waterareas
+    tolerance: 50.0
