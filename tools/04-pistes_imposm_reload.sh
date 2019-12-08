@@ -10,6 +10,8 @@ TMP_DIR=${WORK_DIR}tmp/
 TOOLS_DIR=${WORK_DIR}tools/
 CONFIG_DIR=${WORK_DIR}config/
 
+
+# Populate imposm db
 dropdb -U admin --if-exists pistes_imposm_tmp
 createdb -U admin -E UTF8 -O imposm pistes_imposm_tmp -D data_ssd
 psql -U admin -d pistes_imposm_tmp -c "CREATE EXTENSION postgis;"
@@ -25,7 +27,7 @@ readonly inputpbf=${PLANET_DIR}/planet_pistes.osm.pbf
 readonly mappingfile=${CONFIG_DIR}pistes.yml
 
 echo "$(date) - importing: $inputpbf "
-mkdir -p /home/admin/SSD/imposm_cache_pistes
+mkdir -p /home/admin/imposm_cache_pistes
 
 imposm import \
     -quiet \
@@ -34,7 +36,7 @@ imposm import \
     -write \
     -optimize \
     -overwritecache \
-    -diff -cachedir "/home/admin/SSD/imposm_cache_pistes" -diffdir "/home/admin/SSD/imposm_cache_pistes" \
+    -diff -cachedir "/home/admin/imposm_cache_pistes" -diffdir "/home/admin/imposm_cache_pistes" \
     -deployproduction \
     -connection $PG_CONNECT
 #Fix imported geometries, otherwise we have issue with 
@@ -237,7 +239,7 @@ SET
 " |psql -U imposm -d pistes_imposm_tmp
 echo "build-relations-DB ..."
 
-${TOOLS_DIR}./build-relations-DB.py /home/admin/mapnik/offset_lists/
+${TOOLS_DIR}scripts/./build-relations-in-DB.py /home/admin/mapnik/offset_lists/
 
 echo "SELECT pg_terminate_backend(pg_stat_activity.pid)
 FROM pg_stat_activity
@@ -247,4 +249,28 @@ dropdb --if-exists -U admin pistes_imposm
 createdb -U admin -T pistes_imposm_tmp pistes_imposm
 systemctl restart renderd.service 
 
+echo $(date)' expire tiles'
 
+##########################################
+## Expire tiles, touch only
+##########################################
+# to stop expiry:
+#~ touch -d "2 years ago" /var/lib/mod_tile/planet-import-complete 
+# to start default expiry 
+#~ touch /var/lib/mod_tile/planet-import-complete
+# expiry from tile list: we never change the planet timestamp, just mark the 
+# relevant tiles as expired. Done on 07042016
+# 
+
+cat ${PLANET_DIR}expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-relief --num-threads=1 --touch-from=0 
+cat ${PLANET_DIR}expired_tiles.lst | /usr/local/bin/render_expired --map=pistes --num-threads=1 --touch-from=0 
+cat ${PLANET_DIR}expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-high-dpi --num-threads=1 --touch-from=0 
+cat ${PLANET_DIR}expired_tiles.lst | /usr/local/bin/render_expired --map=base_snow_map --num-threads=1 --touch-from=0 
+cat ${PLANET_DIR}expired_tiles.lst | /usr/local/bin/render_expired --map=base_snow_map_high_dpi --num-threads=1 --touch-from=0 
+
+
+cd ${WORK_DIR}
+
+echo $(date)' Update complete'
+
+${TOOLS_DIR}./06-pgsnapshot.sh

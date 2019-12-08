@@ -237,7 +237,7 @@ for z in [18,17,16,15,14,13,12,11,10,9]:
         if [tx,ty] not in tiles[z]: tiles[z].append([tx,ty])
     sys.stdout.write("z%s: %s tiles\n" % (z,len(tiles[z])))
 
-f=open("expired_tiles.lst",'w')
+f=open("../../data/expired_tiles.lst",'w')
 for z in [18,17,16,15,14,13,12,11,10,9]:
     for t in tiles[z]:
         x=t[0]
@@ -245,7 +245,7 @@ for z in [18,17,16,15,14,13,12,11,10,9]:
         f.write(str(z)+'/'+str(x)+'/'+str(y)+'\n')
 f.close()
 
-f=open("../data/expired.tsv",'w')
+f=open("../../data/expired.tsv",'w')
 f.write("point\n")
 for t in tiles[17]:
     x,y=num2deg(t[0],t[1],17)

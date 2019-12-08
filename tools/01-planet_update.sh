@@ -7,11 +7,8 @@
 # It will exit 2 on error, 1 if there is nothing to do, and 0 if update 
 # is succesfull.
 #______________________________________________________________________
-if  [ -d "/home/admin/" ]; then
-	H=/home/admin/
-else
-	H=/home/website/
-fi
+
+H=/home/admin/
 WORK_DIR=${H}Planet/
 
 # This script log
@@ -21,17 +18,10 @@ PLANET_DIR=${WORK_DIR}data/
 TMP_DIR=${WORK_DIR}tmp/
 TOOLS_DIR=${WORK_DIR}tools/
 cd ${TOOLS_DIR}
-
-echo $(date)' ######################### '
-
 #______________________________________________________________________
 
 echo $(date)' ######################### '
 echo $(date)' Update starting '
-
-#______________________________________________________________________
-# Backup old files
-#~ cp ${PLANET_DIR}state.txt ${PLANET_DIR}last_state.txt
 
 #______________________________________________________________________
 # Update planet
@@ -53,7 +43,7 @@ fi
 osmconvert -v ${PLANET_DIR}planet.o5m --out-timestamp > ${PLANET_DIR}state.txt
 echo $(date)' Timestamp extracted '
 
-# remove files
+# remove tmp files
 rm ${TMP_DIR}*
 #______________________________________________________________________
 ${WORK_DIR}tools/./02-filter.sh

@@ -43,11 +43,9 @@
 #~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
 ## 200s import
 
-if  [ -d "/home/admin/" ]; then
-	H=/home/admin/
-else
-	H=/home/website/
-fi
+
+H=/home/admin/
+
 WORK_DIR=${H}Planet/
 osmosis=${H}"src/osmosis/bin/osmosis -q"
 #~ osmosis="osmosis -q"

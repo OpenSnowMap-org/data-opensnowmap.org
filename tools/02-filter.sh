@@ -6,15 +6,11 @@
 # It also create daily, weekly and monthly change files along with tsv
 # file containing the newly created nodes.
 #______________________________________________________________________
-if  [ -d "/home/admin/" ]; then
-	H=/home/admin/
-else
-	H=/home/website/
-fi
+
+H=/home/admin/
+
 WORK_DIR=${H}Planet/
 
-#osmosis=${H}"src/osmosis/bin/osmosis -q"
-osmosis="osmosis -q"
 # This script log
 LOGFILE=${WORK_DIR}log/planet_update.log
 # Directory where the planet file is stored
@@ -75,10 +71,6 @@ echo $(date)' latest planet_pistes.osm published'
 #-----------------------------------------------------------------------
 #Create change files
 #-----------------------------------------------------------------------
-if [ -f ${PLANET_DIR}dailyok ];
-then
-    rm ${PLANET_DIR}dailyok
-fi
 
 today=$(date --date="today" +%Y-%m-%d)
 yesterday=$(date --date="1 day ago" +%Y-%m-%d)
@@ -97,11 +89,6 @@ then
     if [ -f $yesterday_file ];
     then
         echo $(date)' yesterday file found' $yesterday_file
-        #~ $osmosis \
-        #~ --rx $daily_file \
-        #~ --rx $yesterday_file \
-        #~ --dc \
-        #~ --wxc ${PLANET_DIR}daily.osc
         osmconvert $yesterday_file $daily_file --diff -o=${PLANET_DIR}daily.osc
         echo $(date)' daily.osc done'
         touch ${PLANET_DIR}dailyok
@@ -111,12 +98,7 @@ then
 # Create weekly.osc
     if [ -f $lastweek_file ];
     then
-        #~ echo $(date)' lastweek file found' $lastweek_file
-        #~ $osmosis \
-        #~ --rx $daily_file \
-        #~ --rx $lastweek_file \
-        #~ --dc \
-        #~ --wxc ${PLANET_DIR}weekly.osc
+        echo $(date)' lastweek file found' $lastweek_file
         osmconvert $lastweek_file $daily_file --diff -o=${PLANET_DIR}weekly.osc
         echo $(date)' weekly.osc done'
     else
@@ -126,11 +108,6 @@ then
     if [ -f $lastmonth_file ];
     then
         echo $(date)' lastmonth file found' $lastmonth_file
-        #~ $osmosis \
-        #~ --rx $daily_file \
-        #~ --rx $lastmonth_file \
-        #~ --dc \
-        #~ --wxc ${PLANET_DIR}monthly.osc
         osmconvert $lastmonth_file $daily_file --diff -o=${PLANET_DIR}monthly.osc
         echo $(date)' monthly.osc done'
     else
@@ -140,53 +117,6 @@ else
     echo $(date)' NO DAILY FILE FOUND !!'$daily_file
 fi
 
-#-----------------------------------------------------------------------
-#Create new nodes files weekly.tsv, daily.tsv, monthly.tsv for openlayers
-#-----------------------------------------------------------------------
-if [ -f ${PLANET_DIR}daily.osc ];
-then
-    echo $(date)' daily file found'
-    cat ${PLANET_DIR}daily.osc | grep -o 'lat="[-0-9.]*" lon="[-0-9.]*"' > ${TMP_DIR}tmp1
-    sed s/lat=\"// ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
-    sed s/\lon=\"// ${TMP_DIR}tmp2 > ${TMP_DIR}tmp1
-    sed s/\"//g ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
-    echo "point" > ${PLANET_DIR}daily.tsv
-    sed s/[[:space:]]/,/g ${TMP_DIR}tmp2 >> ${PLANET_DIR}daily.tsv
-    echo $(date)' daily.tsv done'
-else
-    echo $(date)' no daily file found'
-fi
-#---
-if [ -f ${PLANET_DIR}weekly.osc ];
-then
-    echo $(date)' weekly file found'
-    cat ${PLANET_DIR}weekly.osc | grep -o 'lat="[-0-9.]*" lon="[-0-9.]*"' > ${TMP_DIR}tmp1
-    sed s/lat=\"// ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
-    sed s/\lon=\"// ${TMP_DIR}tmp2 > ${TMP_DIR}tmp1
-    sed s/\"//g ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
-    echo "point" > ${PLANET_DIR}weekly.tsv
-    sed s/[[:space:]]/,/g ${TMP_DIR}tmp2 >> ${PLANET_DIR}weekly.tsv
-    echo $(date)' weekly.tsv done'
-else
-    echo $(date)' no weekly file found'
-fi
-#---
-if [ -f ${PLANET_DIR}monthly.osc ];
-then
-    echo $(date)' monthly file found'
-    cat ${PLANET_DIR}monthly.osc | grep -o 'lat="[-0-9.]*" lon="[-0-9.]*"' > ${TMP_DIR}tmp1
-    sed s/lat=\"// ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
-    sed s/\lon=\"// ${TMP_DIR}tmp2 > ${TMP_DIR}tmp1
-    sed s/\"//g ${TMP_DIR}tmp1 > ${TMP_DIR}tmp2
-    echo "point" > ${PLANET_DIR}monthly.tsv
-    sed s/[[:space:]]/,/g ${TMP_DIR}tmp2 >> ${PLANET_DIR}monthly.tsv
-    echo $(date)' monthly.tsv done'
-else
-    echo $(date)' no monthly file found'
-fi
-
-cp ${PLANET_DIR}*.tsv \
-       /var/www/data/
 #-----------------------------------------------------------------------
 # remove temporary files
 #-----------------------------------------------------------------------
