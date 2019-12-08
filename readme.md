@@ -25,8 +25,13 @@ The following scripts run daily with a cron job:
         Expire tiles wth renderd_expired
         Compute stats for opensnowmap.org website (pistes-stat2json.sh)
         
+    04-pistes_imposm_reload.sh
+        Load complete planet_pistes.osm datatbase with imposm in temporary DB
+        Create the additionnal table for routes and resorts
+        Swap temp and actual DB
+        
     06-pgsnapshot.sh
-        Load complete planet_pistes.osm datatbase with osm2pgsql in temporary pgsnapshot DB
+        Load complete planet_pistes.osm datatbase with osmosis in temporary pgsnapshot DB
         (See in config/ for the customization to the pgsnapshot schema)
         Swap temp and actual pgsnapshot DB
         From time to time, create a list of ressorts (resorts.json) with calls to Nominatim (resort_list.py)
@@ -43,6 +48,7 @@ Other scripts run manually or monthly:
         
     list_all_metatiles.py, list_all_tiles.py
         create a tile list from DB
+        
     osmand_pistes.py
         not used anymore, was from the time Osmand did not provide the ski pistes in the .obf files.
         
