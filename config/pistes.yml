@@ -1,0 +1,402 @@
+tags:
+  load_all: true
+tables:
+  pistes_area:
+    mapping:
+      piste:type:
+      - __any__
+    type: polygon
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: piste_type
+      type: mapping_value
+    - key: null
+      name: area
+      type: pseudoarea
+    - key: piste:name
+      name: piste_name
+      type: string
+    - key: piste:ref
+      name: piste_ref
+      type: string
+    - key: ref
+      name: ref
+      type: string
+    - key: piste:grooming
+      name: grooming
+      type: string
+    - key: piste:difficulty
+      name: difficulty
+      type: string
+    - key: piste:oneway
+      name: oneway
+      type: direction
+    - key: piste:lit
+      name: lit1
+      type: bool
+    - key: lit
+      name: lit2
+      type: bool
+    - key: piste:abandoned
+      name: abandoned1
+      type: bool
+    - key: abandoned
+      name: abandoned2
+      type: bool
+    - key: gladed
+      name: gladed
+      type: bool
+    - key: patrolled
+      name: patrolled
+      type: bool
+    - key: route
+      name: route
+      type: string
+  pistes_ways:
+    mapping:
+      piste:type:
+      - __any__
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: piste_type
+      type: mapping_value
+    - key: piste:name
+      name: piste_name
+      type: string
+    - key: piste:ref
+      name: piste_ref
+      type: string
+    - key: ref
+      name: ref
+      type: string
+    - key: piste:grooming
+      name: grooming
+      type: string
+    - key: piste:difficulty
+      name: difficulty
+      type: string
+    - key: piste:oneway
+      name: oneway
+      type: direction
+    - key: piste:lit
+      name: lit1
+      type: bool
+    - key: lit
+      name: lit2
+      type: bool
+    - key: piste:abandoned
+      name: abandoned1
+      type: bool
+    - key: abandoned
+      name: abandoned2
+      type: bool
+    - key: gladed
+      name: gladed
+      type: bool
+    - key: patrolled
+      name: patrolled
+      type: bool
+  resorts:
+    mapping:
+      landuse:
+      - winter_sports
+    type: polygon
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: piste_type
+      type: mapping_value
+    - key: null
+      name: area
+      type: pseudoarea
+  aerialways:
+    mapping:
+      aerialway:
+      - __any__
+      railway:
+      - funicular
+      - incline
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: ref
+      name: ref
+      type: string
+    - key: null
+      name: piste_type
+      type: mapping_value
+    - key: piste:abandoned
+      name: abandoned1
+      type: bool
+    - key: abandoned
+      name: abandoned2
+      type: bool
+  pistes_sites:
+    mapping:
+      site:
+      - piste
+    type: relation
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: tags
+      type: hstore_tags
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: site_type
+      type: mapping_value
+  pistes_routes:
+    mapping:
+      route:
+      - piste
+      - ski
+      piste:type:
+      - __any__
+    type: relation
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: tags
+      type: hstore_tags
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: route_type
+      type: mapping_value
+    - key: piste:ref
+      name: piste_ref
+      type: string
+    - key: ref
+      name: ref
+      type: string
+    - key: piste:name
+      name: piste_name
+      type: string
+    - key: piste:type
+      name: piste_type
+      type: string
+    - key: piste:grooming
+      name: grooming
+      type: string
+    - key: color
+      name: color
+      type: string
+    - key: colour
+      name: colour
+      type: string
+    - key: piste:difficulty
+      name: difficulty
+      type: string
+    - key: piste:oneway
+      name: oneway
+      type: direction
+    - key: piste:lit
+      name: lit1
+      type: bool
+    - key: lit
+      name: lit2
+      type: bool
+    - key: piste:abandoned
+      name: abandoned1
+      type: bool
+    - key: abandoned
+      name: abandoned2
+      type: bool
+    - key: gladed
+      name: gladed
+      type: bool
+    - key: patrolled
+      name: patrolled
+      type: bool
+  pistes_route_members:
+    mapping:
+      route:
+      - piste
+      - ski
+    type: relation_member
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: null
+      name: member
+      type: member_id
+    - key: null
+      name: index
+      type: member_index
+    - key: null
+      name: role
+      type: member_role
+    - key: null
+      name: type
+      type: member_type
+    - key: piste:type
+      name: piste_type
+      type: string
+    - key: name
+      name: relname
+      type: string
+    - key: piste:ref
+      name: piste_ref
+      type: string
+    - key: ref
+      name: ref
+      type: string
+    - key: name
+      name: name
+      type: string
+      from_member: true      
+    - key: piste:name
+      name: piste_name
+      type: string
+      from_member: true
+    - key: piste:grooming
+      name: grooming
+      type: string
+      from_member: true
+    - key: piste:difficulty
+      name: difficulty
+      type: string
+      from_member: true
+    - key: piste:oneway
+      name: oneway
+      type: direction
+      from_member: true
+    - key: piste:lit
+      name: lit1
+      type: bool
+      from_member: true
+    - key: lit
+      name: lit2
+      type: bool
+      from_member: true
+    - key: piste:abandoned
+      name: abandoned1
+      type: bool
+      from_member: true
+    - key: abandoned
+      name: abandoned2
+      type: bool
+      from_member: true
+    - key: gladed
+      name: gladed
+      type: bool
+      from_member: true
+    - key: patrolled
+      name: patrolled
+      type: bool
+      from_member: true
+  pistes_site_members:
+    mapping:
+      site:
+      - piste
+    type: relation_member
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: null
+      name: member
+      type: member_id
+    - key: null
+      name: index
+      type: member_index
+    - key: null
+      name: role
+      type: member_role
+    - key: null
+      name: type
+      type: member_type
+    - key: name
+      name: relname
+      type: string
+    - key: name
+      name: name
+      type: string
+      from_member: true
+  sport_ways:
+    mapping:
+      sport:
+      - __any__
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: piste_type
+      type: mapping_value
+  sport_nodes:
+    mapping:
+      sport:
+      - __any__
+      man_made:
+      - snow_cannon
+    type: point
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: piste_type
+      type: mapping_value

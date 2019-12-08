@@ -377,6 +377,9 @@ tables:
     - key: null
       name: type
       type: mapping_value
+    - key: tunnel
+      name: tunnel
+      type: boolint
   barrierways:
     mapping:
       barrier:

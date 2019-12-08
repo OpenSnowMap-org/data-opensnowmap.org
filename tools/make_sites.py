@@ -72,7 +72,7 @@ for relation in relations:
 				#print types
 				types_list=";".join(types)
 				#print types_list
-				cur.execute("INSERT INTO planet_osm_point(osm_id,site_name, \"piste:type\", way) VALUES(%s,%s, %s, ST_GeomFromText(%s,900913));",(idx,name, types_list, point))
+				cur.execute("INSERT INTO planet_osm_point(osm_id,site_name, \"piste:type\", way) VALUES(%s,%s, %s, ST_GeomFromText(%s,3857));",(idx,name, types_list, point))
 				conn.commit()
 				
 				for entrance in entrances_list:
@@ -85,7 +85,7 @@ for relation in relations:
 						('yes',name, types_list, entrance))
 					else :
 						try: 
-							cur.execute("INSERT INTO planet_osm_point(osm_id,entrance, site_name, \"piste:type\", way) VALUES(%s, %s, %s, %s,  ST_SetSRID(ST_MakePoint(%s,%s),900913));",\
+							cur.execute("INSERT INTO planet_osm_point(osm_id,entrance, site_name, \"piste:type\", way) VALUES(%s, %s, %s, %s,  ST_SetSRID(ST_MakePoint(%s,%s),3857));",\
 							(entrance,'yes',name, types_list, str(lonlat[0]),str(lonlat[1])))
 						except:
 							"""Traceback (most recent call last):

@@ -1,13 +1,15 @@
+mkdir -p /home/admin/imposm_cache
 dropdb imposm
-createuser imposm
-createdb -D data_ssd -E UTF8 -O imposm imposm
+
+createuser --no-superuser --no-createrole --createdb imposm
+createdb -D data_4tb -E UTF8 -O imposm imposm
 psql -d imposm -c "CREATE EXTENSION postgis;"
 psql -d imposm -c "CREATE EXTENSION hstore;" # only required for hstore support
 echo "ALTER USER imposm WITH PASSWORD 'imposm';" |psql -d imposm
 
 readonly PG_CONNECT="postgis://imposm:imposm@localhost/imposm"
-readonly inputpbf=/TMP_DATA/planet-latest.osm.pbf
-readonly mappingfile=/home/admin/imposm_job/opensnowmap.yml
+readonly inputpbf=/home/admin/Planet/data/planet-latest.osm.pbf
+readonly mappingfile=/home/admin/Imposm_job/opensnowmap.yml
 echo "$(date) - importing: $inputpbf "
 
 imposm  import \
@@ -17,7 +19,7 @@ imposm  import \
     -write \
     -optimize \
     -overwritecache \
-    -diff -cachedir /TMP_DATA/imposm_cache -diffdir /TMP_DATA/imposm_cache \
+    -diff -cachedir /home/admin/imposm_cache -diffdir /home/admin/imposm_cache \
     -deployproduction \
     -connection $PG_CONNECT
 exit 0

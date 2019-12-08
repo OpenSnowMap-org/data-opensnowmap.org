@@ -1,6 +1,7 @@
-home="/home/admin/SSD/imposm_updates"
-log="/home/admin/SSD/imposm_updates/imposm_update.log"
-log2="/home/admin/SSD/imposm_updates/imposm.log"
+mkdir -p /home/admin/imposm_updates
+home="/home/admin/imposm_updates"
+log="/home/admin/imposm_updates/imposm_update.log"
+log2="/home/admin/imposm_updates/imposm.log"
 
 cd ${home}
 if [ -f ${home}/lock ];
@@ -34,19 +35,19 @@ else
     echo "Import: update DB"
     echo "*******************************************"
     # 5 days of diff = 14h
-    imposm diff -mapping /home/admin/imposm_job/opensnowmap.yml -quiet -cachedir "/home/admin/SSD/imposm_cache" -diffdir "/home/admin/SSD/imposm_cache" -connection postgis://imposm:imposm@localhost/imposm ${home}/change_file.osc.gz > $log2
+    imposm diff -mapping /home/admin/Imposm_job/opensnowmap.yml -quiet -cachedir "/home/admin/imposm_cache" -diffdir "/home/admin/imposm_cache" -connection postgis://imposm:imposm@localhost/imposm ${home}/change_file.osc.gz > $log2
     
-    SECONDS=0
-    echo "REFRESH MATERIALIZED VIEW pistes_routes;" |psql -d imposm -U imposm
-    echo "ANALYSE pistes_routes;" |psql -d imposm -U imposm
-    duration=$SECONDS
-    echo "pistes_routes view refreshed in $(($duration / 60)) min $(($duration % 60))s."
+    #~ SECONDS=0
+    #~ echo "REFRESH MATERIALIZED VIEW pistes_routes;" |psql -d imposm -U imposm
+    #~ echo "ANALYSE pistes_routes;" |psql -d imposm -U imposm
+    #~ duration=$SECONDS
+    #~ echo "pistes_routes view refreshed in $(($duration / 60)) min $(($duration % 60))s."
 
-    SECONDS=0
-    echo "REFRESH MATERIALIZED VIEW pistes_sites;" |psql -d imposm -U imposm
-    echo "ANALYSE pistes_sites;" |psql -d imposm -U imposm
-    duration=$SECONDS
-    echo "pistes_sites view refreshed in $(($duration / 60)) min $(($duration % 60))s."
+    #~ SECONDS=0
+    #~ echo "REFRESH MATERIALIZED VIEW pistes_sites;" |psql -d imposm -U imposm
+    #~ echo "ANALYSE pistes_sites;" |psql -d imposm -U imposm
+    #~ duration=$SECONDS
+    #~ echo "pistes_sites view refreshed in $(($duration / 60)) min $(($duration % 60))s."
 
     echo $new_state >${home}/state.txt
     rm ${home}/lock

@@ -21,12 +21,12 @@ echo "CREATE MATERIALIZED VIEW pistes_routes AS (
     JOIN
     osm_pistes_route_members ON (osm_pistes_routes.osm_id=osm_pistes_route_members.osm_id)
     GROUP BY osm_pistes_routes.osm_id, osm_pistes_routes.tags
-    );" |psql -d imposm
+    );" |psql -d imposm -U imposm
 #~ -- Add an index to the bbox column.
-echo "CREATE INDEX idx_routes_geom ON pistes_routes USING gist (geometry);" |psql -d imposm
+echo "CREATE INDEX idx_routes_geom ON pistes_routes USING gist (geometry);" |psql -d imposm -U imposm
 #~ -- Cluster table by geographical location.
-echo "CLUSTER pistes_routes USING idx_routes_geom;" |psql -d imposm
-echo "ANALYSE pistes_routes;" |psql -d imposm
+echo "CLUSTER pistes_routes USING idx_routes_geom;" |psql -d imposm -U imposm
+echo "ANALYSE pistes_routes;" |psql -d imposm -U imposm
 
 duration=$SECONDS
 echo "pistes_routes view done in $(($duration / 60)) min $(($duration % 60))s."
@@ -79,11 +79,11 @@ echo "CREATE MATERIALIZED VIEW pistes_sites AS (
     LEFT JOIN osm_sport_nodes 
         ON (osm_sport_nodes.osm_id=osm_pistes_site_members.member)
     GROUP BY osm_pistes_sites.osm_id, osm_pistes_sites.name
-    );" |psql -d imposm
+    );" |psql -d imposm -U imposm
 
-echo "CREATE INDEX idx_sites_geom ON pistes_sites USING gist (geometry);" |psql -d imposm
-echo "CLUSTER pistes_sites USING idx_sites_geom;" |psql -d imposm
-echo "ANALYSE pistes_sites;" |psql -d imposm
+echo "CREATE INDEX idx_sites_geom ON pistes_sites USING gist (geometry);" |psql -d imposm -U imposm
+echo "CLUSTER pistes_sites USING idx_sites_geom;" |psql -d imposm -U imposm
+echo "ANALYSE pistes_sites;" |psql -d imposm -U imposm
 
 duration=$SECONDS
 echo "pistes_sites view done in $(($duration / 60)) min $(($duration % 60))s."
@@ -133,12 +133,12 @@ UPDATE landuse_resorts SET members_types = concat_ws(
         FROM osm_sport_nodes
         WHERE ST_Intersects(osm_sport_nodes.geometry,landuse_resorts.geometry)
     )
-);" |psql -d imposm
+);" |psql -d imposm -U imposm
 # Faudrait aussi s'assurer d'avoir plus de 3 ways ...
 #~ SELECT 363196 => autant que de landusages
-echo "CREATE INDEX idx_landuse_resorts_geom ON landuse_resorts USING gist (geometry);" |psql -d imposm
-echo "CLUSTER landuse_resorts USING idx_landuse_resorts_geom;" |psql -d imposm
-echo "ANALYSE landuse_resorts;" |psql -d imposm
+echo "CREATE INDEX idx_landuse_resorts_geom ON landuse_resorts USING gist (geometry);" |psql -d imposm -U imposm
+echo "CLUSTER landuse_resorts USING idx_landuse_resorts_geom;" |psql -d imposm -U imposm
+echo "ANALYSE landuse_resorts;" |psql -d imposm -U imposm
 
 duration=$SECONDS
 echo "landuse_resorts table done in $(($duration / 60)) min $(($duration % 60))s."

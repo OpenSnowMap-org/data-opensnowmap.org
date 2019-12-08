@@ -93,7 +93,7 @@ for fn in filenames:
     f.close()
 
 #~ conn = psycopg2.connect("dbname=pistes-mapnik user=mapnik")
-conn = psycopg2.connect("dbname=pistes_imposm_tmp user=mapnik")
+conn = psycopg2.connect("dbname=pistes_imposm_tmp user=imposm")
 
 cur = conn.cursor()
     

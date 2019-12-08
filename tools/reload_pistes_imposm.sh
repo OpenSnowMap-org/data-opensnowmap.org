@@ -10,10 +10,10 @@ TMP_DIR=${WORK_DIR}tmp/
 TOOLS_DIR=${WORK_DIR}tools/
 CONFIG_DIR=${WORK_DIR}config/
 
-dropdb -U imposm --if-exists pistes_imposm_tmp
-createdb -U imposm -E UTF8 -O imposm pistes_imposm_tmp -D data_ssd
-psql -U imposm -d pistes_imposm_tmp -c "CREATE EXTENSION postgis;"
-psql -U imposm -d pistes_imposm_tmp -c "CREATE EXTENSION hstore;" # only required for hstore support
+dropdb -U admin --if-exists pistes_imposm_tmp
+createdb -U admin -E UTF8 -O imposm pistes_imposm_tmp -D data_ssd
+psql -U admin -d pistes_imposm_tmp -c "CREATE EXTENSION postgis;"
+psql -U admin -d pistes_imposm_tmp -c "CREATE EXTENSION hstore;" # only required for hstore support
 echo "ALTER USER imposm WITH PASSWORD 'imposm';" |psql -U imposm -d pistes_imposm_tmp
 
 readonly PG_CONNECT="postgis://imposm:imposm@localhost/pistes_imposm_tmp"
@@ -27,7 +27,7 @@ readonly mappingfile=${CONFIG_DIR}pistes.yml
 echo "$(date) - importing: $inputpbf "
 mkdir -p /home/admin/SSD/imposm_cache_pistes
 
-/home/yves/DEV/go/bin/./imposm3 import \
+imposm import \
     -quiet \
     -mapping $mappingfile \
     -read $inputpbf \
@@ -236,9 +236,15 @@ SET
                             ;
 " |psql -U imposm -d pistes_imposm_tmp
 echo "build-relations-DB ..."
-cd ${WORK_DIR}
-./build-relations-DB.py /home/admin/mapnik/offset_lists/
 
-dropdb --if-exists -U mapnik pistes_imposm
-createdb -U mapnik -T pistes_imposm_tmp pistes_imposm
+${TOOLS_DIR}./build-relations-DB.py /home/admin/mapnik/offset_lists/
+
+echo "SELECT pg_terminate_backend(pg_stat_activity.pid)
+FROM pg_stat_activity
+WHERE pg_stat_activity.datname = 'pistes_imposm' 
+  AND pid <> pg_backend_pid();" | psql -d pistes_imposm_tmp -U admin
+dropdb --if-exists -U admin pistes_imposm
+createdb -U admin -T pistes_imposm_tmp pistes_imposm
+systemctl restart renderd.service 
+
 
