@@ -832,6 +832,33 @@ tables:
     - key: null
       name: class
       type: mapping_key
+   power_line:
+    mappings:
+      roads:
+        mapping:
+          power:
+          - line
+          - minor_line
+    type: linestring
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: null
+      name: type
+      type: mapping_value
+    - key: layer
+      name: z_order
+      type: wayzorder
+    - key: layer
+      name: layer
+      type: wayzorder
+    - key: null
+      name: class
+      type: mapping_key
   pistes_area:
     mapping:
       piste:type:
