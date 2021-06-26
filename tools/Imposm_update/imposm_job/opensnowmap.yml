@@ -34,7 +34,6 @@ tables:
       - pitch
       - stadium
       - common
-      - nature_reserve
       highway:
       - pedestrian
       - footway
@@ -89,8 +88,11 @@ tables:
       type: mapping_value
     - key: null
       name: area
-      type: pseudoarea
-    - args:
+      type: area
+    - key: z_order
+      name: z_order
+      type: enumerate
+      args:
         ranks:
         - pedestrian
         - footway
@@ -120,7 +122,6 @@ tables:
         - baracks
         - fuel
         - parking
-        - nature_reserve
         - cinema
         - theatre
         - place_of_worship
@@ -138,9 +139,6 @@ tables:
         - heath
         - island
         - land
-      key: z_order
-      name: z_order
-      type: zorder
   waterareas:
     mapping:
       waterway:
@@ -170,7 +168,7 @@ tables:
       type: mapping_value
     - key: null
       name: area
-      type: pseudoarea
+      type: area
     - key: tunnel
       name: tunnel
       type: boolint
@@ -221,11 +219,24 @@ tables:
       type: mapping_value
     - key: null
       name: area
-      type: pseudoarea
+      type: area
   buildings:
     mapping:
       building:
       - __any__
+      tourism:
+      - alpine_hut
+      - wilderness_hut
+      amenity:
+      - university
+      - school
+      - library
+      - fuel
+      - hospital
+      - fire_station
+      - police
+      - townhall
+      - shelter
     type: polygon
     fields:
     - key: null
@@ -242,7 +253,7 @@ tables:
       type: mapping_value
     - key: null
       name: area
-      type: pseudoarea
+      type: area
   places:
     mapping:
       place:
@@ -334,6 +345,29 @@ tables:
     - key: admin_level
       name: admin_level
       type: integer
+  reserves:
+    mapping:
+      boundary:
+      - protected_area
+      leisure:
+      - nature_reserve
+    type: polygon
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: type
+      type: mapping_value
+    - key: protect_class
+      name: protect_class
+      type: string
   aeroways:
     mapping:
       aeroway:
@@ -608,7 +642,7 @@ tables:
           - monorail
           - disused
     filters:
-      exclude_tags:
+      reject:
       - - area
         - 'yes'
     type: linestring
@@ -671,7 +705,7 @@ tables:
           - residential
           - raceway
     filters:
-      exclude_tags:
+      reject:
       - - area
         - 'yes'
     type: linestring
@@ -731,7 +765,7 @@ tables:
           - tertiary
           - tertiary_link
     filters:
-      exclude_tags:
+      reject:
       - - area
         - 'yes'
     type: linestring
@@ -788,7 +822,7 @@ tables:
           - trunk
           - trunk_link
     filters:
-      exclude_tags:
+      reject:
       - - area
         - 'yes'
     type: linestring
@@ -879,7 +913,7 @@ tables:
       type: mapping_value
     - key: null
       name: area
-      type: pseudoarea
+      type: area
     - key: piste:name
       name: piste_name
       type: string
@@ -981,7 +1015,7 @@ tables:
       type: mapping_value
     - key: null
       name: area
-      type: pseudoarea
+      type: area
   aerialways:
     mapping:
       aerialway:
