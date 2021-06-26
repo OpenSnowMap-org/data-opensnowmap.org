@@ -93,7 +93,7 @@ tables:
       name: z_order
       type: enumerate
       args:
-        ranks:
+        values:
         - pedestrian
         - footway
         - playground
@@ -643,8 +643,7 @@ tables:
           - disused
     filters:
       reject:
-      - - area
-        - 'yes'
+        area: ["yes"]
     type: linestring
     fields:
     - key: null
@@ -706,8 +705,7 @@ tables:
           - raceway
     filters:
       reject:
-      - - area
-        - 'yes'
+        area: ["yes"]
     type: linestring
     fields:
     - key: null
@@ -766,8 +764,7 @@ tables:
           - tertiary_link
     filters:
       reject:
-      - - area
-        - 'yes'
+        area: ["yes"]
     type: linestring
     fields:
     - key: null
@@ -823,8 +820,7 @@ tables:
           - trunk_link
     filters:
       reject:
-      - - area
-        - 'yes'
+        area: ["yes"]
     type: linestring
     fields:
     - key: null
@@ -866,9 +862,9 @@ tables:
     - key: null
       name: class
       type: mapping_key
-   power_line:
+  power_lines:
     mappings:
-      roads:
+      power_lines:
         mapping:
           power:
           - line
