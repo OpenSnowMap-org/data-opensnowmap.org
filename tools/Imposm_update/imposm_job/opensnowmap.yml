@@ -874,6 +874,9 @@ tables:
     - key: piste:abandoned
       name: abandoned
       type: bool
+    - key: abandoned
+      name: abandoned2
+      type: bool
     - key: gladed
       name: gladed
       type: bool
@@ -921,6 +924,9 @@ tables:
       type: bool
     - key: piste:abandoned
       name: abandoned
+      type: bool
+    - key: abandoned
+      name: abandoned2
       type: bool
     - key: gladed
       name: gladed
@@ -1035,6 +1041,9 @@ tables:
       type: bool
     - key: piste:abandoned
       name: abandoned
+      type: bool
+    - key: abandoned
+      name: abandoned2
       type: bool
     - key: gladed
       name: gladed
