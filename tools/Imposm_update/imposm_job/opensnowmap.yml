@@ -254,6 +254,9 @@ tables:
     - key: null
       name: area
       type: area
+    - key: shelter_type
+      name: shelter_type
+      type: string
   places:
     mapping:
       place:
@@ -508,6 +511,9 @@ tables:
     - key: null
       name: type
       type: mapping_value
+    - key: shelter_type
+      name: shelter_type
+      type: string
   barrierpoints:
     mapping:
       barrier:
