@@ -1,5 +1,6 @@
 mkdir -p /home/admin/imposm_updates
 home="/home/admin/imposm_updates"
+tool_dir="/home/admin/Imposm_job"
 log="/home/admin/imposm_updates/imposm_update.log"
 log2="/home/admin/imposm_updates/imposm.log"
 
@@ -7,15 +8,16 @@ cd ${home}
 if [ -f ${home}/lock ];
 then
     echo "Sorry, process already running"
+    echo $(date)" - Sorry, process already running" >> $log
+    echo $(date)" - Sorry, process already running" >> $log2
     exit 1
 else
-    
+    echo $(date)" - Starting update " > $log2
     touch ${home}/lock
-    state=$(cat ${home}/state.txt)
-    new_state=$(date -u +'%Y-%m-%dT%TZ' --date="5 minutes ago") # overlap
-    echo "state: "$state
-    echo "new_state: "$new_state
-    echo $(date)" - Starting update from "$state" to "$new_state >> $log
+    sequenceId=$(cat ${home}/sequence.state)
+    timestamp=$(${tool_dir}/getTimestampFromSequenceID.py $sequenceId https://planet.osm.org/replication/minute/)
+    echo $(date)" - Starting update from "$timestamp", sequence "$sequenceId >> $log
+    echo $(date)" - Starting update from "$timestamp", sequence "$sequenceId >> $log2
     
     date
     echo "*******************************************"
@@ -23,37 +25,49 @@ else
     echo "*******************************************"
     
     rm ${home}/change_file.osc.gz
-    osmupdate $state ${home}/change_file.osc.gz
+    pyosmium-get-changes -s 1024 --format osc.gz --server https://planet.osm.org/replication/minute/ -f ${home}/sequence.state -o ${home}/change_file.osc.gz 
     
-    if [ $? -ne 0 ]
+    if [ $? -eq 0 ]
     then
-        echo $new_state >${home}/last_diff_file_downloaded.txt
-    fi
-    cd ${home}
-    date
-    echo "*******************************************"
-    echo "Import: update DB"
-    echo "*******************************************"
-    # 5 days of diff = 14h
-    imposm diff -mapping /home/admin/Imposm_job/opensnowmap.yml -quiet -cachedir "/home/admin/imposm_cache" -diffdir "/home/admin/imposm_cache" -connection postgis://imposm:imposm@localhost/imposm ${home}/change_file.osc.gz > $log2
-    
-    #~ SECONDS=0
-    #~ echo "REFRESH MATERIALIZED VIEW pistes_routes;" |psql -d imposm -U imposm
-    #~ echo "ANALYSE pistes_routes;" |psql -d imposm -U imposm
-    #~ duration=$SECONDS
-    #~ echo "pistes_routes view refreshed in $(($duration / 60)) min $(($duration % 60))s."
+        sequenceId=$(cat ${home}/sequence.state)
+        timestamp=$(${tool_dir}/getTimestampFromSequenceID.py $sequenceId https://planet.osm.org/replication/minute/)
+        echo $timestamp >${home}/last_diff_file_downloaded.txt
+        echo $timestamp >${home}/state.txt
 
-    #~ SECONDS=0
-    #~ echo "REFRESH MATERIALIZED VIEW pistes_sites;" |psql -d imposm -U imposm
-    #~ echo "ANALYSE pistes_sites;" |psql -d imposm -U imposm
-    #~ duration=$SECONDS
-    #~ echo "pistes_sites view refreshed in $(($duration / 60)) min $(($duration % 60))s."
+		cd ${home}
+		date
+		echo "*******************************************"
+		echo "Import: update DB"
+		echo "*******************************************"
+		# 5 days of diff = 14h
+		imposm diff -mapping /home/admin/Imposm_job/opensnowmap.yml -cachedir "/home/admin/imposm_cache" -diffdir "/home/admin/imposm_cache" -connection postgis://imposm:imposm@localhost/imposm ${home}/change_file.osc.gz >> $log2 2>&1 
+		if [ $? -ne 0] 
+		then 
+			echo $(date)" - Imposm failure" >> $log
+			echo $(date)" - Imposm failure" >> $log2
+			exit 1
+		fi
+		#~ SECONDS=0
+		#~ echo "REFRESH MATERIALIZED VIEW pistes_routes;" |psql -d imposm -U imposm
+		#~ echo "ANALYSE pistes_routes;" |psql -d imposm -U imposm
+		#~ duration=$SECONDS
+		#~ echo "pistes_routes view refreshed in $(($duration / 60)) min $(($duration % 60))s."
 
-    echo $new_state >${home}/state.txt
-    rm ${home}/lock
-#~ 
-    echo "Done"
-    echo $(date)" - Update done" >> $log
-    date
+		#~ SECONDS=0
+		#~ echo "REFRESH MATERIALIZED VIEW pistes_sites;" |psql -d imposm -U imposm
+		#~ echo "ANALYSE pistes_sites;" |psql -d imposm -U imposm
+		#~ duration=$SECONDS
+		#~ echo "pistes_sites view refreshed in $(($duration / 60)) min $(($duration % 60))s."
+
+		
+		rm ${home}/lock
+		echo "Done"
+		echo $(date)" - Update done" >> $log
+		echo $(date)" - Update done" >> $log2
+		date
+    else 
+		echo $(date)" - Issue in getting OSM change file " >> $log
+		echo $(date)" - Issue in getting OSM change file " >> $log2
+	fi
 fi
 # Restart from 2016-06-28T19:00:00Z
