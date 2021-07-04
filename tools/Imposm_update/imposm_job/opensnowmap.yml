@@ -286,7 +286,7 @@ tables:
       name: type
       type: mapping_value
     - args:
-        ranks:
+        values:
         - country
         - state
         - region
