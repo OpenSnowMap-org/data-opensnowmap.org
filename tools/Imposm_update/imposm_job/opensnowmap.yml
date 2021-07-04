@@ -299,7 +299,7 @@ tables:
         - locality
       key: z_order
       name: z_order
-      type: zorder
+      type: enumerate
     - key: population
       name: population
       type: integer
