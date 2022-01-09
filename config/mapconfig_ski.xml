@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- a way is imported if it matches one of the following tag_values -->
+<!-- tag_values are processed in the order of their ID -->
+<configuration>
+  <tag_name name="piste:type" id="1">
+    <tag_value name="nordic" id="100" />
+    <tag_value name="downhill" id="101" />
+    <tag_value name="connection" id="102" />
+    <tag_value name="hike" id="103" />
+    <tag_value name="skitour" id="104" />
+    <tag_value name="sled" id="105" />
+    <tag_value name="ski_jump" id="106" />
+    <tag_value name="fatbike" id="107" />
+    <tag_value name="sleigh" id="108" />
+    <tag_value name="playground" id="109" />
+    <tag_value name="ski_jump_landing" id="110" />
+    <tag_value name="snow_park" id="111" />
+    <tag_value name="other" id="112" />
+  </tag_name>
+  <!-- the following lines are only evaluated if there is no highway-tag at the way -->
+  <tag_name name="aerialway" id="2">
+    <tag_value name="gondola" id="201" />
+    <tag_value name="chair_lift" id="202" />
+    <tag_value name="drag_lift" id="203" />
+    <tag_value name="platter" id="204" />
+    <tag_value name="t-bar" id="205" />
+    <tag_value name="magic_carpet" id="206" />
+    <tag_value name="rope_tow" id="207" />
+    <tag_value name="cable_car" id="208" />
+    <tag_value name="j-bar" id="209" />
+    <tag_value name="mixed_lift" id="210" />
+    <tag_value name="other" id="211" />
+  </tag_name>  
+</configuration>
