@@ -30,13 +30,13 @@ def deg2num(lat_deg, lon_deg, zoom):
   return (xtile, ytile)
 
 if len(sys.argv) < 4:
-    print("usage: lonlat2dirty.py lat lon zoom style delete")
+    print("usage: lonlat2dirty.py lon lat zoom style delete")
     exit(0)
 print(sys.argv)
 
 
-lat=float(sys.argv[1])
-lon=float(sys.argv[2])
+lon=float(sys.argv[1])
+lat=float(sys.argv[2])
 zoom=int(sys.argv[3])
 style=str(sys.argv[4])
 delete = False

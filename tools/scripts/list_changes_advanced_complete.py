@@ -154,101 +154,101 @@ cur = conn.cursor()
 
 for Id in added_nodes_ids:
     cur.execute(" select distinct \
-    st_x(st_transform(st_simplify(way,25),4326)), st_y(st_transform(st_simplify(way,25),4326)) \
+    st_x(st_transform(way,4326)), st_y(st_transform(way,4326)) \
     from planet_osm_point where osm_id=%s;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in added_nodes_nodeList: added_nodes_nodeList.append([x,y,Id])
 
 for Id in added_ways_ids:
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from  planet_osm_line\
                 where osm_id=%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in added_ways_nodeList: added_ways_nodeList.append([x,y,Id])
     
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from planet_osm_polygon\
                 where osm_id=%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in added_ways_nodeList: added_ways_nodeList.append([x,y,Id])
 
 for Id in added_relations_ids:
     cur.execute("select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from  planet_osm_line\
                 where osm_id=-%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in added_relations_nodeList: added_relations_nodeList.append([x,y,Id])
     
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from planet_osm_polygon\
                 where osm_id=-%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in added_relations_nodeList: added_relations_nodeList.append([x,y,Id])
 
 for Id in modified_nodes_ids:
     cur.execute(" select distinct \
-    st_x(st_transform(st_simplify(way,25),4326)), st_y(st_transform(st_simplify(way,25),4326)) \
+    st_x(st_transform(way,4326)), st_y(st_transform(way,4326)) \
     from planet_osm_point where osm_id=%s;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in modified_nodes_nodeList: modified_nodes_nodeList.append([x,y,Id])
 
 for Id in modified_ways_ids:
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from  planet_osm_line\
                 where osm_id=%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in modified_ways_nodeList: modified_ways_nodeList.append([x,y,Id])
     
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from planet_osm_polygon\
                 where osm_id=%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in modified_ways_nodeList: modified_ways_nodeList.append([x,y,Id])
 
 for Id in modified_relations_ids:
     cur.execute("select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from  planet_osm_line\
                 where osm_id=-%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in modified_relations_nodeList: modified_relations_nodeList.append([x,y,Id])
     
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from planet_osm_polygon\
                 where osm_id=-%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in modified_relations_nodeList: modified_relations_nodeList.append([x,y,Id])
 conn.close()
@@ -260,101 +260,101 @@ conn = psycopg2.connect("dbname="+old_db+" user=mapnik")
 cur = conn.cursor()
 for Id in modified_nodes_ids:
     cur.execute(" select distinct \
-    st_x(st_transform(st_simplify(way,25),4326)), st_y(st_transform(st_simplify(way,25),4326)) \
+    st_x(st_transform(way,4326)), st_y(st_transform(way,4326)) \
     from planet_osm_point where osm_id=%s;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in modified_nodes_nodeList: modified_nodes_nodeList.append([x,y,Id])
 
 for Id in modified_ways_ids:
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from  planet_osm_line\
                 where osm_id=%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in modified_ways_nodeList: modified_ways_nodeList.append([x,y,Id])
     
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from planet_osm_polygon\
                 where osm_id=%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in modified_ways_nodeList: modified_ways_nodeList.append([x,y,Id])
 
 for Id in modified_relations_ids:
     cur.execute("select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from  planet_osm_line\
                 where osm_id=-%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in modified_relations_nodeList: modified_relations_nodeList.append([x,y,Id])
     
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from planet_osm_polygon\
                 where osm_id=-%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in modified_relations_nodeList: modified_relations_nodeList.append([x,y,Id])
 
 for Id in deleted_nodes_ids:
     cur.execute(" select distinct \
-    st_x(st_transform(st_simplify(way,25),4326)), st_y(st_transform(st_simplify(way,25),4326)) \
+    st_x(st_transform(way,4326)), st_y(st_transform(way,4326)) \
     from planet_osm_point where osm_id=%s;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in deleted_nodes_nodeList: deleted_nodes_nodeList.append([x,y,Id])
 
 for Id in deleted_ways_ids:
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from  planet_osm_line\
                 where osm_id=%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in deleted_ways_nodeList: deleted_ways_nodeList.append([x,y,Id])
     
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from planet_osm_polygon\
                 where osm_id=%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in deleted_ways_nodeList: deleted_ways_nodeList.append([x,y,Id])
 
 for Id in deleted_relations_ids:
     cur.execute("select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from  planet_osm_line\
                 where osm_id=-%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in deleted_relations_nodeList: deleted_relations_nodeList.append([x,y,Id])
     
     cur.execute(" select distinct st_x(dp), st_y(dp)\
     from (\
-        select (st_dumppoints(st_transform(st_simplify(way,25),4326))).geom as dp \
+        select (st_dumppoints(st_transform(way,4326))).geom as dp \
             from planet_osm_polygon\
                 where osm_id=-%s\
         )as bar;"% (Id,))
-    for c in cur.fetchall():
+    for c in cur.fetchall()[::20]:
         x, y= (c[1],c[0])
         if [x,y,Id] not in deleted_relations_nodeList: deleted_relations_nodeList.append([x,y,Id])
 

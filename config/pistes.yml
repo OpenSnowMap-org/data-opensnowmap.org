@@ -205,6 +205,9 @@ tables:
     - key: null
       name: route_type
       type: mapping_value
+    - key: type
+      name: relation_type
+      type: string
     - key: piste:ref
       name: piste_ref
       type: string
@@ -275,6 +278,9 @@ tables:
     - key: null
       name: type
       type: member_type
+    - key: type
+      name: relation_type
+      type: string
     - key: piste:type
       name: piste_type
       type: string

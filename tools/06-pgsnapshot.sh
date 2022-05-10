@@ -42,12 +42,31 @@
 #~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_names.sql
 #~ psql -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
 ## 200s import
+#~ psql -lqt | cut -d \| -f 1 | grep -qw pistes-pgsnapshot-tmp
+#~ if [ $? = 0 ]; then
+    #~ echo $(date)' Database pistes-pgsnapshot-tmp found'
+#~ else
+    #~ createuser -U admin -s xapi
+    dropdb -U admin pistes-pgsnapshot-tmp
+    createdb -U admin -D data_raid -E UTF8 -O xapi pistes-pgsnapshot-tmp
+    psql -U xapi -d pistes-pgsnapshot-tmp -c "CREATE EXTENSION postgis;"
+    psql -U xapi -d pistes-pgsnapshot-tmp -c "CREATE EXTENSION hstore;" # only required for hstore support
+    psql -U xapi -d pistes-pgsnapshot-tmp -c "CREATE EXTENSION pg_trgm;"
+    echo "ALTER USER xapi WITH PASSWORD 'xapi';" |psql -U admin -d pistes-pgsnapshot-tmp
+    
+    psql -U xapi -d pistes-pgsnapshot-tmp -f /usr/share/doc/osmosis/examples/pgsnapshot_schema_0.6.sql
+    psql -U xapi -d pistes-pgsnapshot-tmp -f /usr/share/doc/osmosis/examples/pgsnapshot_schema_0.6_bbox.sql
+    psql -U xapi -d pistes-pgsnapshot-tmp -f /usr/share/doc/osmosis/examples/pgsnapshot_schema_0.6_linestring.sql
+    psql -U xapi -d pistes-pgsnapshot-tmp -f /usr/share/doc/osmosis/examples/pgsnapshot_schema_0.6_action.sql
+    psql -U xapi -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_geometry.sql
+    psql -U xapi -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_names.sql
+    psql -U xapi -d pistes-pgsnapshot-tmp -f /home/admin/Planet/config/pgsnapshot_schema_0.6_relations_types.sql
 
-
+#~ fi
 H=/home/admin/
 
 WORK_DIR=${H}Planet/
-osmosis=${H}"src/osmosis/bin/osmosis -q"
+
 #~ osmosis="osmosis -q"
 cd ${WORK_DIR}
 # This script log
@@ -65,40 +84,31 @@ TESTSIZE=$(stat -c%s ${PLANET_DIR}planet_pistes.osm)
 if [ $TESTSIZE -gt 1000 ]
 then echo $(date)' planet_pistes.osm ok, updating pgsnapshot DB'
     #Updating DB for osmosis:
-    $osmosis --truncate-pgsql host="localhost" user="xapi" password="xapi" \
+    osmosis --truncate-pgsql host="localhost" user="xapi" password="xapi" \
     database=$DBTMP
     if [ $? -ne 0 ]
     then
         echo $(date)' truncate DB failed'
-        exit 5
     fi
-    $osmosis --read-xml-change ${PLANET_DIR}landuse.osc \
+    osmosis --read-xml-change ${PLANET_DIR}landuse.osc \
     --sort-change --simplify-change \
-    --read-xml ${PLANET_DIR}planet_pistes.osm \
+    --read-xml ${PLANET_DIR}planet_pistes-osmium.osm \
     --apply-change \
     --write-pgsql host="localhost" database=$DBTMP user="xapi" password="xapi"
     if [ $? -ne 0 ]
     then
         echo $(date)' Osmosis failed to update pgsnapshot DB'
-        exit 5
     fi
 
     echo $(date)' Drop pgsnapshot DB'
-    dropdb -U xapi $DB
+    dropdb --if-exists -U xapi $DB
     echo $(date)' Create pgsnapshot DB'
 	createdb -U xapi -T $DBTMP $DB
-    exit
-    #~ # Copy the total way length and last update.txt infos to the website
-#~ 
 else 
     echo $(date)' planet_pistes.osm empty'
-    exit 5
 fi
 
-exit 0
-# skip the rest, no needto hammer nominatim each day
-
-${TOOLS_DIR}./resort_list.py > ${PLANET_DIR}resorts.json
+${TOOLS_DIR}scripts/./resort_list.py > ${PLANET_DIR}resorts.json
 TESTSIZE=$(stat -c%s ${PLANET_DIR}resorts.json)
 if [ $TESTSIZE -gt 10 ]
 then 
@@ -107,6 +117,8 @@ then
 
 else 
     echo $(date)' resorts.json empty'
-    exit 6
 fi
+cat /home/admin/Planet/log/daily-osmium.log | msmtp admin@opensnowmap.org
 
+${TOOLS_DIR}./07-routing_db.sh
+exit 0

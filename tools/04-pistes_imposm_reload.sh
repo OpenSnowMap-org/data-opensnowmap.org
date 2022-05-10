@@ -12,17 +12,17 @@ CONFIG_DIR=${WORK_DIR}config/
 
 
 # Populate imposm db
-dropdb -U admin --if-exists pistes_imposm_tmp
-createdb -U admin -E UTF8 -O imposm pistes_imposm_tmp -D data_ssd
-psql -U admin -d pistes_imposm_tmp -c "CREATE EXTENSION postgis;"
-psql -U admin -d pistes_imposm_tmp -c "CREATE EXTENSION hstore;" # only required for hstore support
-echo "ALTER USER imposm WITH PASSWORD 'imposm';" |psql -U imposm -d pistes_imposm_tmp
+    dropdb -U admin --if-exists pistes_imposm_tmp
+    createdb -U admin -E UTF8 -O imposm pistes_imposm_tmp -D data_raid
+    psql -U admin -d pistes_imposm_tmp -c "CREATE EXTENSION postgis;"
+    psql -U admin -d pistes_imposm_tmp -c "CREATE EXTENSION hstore;" # only required for hstore support
+    echo "ALTER USER imposm WITH PASSWORD 'imposm';" |psql -U imposm -d pistes_imposm_tmp
 
 readonly PG_CONNECT="postgis://imposm:imposm@localhost/pistes_imposm_tmp"
 
-osmconvert ${PLANET_DIR}planet_pistes.osm -o=${PLANET_DIR}planet_pistes.osm.pbf
+osmconvert ${PLANET_DIR}planet_pistes-osmium.osm -o=${PLANET_DIR}planet_pistes-osmium.osm.pbf
 
-readonly inputpbf=${PLANET_DIR}/planet_pistes.osm.pbf
+readonly inputpbf=${PLANET_DIR}planet_pistes-osmium.osm.pbf
 #~ readonly inputpbf=/nvme-data/data/europe-latest.osm.pbf
 readonly mappingfile=${CONFIG_DIR}pistes.yml
 
@@ -39,14 +39,15 @@ imposm import \
     -diff -cachedir "/home/admin/imposm_cache_pistes" -diffdir "/home/admin/imposm_cache_pistes" \
     -deployproduction \
     -connection $PG_CONNECT
+
 #Fix imported geometries, otherwise we have issue with 
 #collection of polygons at the output of ST_LineMerge
-echo "UPDATE osm_pistes_route_members ..."
+echo "$(date) - UPDATE osm_pistes_route_members ..."
 echo "UPDATE osm_pistes_route_members
         SET geometry=ST_ExteriorRing(geometry)
         WHERE ST_GeometryType(osm_pistes_route_members.geometry)='ST_Polygon'
     ;" |psql -U imposm -d pistes_imposm_tmp
-echo "CREATE TABLE pistes_routes ..."
+echo "$(date) - CREATE TABLE pistes_routes ..."
 echo "CREATE TABLE pistes_routes AS (
     SELECT 
         osm_pistes_routes.osm_id as osm_id,
@@ -93,7 +94,7 @@ echo "ANALYSE pistes_routes;" |psql -U imposm -d pistes_imposm_tmp
 #~ Execution time: 0.311 ms
 #~ Et puis de temps en temps:
 #~ echo "REFRESH MATERIALIZED VIEW pistes_routes;" |psql -U imposm -d imposm
-echo "CREATE TABLE pistes_sites ..."
+echo "$(date) - CREATE TABLE pistes_sites ..."
 echo "CREATE TABLE pistes_sites AS (
     SELECT 
         osm_pistes_sites.osm_id as osm_id,
@@ -140,7 +141,7 @@ echo "CLUSTER pistes_sites USING idx_sites_geom;" |psql -U imposm -d pistes_impo
 echo "ANALYSE pistes_sites;" |psql -U imposm -d pistes_imposm_tmp
 
 # landuse_ressorts
-echo "CREATE TABLE landuse_resorts ..."
+echo "$(date) - CREATE TABLE landuse_resorts ..."
 echo "CREATE TABLE landuse_resorts AS SELECT * FROM osm_resorts;
 
 ALTER TABLE landuse_resorts ADD members_types text;
@@ -191,7 +192,7 @@ echo "CREATE INDEX idx_landuse_resorts_geom ON landuse_resorts USING gist (geome
 echo "CLUSTER landuse_resorts USING idx_landuse_resorts_geom;" |psql -U imposm -d pistes_imposm_tmp
 echo "ANALYSE landuse_resorts;" |psql -U imposm -d pistes_imposm_tmp
 
-echo "ALTER TABLE osm_pistes_route_members ..."
+echo "$(date) - ALTER TABLE osm_pistes_route_members ..."
 echo "ALTER TABLE osm_pistes_route_members
 ADD COLUMN nordic_route_offset integer DEFAULT 0,
 ADD COLUMN nordic_route_colour text DEFAULT '',
@@ -199,7 +200,7 @@ ADD COLUMN nordic_route_length integer DEFAULT 1000000,
 ADD COLUMN nordic_route_render_colour text DEFAULT '',
 ADD COLUMN direction_to_route integer DEFAULT 0;
 " |psql -U imposm -d pistes_imposm_tmp
-echo "ALTER TABLE osm_pistes_ways ..."
+echo "$(date) - ALTER TABLE osm_pistes_ways ..."
 echo "ALTER TABLE osm_pistes_ways
 ADD COLUMN nordic_route_offset integer DEFAULT 0,
 ADD COLUMN nordic_route_colour text DEFAULT '',
@@ -207,7 +208,7 @@ ADD COLUMN nordic_route_length integer DEFAULT 1000000,
 ADD COLUMN nordic_route_render_colour text DEFAULT '',
 ADD COLUMN direction_to_route integer DEFAULT 0;
 " |psql -U imposm -d pistes_imposm_tmp
-echo "UPDATE osm_pistes_route_members ..."
+echo "$(date) - UPDATE osm_pistes_route_members ..."
 echo "UPDATE osm_pistes_route_members
 SET 
   nordic_route_offset = 0,
@@ -237,10 +238,12 @@ SET
                             WHERE pistes_routes.osm_id=osm_pistes_route_members.osm_id)
                             ;
 " |psql -U imposm -d pistes_imposm_tmp
-echo "build-relations-DB ..."
+echo "$(date) - build-relations-DB ..."
 
 ${TOOLS_DIR}scripts/./build-relations-in-DB.py /home/admin/mapnik/offset_lists/
 
+#~ exit
+echo "$(date) - Switch DBs"
 echo "SELECT pg_terminate_backend(pg_stat_activity.pid)
 FROM pg_stat_activity
 WHERE pg_stat_activity.datname = 'pistes_imposm' 
@@ -262,15 +265,20 @@ echo $(date)' expire tiles'
 # relevant tiles as expired. Done on 07042016
 # 
 
-cat ${PLANET_DIR}expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-relief --num-threads=1 --touch-from=0 
-cat ${PLANET_DIR}expired_tiles.lst | /usr/local/bin/render_expired --map=pistes --num-threads=1 --touch-from=0 
-cat ${PLANET_DIR}expired_tiles.lst | /usr/local/bin/render_expired --map=pistes-high-dpi --num-threads=1 --touch-from=0 
-cat ${PLANET_DIR}expired_tiles.lst | /usr/local/bin/render_expired --map=base_snow_map --num-threads=1 --touch-from=0 
-cat ${PLANET_DIR}expired_tiles.lst | /usr/local/bin/render_expired --map=base_snow_map_high_dpi --num-threads=1 --touch-from=0 
+cat ${PLANET_DIR}expired_tiles.lst | grep -v "-" |/usr/local/bin/render_expired --tile-dir /var/lib/mod_tile/ --map=pistes-relief --num-threads=1 --touch-from=0 
+echo $(date)' expire tiles'
+cat ${PLANET_DIR}expired_tiles.lst | grep -v "-" | /usr/local/bin/render_expired --tile-dir /var/lib/mod_tile/ --map=pistes --num-threads=1 --touch-from=0 
+echo $(date)' expire tiles'
+cat ${PLANET_DIR}expired_tiles.lst | grep -v "-" | /usr/local/bin/render_expired --tile-dir /var/lib/mod_tile/ --map=pistes-high-dpi --num-threads=1 --touch-from=0 
+echo $(date)' expire tiles'
+cat ${PLANET_DIR}expired_tiles.lst | grep -v "-" | /usr/local/bin/render_expired --tile-dir /var/lib/mod_tile/ --map=base_snow_map --num-threads=1 --touch-from=0 
+echo $(date)' expire tiles'
+cat ${PLANET_DIR}expired_tiles.lst | grep -v "-" | /usr/local/bin/render_expired --tile-dir /var/lib/mod_tile/ --map=base_snow_map_high_dpi --num-threads=1 --touch-from=0 
 
 
 cd ${WORK_DIR}
 
 echo $(date)' Update complete'
+cat /home/admin/Planet/log/daily.log | msmtp admin@opensnowmap.org
 
 ${TOOLS_DIR}./06-pgsnapshot.sh

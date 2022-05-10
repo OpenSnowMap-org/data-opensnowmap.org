@@ -33,32 +33,53 @@ echo $(date)' Update starting '
 #~ Daily update:
 mv --force ${PLANET_DIR}updated_planet-osmium.pbf ${PLANET_DIR}old_planet-osmium.pbf
 
-OSMIUM_POOL_THREADS=4
-#~ Use  after fresh planet download - keep it, only a 3 minute scan anyway
-nice -n 19 pyosmium-up-to-date -v --tmpdir ${TMP_DIR} --ignore-osmosis-headers -s 4096 -o ${TMP_DIR}updated_planet-osmium.pbf ${PLANET_DIR}old_planet-osmium.pbf 
+export OSMIUM_POOL_THREADS=1
+sequenceId=$(cat ${PLANET_DIR}sequence.state)
+timestamp=$(${TOOLS_DIR}scripts/getTimestampFromSequenceID.py $sequenceId https://planet.osm.org/replication/hour/)
+echo $(date)" - Starting update from "$timestamp", sequence "$sequenceId 
+    
+date
+echo "*******************************************"
+echo "Create diff file"
+echo "*******************************************"
+
+rm ${PLANET_DIR}change_file.osc.gz
+pyosmium-get-changes -v -s 1024 --format osc.gz --server https://planet.osm.org/replication/hour/ -f ${PLANET_DIR}sequence.state -o ${PLANET_DIR}change_file.osc.gz 
+
+if [ $? -ne 0 ]; then
+    echo $(date)' Changefile build failed'
+    echo $sequenceId > ${PLANET_DIR}sequence.state
+    exit 1
+fi
+
+#~ pyosmium-up-to-date -v --tmpdir ${TMP_DIR} --ignore-osmosis-headers -s 4096 -o ${TMP_DIR}updated_planet-osmium.pbf ${PLANET_DIR}old_planet-osmium.pbf 
+osmium apply-changes ${PLANET_DIR}old_planet-osmium.pbf ${PLANET_DIR}change_file.osc.gz -o ${TMP_DIR}updated_planet-osmium.pbf
 
 status=$?
-if [ $status -gt 1 ]; then
-	echo $(date)' Update failed'
-	exit 2
+if [ $status -ne 0 ]; then
+    echo $(date)' Applying change failed'
+    exit 2
 fi
-if [ $status -eq 1 ]; then
-	echo $(date)' More than 1GB of diff, run again'
-fi 
-if [ $status -eq 0 ]; then
-	echo $(date)' Planet file updated '
-    rsync -a --bwlimit=100000 ${TMP_DIR}updated_planet-osmium.pbf ${PLANET_DIR}updated_planet-osmium.pbf
+ 
+
+echo $(date)' Planet file updated '
+rsync -a --bwlimit=50000 ${TMP_DIR}updated_planet-osmium.pbf ${PLANET_DIR}updated_planet-osmium.pbf
+if [ $? -ne 0 ]; then
+    echo $(date)' Rsync error, exiting '
+else
     echo $(date)' Planet file moved to planet directory '
-fi 
+fi
+
 #______________________________________________________________________
 # Update timestamp
-pyosmium-get-changes -v --start-osm-data ${PLANET_DIR}/updated_planet-osmium.pbf -f ${PLANET_DIR}sequence.state 
+#pyosmium-get-changes -v --server https://planet.osm.org/replication/hour/ --start-osm-data ${PLANET_DIR}/updated_planet-osmium.pbf -f ${PLANET_DIR}sequence.state 
 sequenceId=$(cat ${PLANET_DIR}/sequence.state)
+timestamp=$(${TOOLS_DIR}scripts/getTimestampFromSequenceID.py $sequenceId https://planet.osm.org/replication/hour/)
+echo $timestamp> ${PLANET_DIR}state.txt
 
-python3 ${TOOLS_DIR}scripts/getTimestampFromSequenceID.py $sequenceId > ${PLANET_DIR}state-osmium.txt
-echo $(date)' Timestamp extracted '
+#echo $(date)' Timestamp extracted '
 echo $(date)' Sequence Id: '$sequenceId
-echo $(date)' Timestamp: '$(cat ${PLANET_DIR}last_state-osmium.txt)
+echo $(date)' Timestamp: '$timestamp
 
 echo $(date)' ######################### '
 echo $(date)' Filtering starting '
@@ -77,9 +98,10 @@ echo $(date)' Filtering starting '
 #______________________________________________________________________
 # Filtering pistes
 
-OSMIUM_POOL_THREADS=2
+#~ OSMIUM_POOL_THREADS=2
 
-nice -n 19 ${TOOLS_DIR}scripts/./osmium tags-filter ${PLANET_DIR}updated_planet-osmium.pbf --output-format=osm -o ${TMP_DIR}planet_pistes-osmium.osm --overwrite --fsync --expressions=${CONFIG_DIR}osmiumTagFilter.conf 
+#~ nice -n 19 
+${TOOLS_DIR}scripts/./osmium tags-filter ${PLANET_DIR}updated_planet-osmium.pbf --output-format=osm -o ${TMP_DIR}planet_pistes-osmium.osm --overwrite --fsync --expressions=${CONFIG_DIR}osmiumTagFilter.conf 
 
 if [ $? -ne 0 ]
 then
@@ -88,13 +110,13 @@ then
 else
     echo $(date)' Planet pistes file filtered '
     mv --force ${PLANET_DIR}planet_pistes-osmium.osm ${PLANET_DIR}planet_pistes-osmium-old.osm
-	mv --force ${TMP_DIR}planet_pistes-osmium.osm ${PLANET_DIR}planet_pistes-osmium.osm
+    mv --force ${TMP_DIR}planet_pistes-osmium.osm ${PLANET_DIR}planet_pistes-osmium.osm
 fi
 #______________________________________________________________________
 # Filtering sites
 
 
-nice -n 19 ${TOOLS_DIR}scripts/./osmium tags-filter ${PLANET_DIR}planet_pistes-osmium.osm --output-format=osm -o ${TMP_DIR}planet_pistes_sites-osmium.osm --overwrite --fsync site=piste
+${TOOLS_DIR}scripts/./osmium tags-filter ${PLANET_DIR}planet_pistes-osmium.osm --output-format=osm -o ${TMP_DIR}planet_pistes_sites-osmium.osm --overwrite --fsync site=piste
 if [ $? -ne 0 ]
 then
     echo $(date)' FAILED to filter planet file'
@@ -112,7 +134,7 @@ echo $(date)' planet_pistes.osm and planet_sites.osm extracted'
 #Create archive files
 #-----------------------------------------------------------------------
 
-last=$(tail -1 ${PLANET_DIR}state-osmium.txt  | sed 's/\([0-9-]*\).*/\1/')
+last=$(tail -1 ${PLANET_DIR}state.txt  | sed 's/\([0-9-]*\).*/\1/')
 
 
 #~ gzip -c  ${PLANET_DIR}planet_pistes-osmium.osm > ${ARCHIVE_DIR}planet_pistes-osmium-$last.osm.gz
@@ -121,8 +143,8 @@ last=$(tail -1 ${PLANET_DIR}state-osmium.txt  | sed 's/\([0-9-]*\).*/\1/')
 #-----------------------------------------------------------------------
 #Publish pistes extract
 #-----------------------------------------------------------------------
-gzip -c  ${PLANET_DIR}planet_pistes-osmium.osm > ${DOWNLOADS_DIR}planet_pistes-osmium.osm.gz
-cp ${PLANET_DIR}state-osmium.txt ${DOWNLOADS_DIR}planet_pistes-state-osmium.txt
+gzip -c  ${PLANET_DIR}planet_pistes-osmium.osm > ${DOWNLOADS_DIR}planet_pistes.osm.gz
+cp ${PLANET_DIR}state.txt ${DOWNLOADS_DIR}planet_pistes-state.txt
 echo $(date)' latest planet_pistes.osm published'
 
 #-----------------------------------------------------------------------
@@ -157,15 +179,15 @@ then
         touch ${PLANET_DIR}dailyok-osmium
     else
 
-			if [ -f $yesterday2_file ];
-			then
-				echo $(date)' yesterday2 file found' $yesterday2_file
-				osmium derive-changes $yesterday2_file $daily_file --output=${PLANET_DIR}daily-osmium.osc --overwrite 
-				echo $(date)' daily.osc done'
-				touch ${PLANET_DIR}dailyok-osmium
-			else
-				echo $(date)' no yesterday file found' $yesterday_file
-			fi
+            if [ -f $yesterday2_file ];
+            then
+                echo $(date)' yesterday2 file found' $yesterday2_file
+                osmium derive-changes $yesterday2_file $daily_file --output=${PLANET_DIR}daily-osmium.osc --overwrite 
+                echo $(date)' daily.osc done'
+                touch ${PLANET_DIR}dailyok-osmium
+            else
+                echo $(date)' no yesterday file found' $yesterday_file
+            fi
     fi
 # Create weekly.osc
     if [ -f $lastweek_file ];
@@ -195,5 +217,6 @@ fi
 rm ${TMP_DIR}*
 echo $(date)' filter.sh DONE'
 
-exit 0
+./03-db_update.sh
+#~ exit 0
 

@@ -59,10 +59,12 @@ for r in resorts:
          ),3857)
 		);
 	""")
-	country = cur.fetchall()[0][0]
-	#~ print name.encode('utf8')
-	con.commit()
-	resorts[r]['country']=country.replace('/',' - ')
+	resorts[r]['country']= ''
+	try :
+		country = cur.fetchall()[0][0]
+		con.commit()
+		resorts[r]['country']=country.replace('/',' - ')
+	except: pass
 	
 	cur.execute("""
 	SELECT name FROM osm_admin 

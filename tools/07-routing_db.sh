@@ -43,8 +43,9 @@ psql --dbname $DBROUTINGTMP -U $USER -c 'CREATE EXTENSION postgis'
 psql --dbname $DBROUTINGTMP -U $USER -c 'CREATE EXTENSION pgRouting'
 psql --dbname $DBROUTINGTMP -U $USER -c 'CREATE EXTENSION hstore'
 
+echo "Filtering planet_piste.osm file and transform tags ..."
 rm ${PLANET_DIR}planet_pistes_routing_filtered.osm
-python ${TOOLS_DIR}scripts/routing_tag_transform.py ${PLANET_DIR}planet_pistes.osm ${PLANET_DIR}planet_pistes_routing_filtered.osm
+python ${TOOLS_DIR}scripts/routing_tag_transform.py ${PLANET_DIR}planet_pistes-osmium.osm ${PLANET_DIR}planet_pistes_routing_filtered.osm
 
 # Tabs removal see https://github.com/pgRouting/osm2pgrouting/issues/259
 sed -i "s/version=\"[0-9]+\" timestamp=\"[^\"]+\" changeset=\"[0-9]+\" uid=\"[0-9]+\" user=\"[^\"]+\"//g" ${PLANET_DIR}planet_pistes_routing_filtered.osm
@@ -55,6 +56,7 @@ sed -r "s/uid=\"[0-9]+\"//g" ${PLANET_DIR}planet_pistes_routing_filtered.osm -i
 sed -r "s/user=\"[^\"]+\"//g" ${PLANET_DIR}planet_pistes_routing_filtered.osm -i
 sed -i $'s/&#x9;/ /g' ${PLANET_DIR}planet_pistes_routing_filtered.osm
 
+echo "Import with osm2pgrouting ..."
 /usr/bin/osm2pgrouting --f ${PLANET_DIR}planet_pistes_routing_filtered.osm --conf ${CONFIG_DIR}mapconfig_ski.xml --dbname $DBROUTINGTMP --username $USER --clean --chunk 100000
 
 echo "select count(*) from ways;" | psql -d $DBROUTINGTMP -U $USER
@@ -64,6 +66,7 @@ echo "select count(*) from ways;" | psql -d $DBROUTINGTMP -U $USER
     #~ if (m_oneWay == "REVERSED") return "-1";
     #~ if (m_oneWay == "UNKNOWN") return "0";
 
+echo "Update costs ..."
 # By default, cost is the lengh of the way for shortest route rouring:
 echo "UPDATE ways SET cost = length_m, reverse_cost = length_m;" | psql -d $DBROUTINGTMP -U $USER
 # lifts :
@@ -99,6 +102,8 @@ echo "UPDATE ways SET cost = -1
 WHERE tag_id IN (100,101,102,103,104,105,106,107,108,109,110,111,112)
 AND oneway IN ('REVERSED','REVERSIBLE')
 ;" | psql -d $DBROUTINGTMP -U $USER
+
+echo "Deploy updated DB ..."
 
 echo "SELECT
     pg_terminate_backend (pg_stat_activity.pid)

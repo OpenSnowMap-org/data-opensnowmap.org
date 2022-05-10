@@ -88,7 +88,7 @@ for element in root.iter():
 sys.stdout.write("nodes: %s, ways: %s, relations: %s \n" % (len(nodes_ids), len(ways_ids), len(relations_ids)))
 
 #Get nodes lon lat from database
-conn = psycopg2.connect("dbname=pistes-mapnik user=mapnik")
+conn = psycopg2.connect("dbname=pistes_imposm user=imposm")
 cur = conn.cursor()
 
 """Note:
@@ -115,20 +115,20 @@ At zoom 16, 1 pixel = 2.387m
 
 tilesZmax = []
 zoom = 16
-sys.stdout.write("retrieving nodes coords ...")
-sys.stdout.flush()
-for Id in nodes_ids:
-    cur.execute(" select distinct \
-    st_x(st_transform(way,4326)), st_y(st_transform(way,4326)) \
-    from planet_osm_point where osm_id=%s;"% (Id,))
-    for c in cur.fetchall():
-        tx, ty= deg2num(c[1],c[0],zoom)
-        meta=xyz_to_meta(str(zoom)+'/'+str(tx)+'/'+str(ty))
-        (z, tx, ty) = meta_to_xyz(meta)
-        if [tx,ty] not in tilesZmax: tilesZmax.append([tx,ty])
+# ~ sys.stdout.write("retrieving nodes coords ...")
+# ~ sys.stdout.flush()
+# ~ for Id in nodes_ids:
+    # ~ cur.execute(" select distinct \
+    # ~ st_x(st_transform(way,4326)), st_y(st_transform(way,4326)) \
+    # ~ from planet_osm_point where osm_id=%s;"% (Id,))
+    # ~ for c in cur.fetchall():
+        # ~ tx, ty= deg2num(c[1],c[0],zoom)
+        # ~ meta=xyz_to_meta(str(zoom)+'/'+str(tx)+'/'+str(ty))
+        # ~ (z, tx, ty) = meta_to_xyz(meta)
+        # ~ if [tx,ty] not in tilesZmax: tilesZmax.append([tx,ty])
 #
 #
-#
+# No index on osm_id in imposm !
 sys.stdout.write("retrieving ways coords ...")
 sys.stdout.flush()
 for Id in ways_ids:
@@ -136,8 +136,25 @@ for Id in ways_ids:
     from (\
         select (st_dumppoints(st_transform(way2,4326))).geom as dp \
             from (\
-                select ST_Segmentize(way,1216) as way2\
-                from planet_osm_line\
+                select ST_Segmentize(geometry,1216) as way2\
+                from osm_pistes_ways \
+                where osm_id=%s\
+            ) as foo \
+        )as bar;"% (Id,))
+    for c in cur.fetchall():
+        tx, ty= deg2num(c[1],c[0],zoom)
+        meta=xyz_to_meta(str(zoom)+'/'+str(tx)+'/'+str(ty))
+        (z, tx, ty) = meta_to_xyz(meta)
+        if [tx,ty] not in tilesZmax: tilesZmax.append([tx,ty])
+sys.stdout.write("retrieving ways coords ...")
+sys.stdout.flush()
+for Id in ways_ids:
+    cur.execute(" select distinct st_x(dp), st_y(dp)\
+    from (\
+        select (st_dumppoints(st_transform(way2,4326))).geom as dp \
+            from (\
+                select ST_Segmentize(geometry,1216) as way2\
+                from osm_aerialways \
                 where osm_id=%s\
             ) as foo \
         )as bar;"% (Id,))
@@ -154,8 +171,8 @@ for Id in relations_ids:
     from (\
         select (st_dumppoints(st_transform(way2,4326))).geom as dp \
             from (\
-                select ST_Segmentize(way,1216) as way2\
-                from planet_osm_line\
+                select ST_Segmentize(geometry,1216) as way2\
+                from osm_pistes_routes\
                 where osm_id=-%s\
             ) as foo \
         )as bar;"% (Id,))
@@ -165,41 +182,41 @@ for Id in relations_ids:
         (z, tx, ty) = meta_to_xyz(meta)
         if [tx,ty] not in tilesZmax: tilesZmax.append([tx,ty])
 
-sys.stdout.write("retrieving loops coords ...")
-sys.stdout.flush()
-for Id in ways_ids:
-    cur.execute(" select distinct st_x(dp), st_y(dp)\
-    from (\
-        select (st_dumppoints(st_transform(way2,4326))).geom as dp \
-            from (\
-                select ST_Segmentize(way,1216) as way2\
-                from planet_osm_polygon\
-                where osm_id=%s\
-            ) as foo \
-        )as bar;"% (Id,))
-    for c in cur.fetchall():
-        tx, ty= deg2num(c[1],c[0],zoom)
-        meta=xyz_to_meta(str(zoom)+'/'+str(tx)+'/'+str(ty))
-        (z, tx, ty) = meta_to_xyz(meta)
-        if [tx,ty] not in tilesZmax: tilesZmax.append([tx,ty])
+# ~ sys.stdout.write("retrieving loops coords ...")
+# ~ sys.stdout.flush()
+# ~ for Id in ways_ids:
+    # ~ cur.execute(" select distinct st_x(dp), st_y(dp)\
+    # ~ from (\
+        # ~ select (st_dumppoints(st_transform(way2,4326))).geom as dp \
+            # ~ from (\
+                # ~ select ST_Segmentize(way,1216) as way2\
+                # ~ from planet_osm_polygon\
+                # ~ where osm_id=%s\
+            # ~ ) as foo \
+        # ~ )as bar;"% (Id,))
+    # ~ for c in cur.fetchall():
+        # ~ tx, ty= deg2num(c[1],c[0],zoom)
+        # ~ meta=xyz_to_meta(str(zoom)+'/'+str(tx)+'/'+str(ty))
+        # ~ (z, tx, ty) = meta_to_xyz(meta)
+        # ~ if [tx,ty] not in tilesZmax: tilesZmax.append([tx,ty])
 
-sys.stdout.write("retrieving area coords ...")
-sys.stdout.flush()
-for Id in relations_ids:
-    cur.execute(" select distinct st_x(dp), st_y(dp)\
-    from (\
-        select (st_dumppoints(st_transform(way2,4326))).geom as dp \
-            from (\
-                select ST_Segmentize(way,1216) as way2\
-                from planet_osm_polygon\
-                where osm_id=-%s\
-            ) as foo \
-        )as bar;"% (Id,))
-    for c in cur.fetchall():
-        tx, ty= deg2num(c[1],c[0],zoom)
-        meta=xyz_to_meta(str(zoom)+'/'+str(tx)+'/'+str(ty))
-        (z, tx, ty) = meta_to_xyz(meta)
-        if [tx,ty] not in tilesZmax: tilesZmax.append([tx,ty])
+# ~ sys.stdout.write("retrieving area coords ...")
+# ~ sys.stdout.flush()
+# ~ for Id in relations_ids:
+    # ~ cur.execute(" select distinct st_x(dp), st_y(dp)\
+    # ~ from (\
+        # ~ select (st_dumppoints(st_transform(way2,4326))).geom as dp \
+            # ~ from (\
+                # ~ select ST_Segmentize(way,1216) as way2\
+                # ~ from planet_osm_polygon\
+                # ~ where osm_id=-%s\
+            # ~ ) as foo \
+        # ~ )as bar;"% (Id,))
+    # ~ for c in cur.fetchall():
+        # ~ tx, ty= deg2num(c[1],c[0],zoom)
+        # ~ meta=xyz_to_meta(str(zoom)+'/'+str(tx)+'/'+str(ty))
+        # ~ (z, tx, ty) = meta_to_xyz(meta)
+        # ~ if [tx,ty] not in tilesZmax: tilesZmax.append([tx,ty])
 
 conn.close()
 

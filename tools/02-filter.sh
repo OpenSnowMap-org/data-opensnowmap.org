@@ -68,17 +68,20 @@ gzip -c  ${PLANET_DIR}planet_pistes.osm > ${DOWNLOADS_DIR}planet_pistes.osm.gz
 cp ${PLANET_DIR}state.txt ${DOWNLOADS_DIR}planet_pistes-state.txt
 echo $(date)' latest planet_pistes.osm published'
 
+exit 0
 #-----------------------------------------------------------------------
 #Create change files
 #-----------------------------------------------------------------------
 
 today=$(date --date="today" +%Y-%m-%d)
+yesterday2=$(date --date="2 day ago" +%Y-%m-%d)
 yesterday=$(date --date="1 day ago" +%Y-%m-%d)
 lastweek=$(date --date="1 week ago" +%Y-%m-%d)
 lastmonth=$(date --date="1 month ago" +%Y-%m-%d)
 
 daily_file=${PLANET_DIR}planet_pistes.osm
 yesterday_file=${ARCHIVE_DIR}planet_pistes-$yesterday.osm.gz
+yesterday2_file=${ARCHIVE_DIR}planet_pistes-$yesterday2.osm.gz
 lastweek_file=${ARCHIVE_DIR}planet_pistes-$lastweek.osm.gz
 lastmonth_file=${ARCHIVE_DIR}planet_pistes-$lastmonth.osm.gz
 
@@ -93,7 +96,16 @@ then
         echo $(date)' daily.osc done'
         touch ${PLANET_DIR}dailyok
     else
-        echo $(date)' no yesterday file found' $yesterday_file
+
+			if [ -f $yesterday2_file ];
+			then
+				echo $(date)' yesterday2 file found' $yesterday2_file
+				osmconvert $yesterday2_file $daily_file --diff -o=${PLANET_DIR}daily.osc
+				echo $(date)' daily.osc done'
+				touch ${PLANET_DIR}dailyok
+			else
+				echo $(date)' no yesterday file found' $yesterday_file
+			fi
     fi
 # Create weekly.osc
     if [ -f $lastweek_file ];
@@ -123,4 +135,4 @@ fi
 rm ${TMP_DIR}*
 echo $(date)' filter.sh DONE'
 
-./03-db_update.sh
+#~ ./03-db_update.sh
