@@ -5,7 +5,7 @@ WORK_DIR=${H}Planet/
 cd ${WORK_DIR}
 
 # This script log
-LOGFILE=${WORK_DIR}log/planet_update.log
+LOGFILE=${WORK_DIR}log/planet_update-osmium.log
 # Directory where the planet file is stored
 PLANET_DIR=${WORK_DIR}data/
 TMP_DIR=${WORK_DIR}tmp/

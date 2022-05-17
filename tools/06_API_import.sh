@@ -21,7 +21,9 @@ ARCHIVE_DIR=${WORK_DIR}archives/
 DOWNLOADS_DIR=${H}downloadable/
 CONFIG_DIR=${WORK_DIR}config/
 cd ${TOOLS_DIR}
-
+echo '#########################'
+echo $(date)' Update API DB'
+echo '#########################'
 #~ createuser -d osmuser
 dropdb pistes_api_osm2pgsql_temp -U osmuser
 createdb --encoding=UTF8 --owner=osmuser pistes_api_osm2pgsql_temp -U osmuser
@@ -53,3 +55,9 @@ WHERE
 echo $(date)' replace mapnik DB'
 dropdb pistes_api_osm2pgsql -U osmuser 
 createdb -U osmuser -T pistes_api_osm2pgsql_temp pistes_api_osm2pgsql
+
+echo '#########################'
+echo $(date)' API DB Updated'
+echo '#########################'
+
+cat /home/admin/Planet/log/daily-osmium.log | msmtp admin@opensnowmap.org

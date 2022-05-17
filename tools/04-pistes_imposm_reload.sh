@@ -3,7 +3,7 @@ WORK_DIR=${H}Planet/
 
 cd ${WORK_DIR}
 # This script log
-LOGFILE=${WORK_DIR}log/planet_update.log
+LOGFILE=${WORK_DIR}log/planet_update-osmium.log
 # Directory where the planet file is stored
 PLANET_DIR=${WORK_DIR}data/
 TMP_DIR=${WORK_DIR}tmp/
@@ -281,4 +281,5 @@ cd ${WORK_DIR}
 echo $(date)' Update complete'
 cat /home/admin/Planet/log/daily.log | msmtp admin@opensnowmap.org
 
-${TOOLS_DIR}./06-pgsnapshot.sh
+cd ${TOOLS_DIR}
+./06_API_import.sh
