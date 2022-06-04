@@ -368,9 +368,37 @@ tables:
       name: name
       type: string
       from_member: true
-  sport_ways:
+  other_areass:
     mapping:
       sport:
+      - __any__
+      avalanche_transceiver:
+      - __any__
+    type: polygon
+    fields:
+    - key: null
+      name: osm_id
+      type: id
+    - key: null
+      name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - key: null
+      name: piste_type
+      type: mapping_value
+    - key: avalanche_transceiver
+      type: string
+      name: avalanche_transceiver
+    - key: sport
+      type: string
+      name: sport
+  other_ways:
+    mapping:
+      sport:
+      - __any__
+      avalanche_transceiver:
       - __any__
     type: linestring
     fields:
@@ -386,12 +414,21 @@ tables:
     - key: null
       name: piste_type
       type: mapping_value
-  sport_nodes:
+    - key: avalanche_transceiver
+      type: string
+      name: avalanche_transceiver
+    - key: sport
+      type: string
+      name: sport
+    
+  other_nodes:
     mapping:
       sport:
       - __any__
       man_made:
       - snow_cannon
+      avalanche_transceiver:
+      - __any__
     type: point
     fields:
     - key: null
@@ -406,3 +443,12 @@ tables:
     - key: null
       name: piste_type
       type: mapping_value
+    - key: avalanche_transceiver
+      type: string
+      name: avalanche_transceiver
+    - key: sport
+      type: string
+      name: sport
+    - key: man_made
+      type: string
+      name: man_made
