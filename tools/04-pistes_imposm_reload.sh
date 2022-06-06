@@ -103,8 +103,8 @@ echo "CREATE TABLE pistes_sites AS (
         array_to_string(array_agg(distinct osm_pistes_ways.piste_type::text) 
         || array_agg(distinct pistes_routes.piste_type::text)
         || array_agg(distinct osm_pistes_area.piste_type::text)
-        || array_agg(distinct osm_sport_ways.piste_type::text)
-        || array_agg(distinct osm_sport_nodes.piste_type::text)
+        || array_agg(distinct osm_other_ways.piste_type::text)
+        || array_agg(distinct osm_other_nodes.piste_type::text)
         ,';') 
         AS members_types,
     
@@ -113,8 +113,8 @@ echo "CREATE TABLE pistes_sites AS (
         ST_Collect(osm_pistes_ways.geometry),
         ST_Collect(pistes_routes.geometry),
         ST_Collect(osm_pistes_area.geometry),
-        ST_Collect(osm_sport_ways.geometry),
-        ST_Collect(osm_sport_nodes.geometry)
+        ST_Collect(osm_other_ways.geometry),
+        ST_Collect(osm_other_nodes.geometry)
         ]
         ))::geometry(Geometry, 3857) 
         AS geometry
@@ -129,10 +129,10 @@ echo "CREATE TABLE pistes_sites AS (
         ON (pistes_routes.osm_id=-osm_pistes_site_members.member)
     LEFT JOIN osm_pistes_area 
         ON (osm_pistes_area.osm_id=osm_pistes_site_members.member)
-    LEFT JOIN osm_sport_ways 
-        ON (osm_sport_ways.osm_id=osm_pistes_site_members.member)
-    LEFT JOIN osm_sport_nodes 
-        ON (osm_sport_nodes.osm_id=osm_pistes_site_members.member)
+    LEFT JOIN osm_other_ways 
+        ON (osm_other_ways.osm_id=osm_pistes_site_members.member)
+    LEFT JOIN osm_other_nodes 
+        ON (osm_other_nodes.osm_id=osm_pistes_site_members.member)
     GROUP BY osm_pistes_sites.osm_id, osm_pistes_sites.name
     );" |psql -U imposm -d pistes_imposm_tmp
 
@@ -173,17 +173,17 @@ UPDATE landuse_resorts SET members_types = concat_ws(
 UPDATE landuse_resorts SET members_types = concat_ws(
     ';',
     members_types,
-    (SELECT string_agg(distinct osm_sport_ways.piste_type::text, ';')
-        FROM osm_sport_ways
-        WHERE ST_Intersects(osm_sport_ways.geometry,landuse_resorts.geometry)
+    (SELECT string_agg(distinct osm_other_ways.piste_type::text, ';')
+        FROM osm_other_ways
+        WHERE ST_Intersects(osm_other_ways.geometry,landuse_resorts.geometry)
     )
 );
 UPDATE landuse_resorts SET members_types = concat_ws(
     ';',
     members_types,
-    (SELECT string_agg(distinct osm_sport_nodes.piste_type::text, ';')
-        FROM osm_sport_nodes
-        WHERE ST_Intersects(osm_sport_nodes.geometry,landuse_resorts.geometry)
+    (SELECT string_agg(distinct osm_other_nodes.piste_type::text, ';')
+        FROM osm_other_nodes
+        WHERE ST_Intersects(osm_other_nodes.geometry,landuse_resorts.geometry)
     )
 );" |psql -U imposm -d pistes_imposm_tmp
 # Faudrait aussi s'assurer d'avoir plus de 3 ways ...

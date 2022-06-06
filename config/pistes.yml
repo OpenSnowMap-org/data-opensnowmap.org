@@ -368,7 +368,7 @@ tables:
       name: name
       type: string
       from_member: true
-  other_areass:
+  other_areas:
     mapping:
       sport:
       - __any__
@@ -420,7 +420,6 @@ tables:
     - key: sport
       type: string
       name: sport
-    
   other_nodes:
     mapping:
       sport:
