@@ -240,9 +240,9 @@ SET
 " |psql -U imposm -d pistes_imposm_tmp
 echo "$(date) - build-relations-DB ..."
 
-${TOOLS_DIR}scripts/./build-relations-in-DB.py /home/admin/mapnik/offset_lists/
+${TOOLS_DIR}scripts/./build-relations-in-DB.py /home/admin/mapnik/offset_lists/ pistes_imposm_tmp
 
-#~ exit
+
 echo "$(date) - Switch DBs"
 echo "SELECT pg_terminate_backend(pg_stat_activity.pid)
 FROM pg_stat_activity
@@ -250,6 +250,7 @@ WHERE pg_stat_activity.datname = 'pistes_imposm'
   AND pid <> pg_backend_pid();" | psql -d pistes_imposm_tmp -U admin
 dropdb --if-exists -U admin pistes_imposm
 createdb -U admin -T pistes_imposm_tmp pistes_imposm
+#~ exit
 systemctl restart renderd.service 
 
 echo $(date)' expire tiles'

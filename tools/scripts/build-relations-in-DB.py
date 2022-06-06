@@ -72,7 +72,11 @@ if len(sys.argv) < 2 :
     print 'Provide directory as argument'
     exit(1)
 path = sys.argv[1]
-
+if sys.argv[2]:
+  db="dbname="+sys.argv[2]+" user=imposm"
+else:
+  db="dbname=pistes_imposm_tmp user=imposm"
+print(db)
 filenames = os.listdir(path)
 
 Offsets = {}
@@ -93,7 +97,7 @@ for fn in filenames:
     f.close()
 
 #~ conn = psycopg2.connect("dbname=pistes-mapnik user=mapnik")
-conn = psycopg2.connect("dbname=pistes_imposm_tmp user=imposm")
+conn = psycopg2.connect(db)
 
 cur = conn.cursor()
     

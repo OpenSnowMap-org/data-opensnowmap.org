@@ -260,81 +260,87 @@ tables:
       - ski
     type: relation_member
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: null
-      name: member
+    - name: member
+      key: null
       type: member_id
-    - key: null
-      name: index
+    - name: index
+      key: null
       type: member_index
-    - key: null
-      name: role
+    - name: role
+      key: null
       type: member_role
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: member_type
-    - key: type
-      name: relation_type
+    - name: relation_type
+      key: type
       type: string
-    - key: piste:type
-      name: piste_type
+    - name: piste_type
+      key: piste:type
       type: string
-    - key: name
-      name: relname
+    - name: relname
+      key: name
       type: string
-    - key: piste:ref
-      name: piste_ref
+    - name: piste_ref
+      key: piste:ref
       type: string
-    - key: ref
-      name: ref
+    - name: ref
+      key: ref
       type: string
-    - key: name
-      name: name
+    - name: rel_grooming
+      key: piste:grooming
+      type: string
+    - name: rel_difficulty
+      key: piste:difficulty
+      type: string
+    - name: name
+      key: name
       type: string
       from_member: true      
-    - key: piste:name
-      name: piste_name
+    - name: piste_name
+      key: piste:name
       type: string
       from_member: true
-    - key: piste:grooming
-      name: grooming
+    - name: grooming
+      key: piste:grooming
       type: string
       from_member: true
-    - key: piste:difficulty
-      name: difficulty
+    - name: difficulty
+      key: piste:difficulty
       type: string
       from_member: true
-    - key: piste:oneway
-      name: oneway
+    - name: oneway
+      key: piste:oneway
       type: direction
       from_member: true
-    - key: piste:lit
-      name: lit1
+    - name: lit1
+      key: piste:lit
       type: bool
       from_member: true
-    - key: lit
-      name: lit2
+    - name: lit2
+      key: lit
       type: bool
       from_member: true
-    - key: piste:abandoned
-      name: abandoned1
+    - name: abandoned1
+      key: piste:abandoned
       type: bool
       from_member: true
-    - key: abandoned
-      name: abandoned2
+    - name: abandoned2
+      key: abandoned
       type: bool
       from_member: true
-    - key: gladed
-      name: gladed
+    - name: gladed
+      key: gladed
       type: bool
       from_member: true
-    - key: patrolled
-      name: patrolled
+    - name: patrolled
+      key: patrolled
       type: bool
       from_member: true
   pistes_site_members:
