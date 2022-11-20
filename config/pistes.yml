@@ -8,6 +8,9 @@ tables:
     type: polygon
     fields:
     - key: null
+      type: hstore_tags
+      name: tags
+    - key: null
       name: osm_id
       type: id
     - key: null
@@ -68,6 +71,9 @@ tables:
     type: linestring
     fields:
     - key: null
+      type: hstore_tags
+      name: tags
+    - key: null
       name: osm_id
       type: id
     - key: null
@@ -122,6 +128,9 @@ tables:
     type: polygon
     fields:
     - key: null
+      type: hstore_tags
+      name: tags
+    - key: null
       name: osm_id
       type: id
     - key: null
@@ -145,6 +154,9 @@ tables:
       - incline
     type: linestring
     fields:
+    - key: null
+      type: hstore_tags
+      name: tags
     - key: null
       name: osm_id
       type: id
@@ -173,11 +185,11 @@ tables:
     type: relation
     fields:
     - key: null
+      type: hstore_tags
+      name: tags
+    - key: null
       name: osm_id
       type: id
-    - key: null
-      name: tags
-      type: hstore_tags
     - key: name
       name: name
       type: string
@@ -194,11 +206,11 @@ tables:
     type: relation
     fields:
     - key: null
+      type: hstore_tags
+      name: tags
+    - key: null
       name: osm_id
       type: id
-    - key: null
-      name: tags
-      type: hstore_tags
     - key: name
       name: name
       type: string
@@ -260,6 +272,9 @@ tables:
       - ski
     type: relation_member
     fields:
+    - key: null
+      type: hstore_tags
+      name: tags
     - name: osm_id
       key: null
       type: id
@@ -350,6 +365,9 @@ tables:
     type: relation_member
     fields:
     - key: null
+      type: hstore_tags
+      name: tags
+    - key: null
       name: osm_id
       type: id
     - key: null
@@ -383,6 +401,9 @@ tables:
     type: polygon
     fields:
     - key: null
+      type: hstore_tags
+      name: tags
+    - key: null
       name: osm_id
       type: id
     - key: null
@@ -408,6 +429,9 @@ tables:
       - __any__
     type: linestring
     fields:
+    - key: null
+      type: hstore_tags
+      name: tags
     - key: null
       name: osm_id
       type: id
@@ -436,6 +460,9 @@ tables:
       - __any__
     type: point
     fields:
+    - key: null
+      type: hstore_tags
+      name: tags
     - key: null
       name: osm_id
       type: id
