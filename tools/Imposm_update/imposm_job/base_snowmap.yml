@@ -74,23 +74,24 @@ tables:
       - glacier
     type: polygon
     fields:
-    - key: null
+    - name: osm_id
+      key: null
       name: osm_id
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: null
-      name: area
+    - name: area
+      key: null
       type: area
-    - key: z_order
-      name: z_order
+    - name: z_order
+      key: z_order
       type: enumerate
       args:
         values:
@@ -154,23 +155,23 @@ tables:
       - water
     type: polygon
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: null
-      name: area
+    - name: area
+      key: null
       type: area
-    - key: tunnel
-      name: tunnel
+    - name: tunnel
+      key: tunnel
       type: boolint
   natural_ways:
     mapping:
@@ -183,17 +184,17 @@ tables:
       - tree_row
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
   natural_nodes:
     mapping:
@@ -205,20 +206,20 @@ tables:
       - saddle
     type: point
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: null
-      name: area
+    - name: area
+      key: null
       type: area
   buildings:
     mapping:
@@ -239,23 +240,23 @@ tables:
       - shelter
     type: polygon
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: null
-      name: area
+    - name: area
+      key: null
       type: area
-    - key: shelter_type
-      name: shelter_type
+    - name: shelter_type
+      key: shelter_type
       type: string
   places:
     mapping:
@@ -273,19 +274,20 @@ tables:
       - isolated_dwelling
     type: point
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - args:
+    - name: z_order
+      args:
         values:
         - country
         - state
@@ -298,10 +300,9 @@ tables:
         - suburb
         - locality
       key: z_order
-      name: z_order
       type: enumerate
-    - key: population
-      name: population
+    - name: population
+      key: population
       type: integer
   transport_areas:
     mapping:
@@ -315,17 +316,17 @@ tables:
       - platform
     type: polygon
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
   admin:
     mapping:
@@ -333,20 +334,20 @@ tables:
       - administrative
     type: polygon
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: admin_level
-      name: admin_level
+    - name: admin_level
+      key: admin_level
       type: integer
   reserves:
     mapping:
@@ -356,20 +357,20 @@ tables:
       - nature_reserve
     type: polygon
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: protect_class
-      name: protect_class
+    - name: protect_class
+      key: protect_class
       type: string
   aeroways:
     mapping:
@@ -378,17 +379,17 @@ tables:
       - taxiway
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
   waterways:
     mapping:
@@ -402,20 +403,20 @@ tables:
       - ditch
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: tunnel
-      name: tunnel
+    - name: tunnel
+      key: tunnel
       type: boolint
   barrierways:
     mapping:
@@ -435,17 +436,17 @@ tables:
       - wire_fence
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
   transport_points:
     mapping:
@@ -467,20 +468,20 @@ tables:
       - subway_entrance
     type: point
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: ref
-      name: ref
+    - name: ref
+      key: ref
       type: string
   amenities:
     mapping:
@@ -499,20 +500,20 @@ tables:
       - shelter
     type: point
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: shelter_type
-      name: shelter_type
+    - name: shelter_type
+      key: shelter_type
       type: string
   barrierpoints:
     mapping:
@@ -535,17 +536,17 @@ tables:
       - stile
     type: point
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
   housenumbers:
     mapping:
@@ -553,26 +554,26 @@ tables:
       - __any__
     type: point
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: addr:street
-      name: addr:street
+    - name: addr:street
+      key: addr:street
       type: string
-    - key: addr:postcode
-      name: addr:postcode
+    - name: addr:postcode
+      key: addr:postcode
       type: string
-    - key: addr:city
-      name: addr:city
+    - name: addr:city
+      key: addr:city
       type: string
   housenumbers_interpolated:
     mapping:
@@ -580,29 +581,29 @@ tables:
       - __any__
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: addr:street
-      name: addr:street
+    - name: addr:street
+      key: addr:street
       type: string
-    - key: addr:postcode
-      name: addr:postcode
+    - name: addr:postcode
+      key: addr:postcode
       type: string
-    - key: addr:city
-      name: addr:city
+    - name: addr:city
+      key: addr:city
       type: string
-    - key: addr:inclusion
-      name: addr:inclusion
+    - name: addr:inclusion
+      key: addr:inclusion
       type: string
   roads:
     mappings:
@@ -652,44 +653,44 @@ tables:
         area: ["yes"]
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: tunnel
-      name: tunnel
+    - name: tunnel
+      key: tunnel
       type: boolint
-    - key: bridge
-      name: bridge
+    - name: bridge
+      key: bridge
       type: boolint
-    - key: oneway
-      name: oneway
+    - name: oneway
+      key: oneway
       type: direction
-    - key: ref
-      name: ref
+    - name: ref
+      key: ref
       type: string
-    - key: layer
-      name: z_order
+    - name: z_order
+      key: layer
       type: wayzorder
-    - key: layer
-      name: layer
+    - name: layer
+      key: layer
       type: wayzorder
-    - key: access
-      name: access
+    - name: access
+      key: access
       type: string
-    - key: service
-      name: service
+    - name: service
+      key: service
       type: string
-    - key: null
-      name: class
+    - name: class
+      key: null
       type: mapping_key
   minorroads:
     mappings:
@@ -714,44 +715,44 @@ tables:
         area: ["yes"]
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: tunnel
-      name: tunnel
+    - name: tunnel
+      key: tunnel
       type: boolint
-    - key: bridge
-      name: bridge
+    - name: bridge
+      key: bridge
       type: boolint
-    - key: oneway
-      name: oneway
+    - name: oneway
+      key: oneway
       type: direction
-    - key: ref
-      name: ref
+    - name: ref
+      key: ref
       type: string
-    - key: layer
-      name: z_order
+    - name: z_order
+      key: layer
       type: wayzorder
-    - key: layer
-      name: layer
+    - name: layer
+      key: layer
       type: wayzorder
-    - key: access
-      name: access
+    - name: access
+      key: access
       type: string
-    - key: service
-      name: service
+    - name: service
+      key: service
       type: string
-    - key: null
-      name: class
+    - name: class
+      key: null
       type: mapping_key
   mainroads:
     mappings:
@@ -773,44 +774,44 @@ tables:
         area: ["yes"]
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: tunnel
-      name: tunnel
+    - name: tunnel
+      key: tunnel
       type: boolint
-    - key: bridge
-      name: bridge
+    - name: bridge
+      key: bridge
       type: boolint
-    - key: oneway
-      name: oneway
+    - name: oneway
+      key: oneway
       type: direction
-    - key: ref
-      name: ref
+    - name: ref
+      key: ref
       type: string
-    - key: layer
-      name: z_order
+    - name: z_order
+      key: layer
       type: wayzorder
-    - key: layer
-      name: layer
+    - name: layer
+      key: layer
       type: wayzorder
-    - key: access
-      name: access
+    - name: access
+      key: access
       type: string
-    - key: service
-      name: service
+    - name: service
+      key: service
       type: string
-    - key: null
-      name: class
+    - name: class
+      key: null
       type: mapping_key
   motorways:
     mappings:
@@ -829,44 +830,44 @@ tables:
         area: ["yes"]
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: tunnel
-      name: tunnel
+    - name: tunnel
+      key: tunnel
       type: boolint
-    - key: bridge
-      name: bridge
+    - name: bridge
+      key: bridge
       type: boolint
-    - key: oneway
-      name: oneway
+    - name: oneway
+      key: oneway
       type: direction
-    - key: ref
-      name: ref
+    - name: ref
+      key: ref
       type: string
-    - key: layer
-      name: z_order
+    - name: z_order
+      key: layer
       type: wayzorder
-    - key: layer
-      name: layer
+    - name: layer
+      key: layer
       type: wayzorder
-    - key: access
-      name: access
+    - name: access
+      key: access
       type: string
-    - key: service
-      name: service
+    - name: service
+      key: service
       type: string
-    - key: null
-      name: class
+    - name: class
+      key: null
       type: mapping_key
   power_lines:
     mappings:
@@ -877,23 +878,23 @@ tables:
           - minor_line
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: layer
-      name: z_order
+    - name: z_order
+      key: layer
       type: wayzorder
-    - key: layer
-      name: layer
+    - name: layer
+      key: layer
       type: wayzorder
-    - key: null
-      name: class
+    - name: class
+      key: null
       type: mapping_key
   pistes_area:
     mapping:
@@ -901,20 +902,20 @@ tables:
       - __any__
     type: polygon
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: null
-      name: area
+    - name: area
+      key: null
       type: area
     - key: piste:name
       name: piste_name
@@ -955,17 +956,17 @@ tables:
       - __any__
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
     - key: piste:name
       name: piste_name
@@ -1003,20 +1004,20 @@ tables:
       - winter_sports
     type: polygon
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
-    - key: null
-      name: area
+    - name: area
+      key: null
       type: area
   aerialways:
     mapping:
@@ -1024,17 +1025,17 @@ tables:
       - __any__
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
   pistes_sites:
     mapping:
@@ -1042,17 +1043,17 @@ tables:
       - piste
     type: relation
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: tags
+    - name: tags
+      key: null
       type: hstore_tags
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: site_type
+    - name: site_type
+      key: null
       type: mapping_value
   pistes_routes:
     mapping:
@@ -1063,17 +1064,17 @@ tables:
       - __any__
     type: relation
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: tags
+    - name: tags
+      key: null
       type: hstore_tags
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: route_type
+    - name: route_type
+      key: null
       type: mapping_value
     - key: piste:name
       name: piste_name
@@ -1121,23 +1122,23 @@ tables:
       - ski
     type: relation_member
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: null
-      name: member
+    - name: member
+      key: null
       type: member_id
-    - key: null
-      name: index
+    - name: index
+      key: null
       type: member_index
-    - key: null
-      name: role
+    - name: role
+      key: null
       type: member_role
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: member_type
     - key: piste:type
       name: piste_type
@@ -1145,8 +1146,8 @@ tables:
     - key: name
       name: relname
       type: string
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
       from_member: true
   pistes_site_members:
@@ -1155,29 +1156,29 @@ tables:
       - piste
     type: relation_member
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: null
-      name: member
+    - name: member
+      key: null
       type: member_id
-    - key: null
-      name: index
+    - name: index
+      key: null
       type: member_index
-    - key: null
-      name: role
+    - name: role
+      key: null
       type: member_role
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: member_type
     - key: name
       name: relname
       type: string
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
       from_member: true
   sport_ways:
@@ -1186,17 +1187,17 @@ tables:
       - __any__
     type: linestring
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
   sport_nodes:
     mapping:
@@ -1204,17 +1205,17 @@ tables:
       - __any__
     type: point
     fields:
-    - key: null
-      name: osm_id
+    - name: osm_id
+      key: null
       type: id
-    - key: null
-      name: geometry
+    - name: geometry
+      key: null
       type: geometry
-    - key: name
-      name: name
+    - name: name
+      key: name
       type: string
-    - key: null
-      name: type
+    - name: type
+      key: null
       type: mapping_value
 generalized_tables:
   landusages_gen0:
