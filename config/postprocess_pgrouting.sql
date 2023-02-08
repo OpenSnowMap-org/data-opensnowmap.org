@@ -79,6 +79,11 @@ tags=lines.tags
 FROM lines
 WHERE lines.osm_id=lines_noded.old_id;
 
+ALTER TABLE lines_noded ADD COLUMN access text;
+UPDATE lines_noded
+SET access=lines.tags->>'access'
+FROM lines
+WHERE lines.osm_id=lines_noded.old_id;
 
 -- ~ # lifts :
 -- ~ # Default oneway lifts:
@@ -105,6 +110,11 @@ AND lift_type <> ''
 AND lift_type NOT IN ('chair_lift', 'drag_lift', 'platter', 't-bar','j-bar', 'magic_carpet', 'rope_tow', 'mixed_lift')
 AND oneway IN ('-1');
 
+
+UPDATE lines_noded SET cost = -1
+WHERE piste_type is null
+AND lift_type <> ''
+AND access IN ('no','discouraged');
 
 -- ~ Smallest costs set first, so that priority is given to strongest cost
 -- ~ Relations cost set before way, so ways get final say
