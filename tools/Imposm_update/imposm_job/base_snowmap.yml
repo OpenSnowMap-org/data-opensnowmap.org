@@ -548,63 +548,6 @@ tables:
     - name: type
       key: null
       type: mapping_value
-  housenumbers:
-    mapping:
-      addr:housenumber:
-      - __any__
-    type: point
-    fields:
-    - name: osm_id
-      key: null
-      type: id
-    - name: geometry
-      key: null
-      type: geometry
-    - name: name
-      key: name
-      type: string
-    - name: type
-      key: null
-      type: mapping_value
-    - name: addr:street
-      key: addr:street
-      type: string
-    - name: addr:postcode
-      key: addr:postcode
-      type: string
-    - name: addr:city
-      key: addr:city
-      type: string
-  housenumbers_interpolated:
-    mapping:
-      addr:interpolation:
-      - __any__
-    type: linestring
-    fields:
-    - name: osm_id
-      key: null
-      type: id
-    - name: geometry
-      key: null
-      type: geometry
-    - name: name
-      key: name
-      type: string
-    - name: type
-      key: null
-      type: mapping_value
-    - name: addr:street
-      key: addr:street
-      type: string
-    - name: addr:postcode
-      key: addr:postcode
-      type: string
-    - name: addr:city
-      key: addr:city
-      type: string
-    - name: addr:inclusion
-      key: addr:inclusion
-      type: string
   roads:
     mappings:
       roads:
@@ -692,6 +635,15 @@ tables:
     - name: class
       key: null
       type: mapping_key
+    - name: trail_visibility
+      key: trail_visibility
+      type: string
+    - name: sac_scale
+      key: sac_scale
+      type: string
+    - name: surface
+      key: surface
+      type: string
   minorroads:
     mappings:
       roads:
@@ -754,6 +706,15 @@ tables:
     - name: class
       key: null
       type: mapping_key
+    - name: trail_visibility
+      key: trail_visibility
+      type: string
+    - name: sac_scale
+      key: sac_scale
+      type: string
+    - name: surface
+      key: surface
+      type: string
   mainroads:
     mappings:
       roads:
@@ -813,6 +774,9 @@ tables:
     - name: class
       key: null
       type: mapping_key
+    - name: surface
+      key: surface
+      type: string
   motorways:
     mappings:
       roads:
