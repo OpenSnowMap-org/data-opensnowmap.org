@@ -101,7 +101,7 @@ echo $(date)' Filtering starting '
 #~ OSMIUM_POOL_THREADS=2
 
 #~ nice -n 19 
-${TOOLS_DIR}scripts/./osmium tags-filter ${PLANET_DIR}updated_planet-osmium.pbf --output-format=osm -o ${TMP_DIR}planet_pistes-osmium.osm --overwrite --fsync --expressions=${CONFIG_DIR}osmiumTagFilter.conf 
+osmium tags-filter ${PLANET_DIR}updated_planet-osmium.pbf --output-format=osm -o ${TMP_DIR}planet_pistes-osmium.osm --overwrite --fsync --expressions=${CONFIG_DIR}osmiumTagFilter.conf 
 
 if [ $? -ne 0 ]
 then
@@ -116,7 +116,7 @@ fi
 # Filtering sites
 
 
-${TOOLS_DIR}scripts/./osmium tags-filter ${PLANET_DIR}planet_pistes-osmium.osm --output-format=osm -o ${TMP_DIR}planet_pistes_sites-osmium.osm --overwrite --fsync site=piste
+osmium tags-filter ${PLANET_DIR}planet_pistes-osmium.osm --output-format=osm -o ${TMP_DIR}planet_pistes_sites-osmium.osm --overwrite --fsync site=piste
 if [ $? -ne 0 ]
 then
     echo $(date)' FAILED to filter planet file'

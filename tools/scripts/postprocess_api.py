@@ -9,7 +9,7 @@ from lxml import etree
 conn = psycopg2.connect("dbname=pistes_api_osm2pgsql_temp user=osmuser")
 cur = conn.cursor()
 
-print "postprocess_api.py post-process relations in the database\n"
+print("postprocess_api.py post-process relations in the database\n")
 
 
 #
