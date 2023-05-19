@@ -3,7 +3,7 @@ home="/home/admin/imposm_updates"
 tool_dir="/home/admin/Imposm_job"
 log="/home/admin/imposm_updates/imposm_update.log"
 log2="/home/admin/imposm_updates/imposm.log"
-
+readonly mappingfile=/home/admin/Planet/tools/Imposm_update/imposm_job/base_snowmap.yml
 cd ${home}
 if [ -f ${home}/lock ];
 then
@@ -12,7 +12,7 @@ then
     echo $(date)" - Sorry, process already running" >> $log2
     exit 1
 else
-    echo $(date)" - Starting update " > $log2
+    echo $(date)" - Starting update " >> $log2
     touch ${home}/lock
     sequenceId=$(cat ${home}/sequence.state)
     timestamp=$(${tool_dir}/getTimestampFromSequenceID.py $sequenceId https://planet.osm.org/replication/minute/)
@@ -25,7 +25,7 @@ else
     echo "*******************************************"
     
     rm ${home}/change_file.osc.gz
-    pyosmium-get-changes -s 1024 --format osc.gz --server https://planet.osm.org/replication/minute/ -f ${home}/sequence.state -o ${home}/change_file.osc.gz 
+    pyosmium-get-changes -v -s 1024 --format osc.gz --server https://planet.osm.org/replication/minute/ -f ${home}/sequence.state -o ${home}/change_file.osc.gz >> $log2 2>&1 
     
     if [ $? -eq 0 ]
     then
@@ -40,7 +40,7 @@ else
 		echo "Import: update DB"
 		echo "*******************************************"
 		# 5 days of diff = 14h
-		imposm diff -mapping /home/admin/Imposm_job/opensnowmap.yml -cachedir "/home/admin/imposm_cache" -diffdir "/home/admin/imposm_cache" -connection postgis://imposm:imposm@localhost/imposm ${home}/change_file.osc.gz >> $log2 2>&1 
+		imposm diff -mapping $mappingfile -cachedir "/home/admin/imposm_cache" -diffdir "/home/admin/imposm_cache" -connection postgis://imposm:imposm@localhost/imposm ${home}/change_file.osc.gz >> $log2 2>&1 
 		if [ $? -ne 0] 
 		then 
 			echo $(date)" - Imposm failure" >> $log
@@ -66,8 +66,10 @@ else
 		echo $(date)" - Update done" >> $log2
 		date
     else 
-		echo $(date)" - Issue in getting OSM change file " >> $log
-		echo $(date)" - Issue in getting OSM change file " >> $log2
+		echo $(date)" - Issue in getting OSM change file, resuming " >> $log
+		echo $(date)" - Issue in getting OSM change file, resuming " >> $log2
+		#~ we can safely try again later when the server is available
+		rm ${home}/lock
 	fi
 fi
 # Restart from 2016-06-28T19:00:00Z

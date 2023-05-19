@@ -36,7 +36,7 @@ psql pistes_api_osm2pgsql_temp --command='CREATE EXTENSION IF NOT EXISTS pg_trgm
 /home/admin/SRC/osm2pgsql/build/osm2pgsql -U osmuser --create ${PLANET_DIR}planet_pistes-osmium.osm.pbf --database=pistes_api_osm2pgsql_temp --output=flex --style=${CONFIG_DIR}opensnowmap.lua 
 #~ --log-level=debug --log-sql-data
 cat ${CONFIG_DIR}postprocess_api.sql | psql -U osmuser -d pistes_api_osm2pgsql_temp 
-python ${TOOLS_DIR}scripts/postprocess_api.py
+python3 ${TOOLS_DIR}scripts/postprocess_api.py
 cat ${CONFIG_DIR}postprocess_pgrouting.sql | psql -d pistes_api_osm2pgsql_temp -U osmuser
 
 ##########################################

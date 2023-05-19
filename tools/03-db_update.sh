@@ -141,13 +141,10 @@ createdb -U mapnik -T $DBMAPNIKTMP $DBMAPNIK
 
 
 echo $(date)' update relations style for osm2pgsql style'
-#~ cd ${H}mapnik/pistes-only-clean2017/
-#~ python build-relations-style.py ../offset_lists
-#~ xmllint -noent ${H}mapnik/pistes-only-clean2017/map.xml > ${H}mapnik/pistes-only-clean2017/full.xml
 
-cd ${H}mapnik/pistes-relief-clean2017/
-python build-relations-style.py ../offset_lists
-xmllint -noent ${H}mapnik/pistes-relief-clean2017/map.xml > ${H}mapnik/pistes-relief-clean2017/full.xml
+#~ cd ${H}mapnik/pistes-relief-clean2017/
+#~ python3 build-relations-style.py ../offset_lists
+#~ xmllint -noent ${H}mapnik/pistes-relief-clean2017/map.xml > ${H}mapnik/pistes-relief-clean2017/full.xml
 
 echo $(date)' restart renderd'
 systemctl restart renderd.service 

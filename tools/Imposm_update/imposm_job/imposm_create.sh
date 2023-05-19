@@ -1,19 +1,20 @@
+rm -rf /home/admin/imposm_cache
 mkdir -p /home/admin/imposm_cache
 dropdb imposm
 
 createuser --no-superuser --no-createrole --createdb imposm
-createdb -D data_4tb -E UTF8 -O imposm imposm
-psql -d imposm -c "CREATE EXTENSION postgis;"
-psql -d imposm -c "CREATE EXTENSION hstore;" # only required for hstore support
-echo "ALTER USER imposm WITH PASSWORD 'imposm';" |psql -d imposm
+createdb -D data_4tb -E UTF8 -O imposm imposm_tmp
+#~ alter database imposm_tmp rename to imposm;
+psql -d imposm_tmp -c "CREATE EXTENSION postgis;"
+psql -d imposm_tmp -c "CREATE EXTENSION hstore;" # only required for hstore support
+echo "ALTER USER imposm WITH PASSWORD 'imposm';" |psql -d imposm_tmp
 
-readonly PG_CONNECT="postgis://imposm:imposm@localhost/imposm"
-readonly inputpbf=/home/admin/Planet/data/planet-latest.osm.pbf
-readonly mappingfile=/home/admin/Imposm_job/opensnowmap.yml
+readonly PG_CONNECT="postgis://imposm:imposm@localhost/imposm_tmp"
+readonly inputpbf=/home/admin/planet-230501.osm.pbf
+readonly mappingfile=/home/admin/Planet/tools/Imposm_update/imposm_job/base_snowmap.yml
 echo "$(date) - importing: $inputpbf "
 
-imposm  import \
-    -quiet \
+nohup imposm  import \
     -mapping $mappingfile \
     -read $inputpbf \
     -write \
@@ -21,7 +22,8 @@ imposm  import \
     -overwritecache \
     -diff -cachedir /home/admin/imposm_cache -diffdir /home/admin/imposm_cache \
     -deployproduction \
-    -connection $PG_CONNECT
+    -connection $PG_CONNECT &
+#~ Finished: Imposm in 30h17m56.049176894s
 exit 0
 echo "CREATE MATERIALIZED VIEW pistes_routes AS (
     SELECT 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 
 import pdb
@@ -6,7 +6,7 @@ import psycopg2
 import os, sys
 from lxml import etree
 import datetime
-from cgi import escape
+from html import escape
 
 HOME_DIR=sys.argv[1]
 
@@ -31,7 +31,7 @@ def process(relation):
 	entrances_list= ",".join(entrances)
 	return name, id_list, entrances
 
-print "makes_sites.py, process relations and landuses for ressorts rendering\n"
+print("makes_sites.py, process relations and landuses for ressorts rendering\n")
 conn = psycopg2.connect("dbname=pistes-mapnik-tmp user=mapnik")
 cur = conn.cursor()
     
@@ -114,8 +114,8 @@ cur.execute("""
 			;
 			""")
 sites_ids=cur.fetchall()
-ids=[str(long(x[0])) for x in sites_ids]
-print "	Number of ways to process: ",len(ids)
+ids=[str(int(x[0])) for x in sites_ids]
+print("	Number of ways to process: ",len(ids))
 l=len(ids)
 for i in ids:
 	l-=1
@@ -178,7 +178,7 @@ for i in ids:
 				;
 				"""% (i,))
 		members=cur.fetchall()
-		member_ids=[str(long(x[0])) for x in members]
+		member_ids=[str(int(x[0])) for x in members]
 		
 		f.write('   <create>\n')
 		f.write('       <relation id="'+i+'" changeset="1" version="1" timestamp="')
@@ -195,7 +195,7 @@ for i in ids:
 		f.write('           <tag k="was_way" v="yes"/>\n')
 		f.write('       </relation>\n')
 		f.write('   </create>\n')
-	except  Exception,e:
+	except:
 		pass
 		#~ print "error for way ", i
 		#~ print str(e)

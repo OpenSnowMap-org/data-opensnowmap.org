@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 
 #import pdb
@@ -6,6 +6,7 @@ import mapnik
 import psycopg2
 import os, sys, re
 import datetime
+import pdb
 """
 Offsets={
 -1439743:-1,
@@ -69,7 +70,7 @@ def is_int(s):
 #
 
 if len(sys.argv) < 2 :
-    print 'Provide directory as argument'
+    print('Provide directory as argument')
     exit(1)
 path = sys.argv[1]
 if sys.argv[2]:
@@ -124,8 +125,9 @@ f.close()
 ##############
 
 f=open('colors.csv','w')
-ids = Colors.keys()
-ids.extend(Offsets.keys())
+
+ids = list(Colors.keys())
+ids.extend(list(Offsets.keys()))
 ids=list(set(ids))
 
 for osm_id in ids:

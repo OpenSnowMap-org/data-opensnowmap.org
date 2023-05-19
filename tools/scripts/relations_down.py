@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 
 import pdb
@@ -17,7 +17,7 @@ conn.commit()
 
 # copy sites ids as a in_site tag for it's members
 #
-print "relation_down.py: Normalize groomin and post-process relations\n"
+print("relation_down.py: Normalize groomin and post-process relations\n")
 try: 
 	cur.execute("ALTER TABLE planet_osm_line ADD in_site bigint[];")
 	conn.commit()
