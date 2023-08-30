@@ -2,15 +2,13 @@ This set of script are dedicated to maintain Opensnowmap.org server data up-to-d
 
 The following scripts run daily with a cron job:
 
-    01-planet_update.sh 
-        Update complete planet database with osmctools' osmupdate
+    00_osmium_pistes_workflow.sh 
+        Update complete planet pbf file with Osmium
         Provide state.txt for opensnowmap.org website
-        
-    02-filter.sh
-        Filter planet file for winter-sport related elements with osmctools' osmfilter => planet_pistes.osm
+        Filter planet file for winter-sport related elements => planet_pistes.osm
         Filter planet file for site=piste relations
         Archive daily planet_pistes.osm
-        Create daily, weekly and monthly planet_pistes.osc diff files with Osmosis
+        Create daily, weekly and monthly planet_pistes.osc diff files 
         Create daily, weekly and monthly *.tsv diff files with sed for display on opensnowmap.org website
         
     03-db_update.sh
@@ -20,7 +18,6 @@ The following scripts run daily with a cron job:
         Create a expired_tiles.lst of tiles to expire from actual and temporary DB (list_expired.py)
         Stop renderd
         Stop actual DB, replace it with temporary DB
-        Update mapnik styles depending on relation colour=* tags and manual offsets
         Restart renderd
         Expire tiles wth renderd_expired
         Compute stats for opensnowmap.org website (pistes-stat2json.sh)
@@ -28,12 +25,13 @@ The following scripts run daily with a cron job:
     04-pistes_imposm_reload.sh
         Load complete planet_pistes.osm datatbase with imposm in temporary DB
         Create the additionnal table for routes and resorts
+        Update DB  depending on relation colour=* tags and manual offsets
         Swap temp and actual DB
         
-    06-pgsnapshot.sh
-        Load complete planet_pistes.osm datatbase with osmosis in temporary pgsnapshot DB
-        (See in config/ for the customization to the pgsnapshot schema)
-        Swap temp and actual pgsnapshot DB
+    06_API_import.sh
+        Load complete planet_pistes.osm datatbase with osm2pgsql
+        Post-process for the websiote API needs : sites and routes relations, trigram text search and pgrouting.
+        Swap temp and actual  DB
         From time to time, create a list of ressorts (resorts.json) with calls to Nominatim (resort_list.py)
     
 Other scripts run manually or monthly:
