@@ -64,6 +64,12 @@ tables:
     - key: route
       name: route
       type: string
+    - key: tunnel
+      name: tunnel
+      type: bool
+    - key: bridge
+      name: bridge
+      type: bool
   pistes_ways:
     mapping:
       piste:type:
@@ -120,6 +126,12 @@ tables:
       type: bool
     - key: patrolled
       name: patrolled
+      type: bool
+    - key: tunnel
+      name: tunnel
+      type: bool
+    - key: bridge
+      name: bridge
       type: bool
   resorts:
     mapping:
@@ -358,6 +370,14 @@ tables:
       key: patrolled
       type: bool
       from_member: true
+    - key: tunnel
+      name: tunnel
+      type: bool
+      from_member: true
+    - key: bridge
+      name: bridge
+      type: bool
+      from_member: true
   pistes_site_members:
     mapping:
       site:
@@ -421,6 +441,12 @@ tables:
     - key: sport
       type: string
       name: sport
+    - key: tunnel
+      name: tunnel
+      type: bool
+    - key: bridge
+      name: bridge
+      type: bool
   other_ways:
     mapping:
       sport:
@@ -450,6 +476,12 @@ tables:
     - key: sport
       type: string
       name: sport
+    - key: tunnel
+      name: tunnel
+      type: bool
+    - key: bridge
+      name: bridge
+      type: bool
   other_nodes:
     mapping:
       sport:
